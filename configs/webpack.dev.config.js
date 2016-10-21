@@ -1,0 +1,69 @@
+const webpack = require('webpack');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+
+module.exports = {
+  devtool: 'cheap-module-eval-source-map',
+  context: path.join(__dirname, '../client'),
+  entry: [
+    'react-hot-loader/patch',
+    'webpack-dev-server/client?http://localhost:3001',
+    'webpack/hot/only-dev-server',
+    './index.js'
+  ],
+  output: {
+    path: path.join(__dirname, '../static'),
+    filename: '[name].js',
+    chunkFilename: '[name].chunk.js',
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        loader: 'babel',
+        query: {
+          babelrc: false,
+          presets: [
+            ['es2015', {modules: false}], 'stage-0', 'react'
+          ],
+          plugins: [
+            'react-hot-loader/babel',
+            'transform-decorators-legacy',
+          ]
+        }
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.js', '.jsx'],
+    modules: [
+      path.resolve('../src'),
+      'node_modules'
+    ]
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      children: true,
+      minChunks: 2,
+      async: true,
+    }),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false,
+    }),
+    new webpack.DefinePlugin({
+      'process.env': { NODE_ENV: JSON.stringify('development') }
+    }),
+    new HtmlWebpackPlugin({
+      template: 'index.html',
+      inject: true,
+    })
+  ],
+
+  target: 'web',
+
+};
