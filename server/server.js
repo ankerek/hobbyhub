@@ -19,6 +19,12 @@ if(config.env === 'production') {
 app.use(morgan('tiny'));
 app.use(routes);
 
+// error-handling middleware
+app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
+  console.log(err);
+  return res.status(err.status || 500).json('Něco se pokazilo');
+});
+
 app.listen(config.port, function() {
   console.log(`Server started: http://${config.host}:${config.port}/`);
 });
