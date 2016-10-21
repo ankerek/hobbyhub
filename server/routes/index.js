@@ -1,10 +1,8 @@
 import express from 'express';
+import apiRouter from './api';
 
 const router = express.Router();
 
-router.route('/api')
-  .get((req, res, next) => {
-    res.send('Hello world!');
-  })
+router.use('/api', apiRouter);
 
 export default router;
