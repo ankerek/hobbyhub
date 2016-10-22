@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "start": "npm-run-all --parallel dev:server dev:client",
-    "dev:server": "nodemon server",
+    "start": "npm run dev",
+    "dev": "npm-run-all --parallel dev:server dev:client",
+    "dev:server": "nodemon server --ignore client/",
     "dev:client": "node server/webpack-dev-server",
     "build": "NODE_ENV=production webpack --progress --stats --config ./webpack/prod.config.js",
     "prod": "NODE_ENV=production node index",
