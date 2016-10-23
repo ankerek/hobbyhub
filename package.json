@@ -6,7 +6,7 @@
     "start": "npm run dev",
     "dev": "npm-run-all --parallel dev:server dev:client",
     "dev:server": "nodemon server --ignore client/",
-    "dev:client": "node server/webpack-dev-server",
+    "dev:client": "webpack-dev-server --config ./configs/webpack.dev.config",
     "build": "NODE_ENV=production webpack --progress --stats --config ./webpack/prod.config.js",
     "prod": "NODE_ENV=production node index",
     "lint": "eslint server client"

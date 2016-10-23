@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const config = require('./');
 
 
 module.exports = {
@@ -39,7 +40,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
     modules: [
-      path.resolve('../src'),
+      path.resolve('../client'),
       'node_modules'
     ]
   },
@@ -63,6 +64,27 @@ module.exports = {
       inject: true,
     })
   ],
+  devServer: {
+    contentBase: '../client',
+    historyApiFallback: true,
+    host: config.host,
+    hot: true,
+    port: config.port + 1,
+    stats: {
+      cached: true,
+      cachedAssets: true,
+      chunks: true,
+      chunkModules: false,
+      colors: true,
+      hash: false,
+      reasons: true,
+      timings: true,
+      version: false
+    },
+    proxy: {
+      '/api': `http://${config.host}:${config.port}`,
+    }
+  },
 
   target: 'web',
 
