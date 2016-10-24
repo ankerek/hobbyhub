@@ -8,7 +8,7 @@ export default class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <div>
+        <div className="container">
           <Match exactly pattern="/" component={Home} />
           <Match pattern="/events" component={Home} />
 

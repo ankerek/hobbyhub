@@ -35,6 +35,11 @@ module.exports = {
           ]
         }
       },
+      {
+        test: /\.css$/,
+        exclude: /node_modules/,
+        loader: 'style-loader!css-loader?localIdentName=[local]__[path][name]__[hash:base64:5]&modules&importLoaders=1&sourceMap!postcss-loader',
+      },
     ],
   },
   resolve: {
@@ -83,6 +88,7 @@ module.exports = {
     },
     proxy: {
       '/api': `http://${config.host}:${config.port}`,
+      '/static': `http://${config.host}:${config.port}`,
     }
   },
 

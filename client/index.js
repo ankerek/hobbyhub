@@ -6,6 +6,8 @@ import configureStore from './utils/store';
 
 import Root from './Root';
 
+import './theme/main.css';
+
 const rootEl = document.getElementById('root');
 const store = configureStore();
 
