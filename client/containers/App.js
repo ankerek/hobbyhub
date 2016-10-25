@@ -9,9 +9,12 @@ export default class App extends Component {
     return (
       <BrowserRouter>
         <div className="container">
+          header
+
           <Match exactly pattern="/" component={Home} />
           <Match pattern="/events" component={Home} />
-
+          
+          footer
         </div>
       </BrowserRouter>
     );

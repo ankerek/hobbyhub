@@ -2,11 +2,13 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import configureStore from './utils/store'; 
+import configureStore from './utils/store';
+
+import Bootstrap from 'bootstrap/dist/css/bootstrap.css';// eslint-disable-line no-unused-vars
 
 import Root from './Root';
 
-import './theme/main.css';
+import './theme/css/main.css';
 
 const rootEl = document.getElementById('root');
 const store = configureStore();

@@ -6,13 +6,14 @@ import routes from './routes';
 
 const app = express();
 
-const publicPath = '/';
-const outputPath = path.resolve(process.cwd(), 'static');
 
-app.use('/static', express.static(outputPath));
 
 // server index.html file in production
 if(config.env === 'production') {
+  const publicPath = '/';
+  const outputPath = path.resolve(process.cwd(), 'static');
+
+  app.use(publicPath, express.static(outputPath));
   app.get('*', (req, res) => res.sendFile(path.resolve(outputPath, 'index.html')));
 }
 
