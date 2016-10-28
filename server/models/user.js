@@ -31,7 +31,7 @@ const ratingSchema = new mongoose.Schema({
 });
 
 // the user document schema
-const UserSchema = new mongoose.Shema({
+const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,

@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
+import Category from './category.js'
 
 // reused for organiser and individual attendees
-const attendeeSchema = new mognoose.Schema({
+const attendeeSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
@@ -27,12 +28,14 @@ const attendeeSchema = new mognoose.Schema({
 });
 
 // recursive comment schema
-const commentSchema = new mongoose.Schema({
+const commentSchema = new mongoose.Schema();
+
+commentSchema.add({
   author: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
-  authoerName: {
+  authorName: {
     type: String,
     required: true,
   },
@@ -64,7 +67,7 @@ const EventSchema = new mongoose.Schema({
     required: true,
   },
   categories: {
-    type: [CategorySchema],
+    type: [Category.Schema],
     default: [],
     required: true,
   },

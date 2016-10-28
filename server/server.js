@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import path from 'path';
 import morgan from 'morgan';
 import config from '../configs';
@@ -6,6 +7,9 @@ import routes from './routes';
 
 const app = express();
 
+mongoose.connect(config.mongodb, (err) => {
+    if (err) throw err;
+});
 
 
 // server index.html file in production
