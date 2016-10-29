@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
-import Category from './category.js'
 
 // reused for organiser and individual attendees
 const attendeeSchema = new mongoose.Schema({
+  _id: false,
   userId: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   },
   email: {
@@ -31,8 +32,10 @@ const attendeeSchema = new mongoose.Schema({
 const commentSchema = new mongoose.Schema();
 
 commentSchema.add({
+  _id: false,
   author: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   },
   authorName: {
@@ -66,11 +69,12 @@ const EventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  categories: {
-    type: [Category.Schema],
+  categories: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
     default: [],
     required: true,
-  },
+  }],
   start: {
     type: Date,
     required: true,

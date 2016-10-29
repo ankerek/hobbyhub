@@ -1,4 +1,5 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import path from 'path';
 import morgan from 'morgan';
@@ -11,6 +12,9 @@ mongoose.connect(config.mongodb, (err) => {
     if (err) throw err;
 });
 
+// initialize express json body parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // server index.html file in production
 if(config.env === 'production') {

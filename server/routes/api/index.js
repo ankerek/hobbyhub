@@ -1,47 +1,23 @@
 import express from 'express';
-import User from '../../models/user.js';
-import Event from '../../models/event.js';
+
+import * as EventsController from '../../controllers/events_controller'
+import * as UsersController from '../../controllers/users_controller'
+import * as CategoriesController from '../../controllers/categories_controller'
 
 const router = express.Router();
 
 router.route('/events')
-  .get((req, res, next) => {
-    Event.find((err,events) => {
-      if(err){
-          res.send(err);
-        }
-      res.json(events);
-    })
-  })
+  .post(EventsController.create)
+  .get(EventsController.index)
 
 router.route('/events/:event_id')
-  .get((req, res, next) => {
-    Event.findById(req.params.event_id, (err, event) => {
-        if (err){
-            res.send(err);
-          }
-        res.json(event);
-        })
-    })
+  .get(EventsController.show)
 
 router.route('/users')
-  .get((req, res, next) => {
-    User.find((err,users)=> {
-        if(err){
-            res.send(err);
-          }
-        res.json(users);
-        })
-    })
+  .post(UsersController.create)
+  .get(UsersController.index)
 
 router.route('/users/:user_id')
-  .get((req, res, next) => {
-    User.findById(req.params.user_id, (err, user) => {
-        if (err){
-            res.send(err);
-          }
-        res.json(user);
-        })
-    })
+  .get(UsersController.show)
 
 export default router;
