@@ -41,11 +41,11 @@ const initialState = Immutable.from([{
   }],
 }]);
 
-const eventsReducer = (state = initialState, { type, payload }) => {
+const upcomingEventsReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     default:
       return state;
   }
 };
 
-export default eventsReducer;
+export default upcomingEventsReducer;
