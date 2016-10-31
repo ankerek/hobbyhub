@@ -18,12 +18,12 @@ const attendeeSchema = new mongoose.Schema({
   },
   averageRating: {
     type: Number,
-    required: false,
     min: 0, max: 100,
+    required: false,
   },
   state: {
     type: String,
-    enum: ['PENDING', 'ACCEPTED'], default: 'PENDING',
+    enum: ['PENDING', 'ACCEPTED', 'REJECTED'], default: 'PENDING',
     required: true,
   },
 });
@@ -44,7 +44,6 @@ commentSchema.add({
   },
   timestamp: {
     type: Date,
-    required: true,
     default: Date.now,
   },
   text: {
@@ -78,10 +77,16 @@ const EventSchema = new mongoose.Schema({
   start: {
     type: Date,
     required: true,
+    default: Date.now,
   },
   end: {
     type: Date,
     required: true,
+    default: Date.now
+  },
+  address: {
+    type: String,
+    required: true
   },
   minPeople: {
     type: Number,

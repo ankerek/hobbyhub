@@ -4,7 +4,8 @@ import mongoose from 'mongoose';
 const ratingSchema = new mongoose.Schema({
   ratedBy: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true , //TODO: refs for backend, autoincrement id for api?
+    ref: 'User',
+    required: true,
   },
   event: {
     type: mongoose.Schema.Types.ObjectId,
@@ -16,13 +17,13 @@ const ratingSchema = new mongoose.Schema({
   },
   timestamp: {
     type: Date,
-    required: true,
     default: Date.now,
+    required: true,
   },
   percent: {
     type: Number,
-    required: true,
     min: 0, max: 100,
+    required: true,
   },
   additionalText: {
     type: String,
@@ -43,6 +44,10 @@ const UserSchema = new mongoose.Schema({
   lastName: {
     type: String,
     required: true,
+  },
+  pictureUrl: {
+    type: String,
+    required: false,
   },
   introducation: {
     type: String,
