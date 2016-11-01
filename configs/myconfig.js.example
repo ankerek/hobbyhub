@@ -1,0 +1,6 @@
+// Don't modify this file. Create `myconfig.js` and put your overrides in there.
+module.exports = {
+  mongodb: process.env.MONGOLAB_URI || 'mongodb://<user>:<password>@ds029565.mlab.com:29565/hobbyhub',
+  secret: 'tajnyKlic',
+  authExpiration: 7 * 24 * 60 * 60,
+};
