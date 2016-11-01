@@ -8,13 +8,16 @@ import routes from './routes';
 
 const app = express();
 
-mongoose.connect(config.mongodb, (err) => {
-    if (err) throw err;
+mongoose.connect(config.mongodb);
+mongoose.connection.on('error', () => {
+  console.info('Error: Could not connect to MongoDB.');
 });
 
 // initialize express json body parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(morgan('tiny'));
+app.use(routes);
 
 // server index.html file in production
 if(config.env === 'production') {
@@ -25,8 +28,7 @@ if(config.env === 'production') {
   app.get('*', (req, res) => res.sendFile(path.resolve(outputPath, 'index.html')));
 }
 
-app.use(morgan('tiny'));
-app.use(routes);
+
 
 // error-handling middleware
 app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
