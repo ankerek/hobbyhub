@@ -14,6 +14,7 @@ module.exports = {
     path: path.join(__dirname, '../static'),
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].chunk.js',
+    publicPath: '/',
   },
   module: {
     loaders: [
