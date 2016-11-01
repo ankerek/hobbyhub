@@ -1,12 +1,15 @@
 import Event from '../models/event'
 
 export function index(req, res, next) {
-  Event.find((err, events) => {
-    if (err) {
-      return next(err);
-    }
-    res.json(events);
-  })
+  Event
+    .find()
+    .populate('categories')
+    .exec((err, events) => {
+      if (err) {
+        return next(err);
+      }
+      res.json(events);
+    });
 }
 
 export function create(req, res, next) {
