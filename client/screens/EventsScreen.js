@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import compose from 'compose-function';
 
-import { Grid, Row, Col, Button, Jumbotron, FormGroup, FormControl, Well } from 'react-bootstrap';
+import { Grid, Row, Col, Button, Jumbotron, FormGroup, FormControl, Well, Image } from 'react-bootstrap';
 import EventRow from '../components/EventRow';
 
 export const mapStateToProps = (state) => ({
@@ -21,7 +21,7 @@ export const EventsScreenView = ({
         <Row>
           <Col lg={8}>
             {categories.map(category => (
-              <Link key={category.id} to={`/events/categories/${category.id}`}>|{category.name}|</Link>
+                <Link key={category.id} to={`/events/categories/${category.id}`}><Image src="http://placehold.it/40x40" alt={category.name} style={{marginRight: 1 + 'em'}}></Image></Link>
             ))}
           </Col>
           <Col lg={4}>
@@ -35,10 +35,9 @@ export const EventsScreenView = ({
         More filters...
       </p>
     </Jumbotron>
-    <Well>
+
       <h2>Events</h2>
       {events.map(event => (<EventRow key={event.id} event={event} />))}
-    </Well>
   </div>
 );
 

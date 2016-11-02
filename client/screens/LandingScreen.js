@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import compose from 'compose-function';
 
-import { Grid, Row, Col, Button, Jumbotron, Well, FormGroup, FormControl } from 'react-bootstrap';
+import { Grid, Row, Col, Button, ButtonToolbar, Jumbotron, Well, FormGroup, FormControl, Image } from 'react-bootstrap';
 
 import EventRow from '../components/EventRow';
 
@@ -21,8 +21,8 @@ export const LandingScreenView = ({
       <Grid>
         <Row>
           <Col lg={8}>
-            {categories.map(category => (
-              <Link key={category.id} to={`/events/categories/${category.id}`}>|{category.name}|</Link>
+              {categories.map(category => (
+                <Link key={category.id} to={`/events/categories/${category.id}`}><Image src="http://placehold.it/40x40" alt={category.name} style={{marginRight: 1 + 'em'}}></Image></Link>
             ))}
           </Col>
           <Col lg={4}>
@@ -33,25 +33,25 @@ export const LandingScreenView = ({
         </Row>
       </Grid>
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet beatae deserunt earum enim maxime quas quis quos ut voluptatibus? Architecto cum cupiditate dolores error, libero odit provident vitae. Distinctio, expedita.</p>
-      <Button bsStyle="primary">
-        Sign Up
-        <br />
-        to get involved
-      </Button>
+      <div className="text-center">
+        <Button bsStyle="primary" bsSize="large">
+          Sign Up
+          <br />
+          to get involved
+        </Button>
+      </div>
     </Jumbotron>
-    <Well>
       <Grid>
         <Row>
           <Col lg={10}>
             <h2>Upcoming Events</h2>
           </Col>
           <Col lg={2}>
-            <Link to="/events">See all</Link>
+            <Button href="/events">See all</Button>
           </Col>
         </Row>
       </Grid>
       {upcomingEvents.map(event => (<EventRow key={event.id} event={event} />))}
-    </Well>
   </div>
 );
 
