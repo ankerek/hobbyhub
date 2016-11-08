@@ -24,7 +24,7 @@ export function create(req, res, next) {
 
 export function show(req, res, next) {
   Event
-    .findOne({ _id: req.params.event_id })
+    .findOne({ _id: req.params.eventId })
     .populate('categories')
     .exec((err, event) => {
       if (err) {

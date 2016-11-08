@@ -37,6 +37,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  password: { //TODO: temporary plaintext simple password
+    type: String,
+    required: true,
+  },
   firstName: {
     type: String,
     required: true,
@@ -49,7 +53,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  introducation: {
+  introduction: {
     type: String,
     required: false,
   },

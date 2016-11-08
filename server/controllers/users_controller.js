@@ -27,3 +27,7 @@ export function show(req, res, next) {
         res.json(user);
       })
 }
+
+export function auth(req, rest, next) {
+  //TODO: passport, hardcode? whatever
+}
