@@ -7,6 +7,12 @@ export default function configureStore(initialState) {
   const sagaMiddleware = createSagaMiddleware();
     
   const middlewares = [ sagaMiddleware ];
+
+  if (process.env.NODE_ENV === 'development') {
+    const createLogger = require('redux-logger');
+    const logger = createLogger();
+    middlewares.push(logger);
+  }
   
   const store = createStore(
     rootReducer,
