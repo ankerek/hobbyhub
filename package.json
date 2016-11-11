@@ -9,7 +9,7 @@
     "dev:client": "webpack-dev-server --config ./configs/webpack.dev.config",
     "build": "cross-env NODE_ENV=production webpack --progress --config ./configs/webpack.prod.config",
     "prod": "cross-env NODE_ENV=production node server",
-    "postinstall": "npm run build",
+    "postinstall": "npm run build && apidoc -i ./server/routes/api/ -o ./static/apidoc/",
     "lint": "eslint server client"
   },
   "repository": {
