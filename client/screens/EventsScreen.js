@@ -2,14 +2,33 @@ import React, { PropTypes as T } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import compose from 'compose-function';
+import { fetchEvents } from '../actions/events';
+import { getAllEvents } from '../reducers';
 
 import { Grid, Row, Col, Button, Jumbotron, FormGroup, FormControl, Well, Image } from 'react-bootstrap';
 import EventRow from '../components/EventRow';
 
 export const mapStateToProps = (state) => ({
   categories: state.categories,
-  events: state.events,
+  events: getAllEvents(state),
 });
+
+
+export const fetchHoc = (fetch) => {
+  return function wrapWithFetch(WrappedComponent) {
+    return class extends React.Component {
+      componentDidMount() {
+        this.props.dispatch(fetch());
+      }
+
+      render() {
+        return (
+          <WrappedComponent {...this.props} />
+        )
+      }
+    }
+  }
+}
 
 export const EventsScreenView = ({
   categories,
@@ -35,9 +54,8 @@ export const EventsScreenView = ({
         More filters...
       </p>
     </Jumbotron>
-
       <h2>Events</h2>
-      {events.map(event => (<EventRow key={event.id} event={event} />))}
+      {events.map(event => (<EventRow key={event._id} event={event} />))}
   </div>
 );
 
@@ -47,7 +65,8 @@ EventsScreenView.propTypes = {
 };
 
 const EventsScreen = compose(
-  connect(mapStateToProps)
+  connect(mapStateToProps),
+  fetchHoc(fetchEvents),
 )(EventsScreenView);
 
 export default EventsScreen;

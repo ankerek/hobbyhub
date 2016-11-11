@@ -16,31 +16,31 @@ export const EventRowView = ({
       </Col>
       <Col lg={3}>
         <Row>
-          <h3>{event.title}</h3>
+          <h3>{event.name}</h3>
         </Row>
         <Row>
           <p>{event.address}</p>
         </Row>
         <Row>
-          <p>{event.time}</p>
+          <p>{event.start}</p>
         </Row>
         <Row>
             <Button>
               <Link to="/">Attend</Link>
             </Button>
             <Button>
-              <Link to={`/events/${event.id}`}>See Detail</Link>
+              <Link to={`/events/${event._id}`}>See Detail</Link>
             </Button>
         </Row>
       </Col>
       <Col lg={2}>
         <Row>
-          <h2>{event.participants.length}/{event.maxParticipants}</h2>
+          <h2>{event.attendees.length}/{event.maxPeople}</h2>
         </Row>
       </Col>
       <Col lg={6}>
-        {event.participants.map(user => (
-            <Link key={user.id} to={`/users/${user.id}`}><Image src="http://placehold.it/35x35" alt={user.name} style={{marginRight: 0.5 + 'em'}}></Image></Link>
+        {event.attendees.map(user => (
+            <Link key={user.userId} to={`/users/${user.userId}`}><Image src="http://placehold.it/35x35" alt={user.fullName} style={{marginRight: 0.5 + 'em'}}></Image></Link>
         ))}
       </Col>
     </Row>
