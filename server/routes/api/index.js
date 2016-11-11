@@ -75,8 +75,9 @@ router.route('/events')
    *     {
    *       "name": "eventName",
    *       "organizer": "bob@bob.bob"
+   *       "description": "This is the coolest event ever";
    *       "categories": [
-   *        "57897ajsdkvl", "7657asdflkjc"
+   *        "sport", "football", "nonexistentCategory"
    *       ],
    *       "start": 1478623941,
    *       "end": 1478623941,
@@ -170,30 +171,30 @@ router.route('/events/:eventId')
    */
   .get(EventsController.show);
 
-router.route('/events/:eventId/attendees/:email')
+router.route('/events/:eventId/attendees/:userId')
   /**
-   * @api {PUT} /events/:eventId/attendees/:email Add user as attendee
+   * @api {PUT} /events/:eventId/attendees/:userId Add user as attendee
    * @apiVersion 0.0.1
    * @apiName AttendEvent
    * @apiGroup Event
    * @apiPermission authenticatedUser
    *
-   * @apiDescription This call will add the user with specified email as an attendee of the event
+   * @apiDescription This call will add the user with specified userId as an attendee of the event
    *
-   * @apiError UserNotFound An User with specified <code>email</code> has not been found
+   * @apiError UserNotFound An User with specified <code>userId</code> has not been found
    * @apiError EventNotFound An Event with specified <code>eventId</code> has not been found
    */
   .put(EventsController.attend)
   /**
-   * @api {DELETE} /events/:eventId/attendees/:email Remove user as attendee
+   * @api {DELETE} /events/:eventId/attendees/:userId Remove user as attendee
    * @apiVersion 0.0.1
    * @apiName LeaveEvent
    * @apiGroup Event
    * @apiPermission authenticatedUser
    *
-   * @apiDescription This call will remove the user with specified email from the event
+   * @apiDescription This call will remove the user with specified userId from the event
    *
-   * @apiError UserNotFound An User with specified <code>email</code> has not been found
+   * @apiError UserNotFound An User with specified <code>userId</code> has not been found
    * @apiError EventNotFound An Event with specified <code>eventId</code> has not been found
    */
   .delete(EventsController.leave);
@@ -235,6 +236,6 @@ router.route('/users/auth')
    *
    * @apiError InvalidCredentials Provided credentials were not valid
    */
-  .post(AuthController.auth);
+  .post(UsersController.auth);
 
 export default router;

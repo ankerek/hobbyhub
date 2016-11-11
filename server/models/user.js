@@ -35,6 +35,7 @@ const ratingSchema = new mongoose.Schema({
 const UserSchema = new mongoose.Schema({
   email: {
     type: String,
+    unique: true,
     required: true,
   },
   password: { //TODO: temporary plaintext simple password
