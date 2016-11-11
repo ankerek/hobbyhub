@@ -25,6 +25,8 @@ if(config.env === 'production') {
   const outputPath = path.resolve(process.cwd(), 'static');
 
   app.use(publicPath, express.static(outputPath));
+  app.use('/static', express.static(path.resolve(outputPath, 'apidoc')));
+  app.get('/static/apidoc', (req, res) => res.sendFile(path.resolve(outputPath, 'apidoc', 'index.html')));
   app.get('*', (req, res) => res.sendFile(path.resolve(outputPath, 'index.html')));
 }
 
