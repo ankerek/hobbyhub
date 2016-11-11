@@ -20,10 +20,14 @@ export function create(req, res, next) {
 }
 
 export function show(req, res, next) {
-  User.findById(req.params.user_id, (err, user) => {
+  User.findById(req.params.userId, (err, user) => {
         if (err) {
           return next(err);
         }
         res.json(user);
       })
+}
+
+export function auth(req, rest, next) {
+  //TODO: passport, hardcode? whatever
 }

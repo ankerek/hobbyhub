@@ -5,7 +5,6 @@ const attendeeSchema = new mongoose.Schema({
   _id: false,
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
     required: true,
   },
   email: {
@@ -35,7 +34,6 @@ commentSchema.add({
   _id: false,
   author: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
     required: true,
   },
   authorName: {
@@ -58,6 +56,7 @@ commentSchema.add({
 const EventSchema = new mongoose.Schema({
   name: {
     type: String,
+    unique: true,
     required: true,
   },
   organizer: {
@@ -68,12 +67,11 @@ const EventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  categories: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category',
+  categories: {
+    type: [String],
     default: [],
     required: true,
-  }],
+  },
   start: {
     type: Date,
     required: true,

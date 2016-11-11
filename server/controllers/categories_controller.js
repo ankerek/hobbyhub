@@ -2,7 +2,7 @@ import Category from '../models/category'
 
 export function index(req, res, next) {
   Category.find((err, categories) => {
-    if(err) {
+    if (err) {
       return next(err);
     }
     res.json(categories);
@@ -20,7 +20,7 @@ export function create(req, res, next) {
 }
 
 export function show(req, res, next) {
-  Category.findById(req.params.category_id, (err, category) => {
+  Category.findById(req.params.categoryId, (err, category) => {
     if (err) {
       return next(err);
     }
