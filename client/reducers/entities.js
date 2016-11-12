@@ -21,7 +21,7 @@ export default entities;
 
 export const getEvent = (state, id) => ({
   ...state.events[id],
-  attendees: getUsersByEvent(state, state.events[id].attendees),
+  attendees: state.events[id] ? getUsersByEvent(state, state.events[id].attendees) : [],
 })
 export const getUser = (state, id) => state.users[id]
 

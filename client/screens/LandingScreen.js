@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import compose from 'compose-function';
 import { getAllEvents } from '../reducers';
+import { fetchEvents } from '../actions/events';
+import fetchData from '../components/fetchData';
 
 import { Grid, Row, Col, Button, ButtonToolbar, Jumbotron, Well, FormGroup, FormControl, Image } from 'react-bootstrap';
 
@@ -52,7 +54,7 @@ export const LandingScreenView = ({
           </Col>
         </Row>
       </Grid>
-      {upcomingEvents.map(event => (<EventRow key={event._id} event={event} />))}
+      {upcomingEvents.length && upcomingEvents.map(event => (<EventRow key={event._id} event={event} />))}
   </div>
 );
 
@@ -62,7 +64,8 @@ LandingScreenView.propTypes = {
 };
 
 const LandingScreen = compose(
-  connect(mapStateToProps)
+  connect(mapStateToProps),
+  fetchData(fetchEvents),
 )(LandingScreenView);
 
 export default LandingScreen;
