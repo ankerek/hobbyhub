@@ -2,8 +2,9 @@ import React, { PropTypes as T } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import compose from 'compose-function';
-import { fetchEvents } from '../actions/events';
 import { getAllEvents } from '../reducers';
+import { fetchEvents } from '../actions/events';
+import fetchData from '../components/fetchData';
 
 import { Grid, Row, Col, Button, Jumbotron, FormGroup, FormControl, Well, Image } from 'react-bootstrap';
 import EventRow from '../components/EventRow';
@@ -12,23 +13,6 @@ export const mapStateToProps = (state) => ({
   categories: state.categories,
   events: getAllEvents(state),
 });
-
-
-export const fetchHoc = (fetch) => {
-  return function wrapWithFetch(WrappedComponent) {
-    return class extends React.Component {
-      componentDidMount() {
-        this.props.dispatch(fetch());
-      }
-
-      render() {
-        return (
-          <WrappedComponent {...this.props} />
-        )
-      }
-    }
-  }
-}
 
 export const EventsScreenView = ({
   categories,
@@ -66,7 +50,7 @@ EventsScreenView.propTypes = {
 
 const EventsScreen = compose(
   connect(mapStateToProps),
-  fetchHoc(fetchEvents),
+  fetchData(fetchEvents),
 )(EventsScreenView);
 
 export default EventsScreen;
