@@ -2,12 +2,13 @@ import React, { PropTypes as T } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import compose from 'compose-function';
-import { getEvent } from '../reducers/entities';
-import { fetchEvent } from '../actions/events';
+import { getEvent, getIsAttendee } from '../reducers/entities';
+import { fetchEvent, joinEvent, leaveEvent } from '../actions/events';
 import { Grid, Row, Col, Button, Well, Image } from 'react-bootstrap';
 
 export const mapStateToProps = (state, { params: { id } }) => ({
   event: getEvent(state.entities, id),
+  isAttendee: getIsAttendee(state.entities, id, state.auth.user._id),
 });
 
 class EventDetailContainer extends React.Component {
@@ -23,7 +24,7 @@ class EventDetailContainer extends React.Component {
   }
 }
 
-export const EventDetailScreenView = ({ event }) => (
+export const EventDetailScreenView = ({ event, isAttendee ,dispatch }) => (
   <Well>
     <Row>
       <Col lg={8}>
@@ -32,21 +33,23 @@ export const EventDetailScreenView = ({ event }) => (
           <p>{event.start}</p>
       </Col>
       <Col lg={4}>
-        <Button bsStyle="primary" bsSize="large" className="pull-right">Attend</Button>
+       { isAttendee 
+          ? <Button bsStyle="danger" bsSize="large" className="pull-right" onClick={() => dispatch(leaveEvent(event._id))}>Leave event</Button>
+          : <Button bsStyle="primary" bsSize="large" className="pull-right" onClick={() => dispatch(joinEvent(event._id))}>Attend event</Button> } 
+        
       </Col>
     </Row>
     <p>{event.description}</p>
     <h2>{event.attendees.length}/{event.maxPeople}</h2>
     {event.attendees.map(user => (
-            <Row style={{margin: 1 + 'em'}}>
-              <Link key={user._id} to={`/users/${user._id}`}><Image src="http://placehold.it/35x35" alt={user.fullName} style={{marginRight: 0.5 + 'em'}}></Image>{user.fullName}</Link>
-            </Row>
-        ))}
+      <Link key={user.userId} to={`/users/${user.userId}`}><Image src="http://placehold.it/35x35" alt={user.fullName} style={{marginRight: 0.5 + 'em'}}></Image>{user.fullName}</Link>
+    ))}
   </Well>
 );
 
 EventDetailScreenView.propTypes = {
   event: T.object.isRequired,
+  dispatch: T.func.isRequired,
 };
 
 const EventDetailScreen = compose(

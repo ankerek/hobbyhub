@@ -1,10 +1,19 @@
 import React, { PropTypes as T } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { getIsAttendee } from '../reducers/entities';
+import { joinEvent, leaveEvent } from '../actions/events';
 
 import { Grid, Row, Col, Button, Well, Image } from 'react-bootstrap';
 
+export const mapStateToProps = (state, { event }) => ({
+  isAttendee: getIsAttendee(state.entities, event._id, state.auth.user._id),
+});
+
 export const EventRowView = ({
   event,
+  isAttendee,
+  dispatch,
 }) => (
   <Well>
   <Grid>
@@ -25,9 +34,9 @@ export const EventRowView = ({
           <p>{event.start}</p>
         </Row>
         <Row>
-            <Button>
-              <Link to="/">Attend</Link>
-            </Button>
+            { isAttendee 
+              ? <Button onClick={() => dispatch(leaveEvent(event._id))}>Leave</Button>
+              : <Button onClick={() => dispatch(joinEvent(event._id))}>Attend</Button> } 
             <Button>
               <Link to={`/events/${event._id}`}>See Detail</Link>
             </Button>
@@ -52,6 +61,6 @@ EventRowView.propTypes = {
   event: T.object.isRequired,
 };
 
-const EventRow = (EventRowView);
+const EventRow = connect(mapStateToProps)(EventRowView);
 
 export default EventRow;
