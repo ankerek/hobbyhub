@@ -1,0 +1,56 @@
+/**
+ * @description
+ * Scopes styles for 2x capable devices only.
+ */
+@mixin at2x() {
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 2dppx) {
+    @content;
+  }
+}
+
+/**
+ * @description
+ * Scopes styles for 3x capable devices only.
+ */
+@mixin at3x() {
+  @media (-webkit-min-device-pixel-ratio: 3), (min-resolution: 288dpi), (min-resolution: 3dppx) {
+    @content;
+  }
+}
+
+/**
+ * @description
+ * Scopes rules to `min-width` media query.
+ *
+ * @param value - Value of `min-width`.
+ */
+@mixin at-least($value) {
+  @media only screen and (min-width: #{$value}) {
+    @content;
+  }
+}
+
+/**
+ * @description
+ * Scopes rules to `max-width` media query.
+ *
+ * @param value - Value of `max-width`.
+ */
+@mixin at-most($value) {
+  @media only screen and (max-width: #{$value}) {
+    @content;
+  }
+}
+
+/**
+ * @description
+ * Scopes rules between `min-width` and `max-width` media query.
+ *
+ * @param min - Value of `min-width`.
+ * @param max - Value of `max-width`.
+ */
+@mixin between($min, $max) {
+  @media only screen and (min-width: #{$min}) and (max-width: #{$max}) {
+    @content;
+  }
+}

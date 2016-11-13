@@ -6,12 +6,12 @@ import { Button, Navbar, Nav, NavDropdown, NavItem, MenuItem, Glyphicon} from 'r
 
 // import logo from '../stylesheets/img/logo.png';
 
-import { getUser } from '../reducers';
+import { getCurrentUser } from '../reducers/auth';
 import { logout } from '../actions/auth';
 import { navigate } from '../actions/router';
 
 const mapStateToProps = (state) => ({
-  user: getUser(state),
+  user: getCurrentUser(state),
 });
 
 const mapDispatchToProps = {

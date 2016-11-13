@@ -1,0 +1,185 @@
+@import "../mixins/responsive";
+
+/* Proportional widths
+   ========================================================================== */
+
+/**
+ * Specify the proportional width of an object
+ *
+ * Intentional redundancy built into each set of unit classes.
+ * Supports: 2, 3, 4, 5, 6, 8, 10, 12 part
+ */
+
+
+@include at-least(35em) {
+  .u-size1of1\:35em {
+    width: 100% !important;
+  }
+
+  .u-size1of5\:35em,
+  .u-size2of10\:35em {
+    width: 20% !important;
+  }
+
+  .u-size1of3\:35em,
+  .u-size2of6\:35em,
+  .u-size4of12\:35em {
+    width: 33.333% !important;
+  }
+
+  .u-size1of2\:35em,
+  .u-size2of4\:35em,
+  .u-size3of6\:35em,
+  .u-size4of8\:35em,
+  .u-size5of10\:35em,
+  .u-size6of12\:35em {
+    width: 50% !important;
+  }
+
+  .u-size1of4\:35em,
+  .u-size2of8\:35em,
+  .u-size3of12\:35em {
+    width: 25% !important;
+  }
+
+  .u-size5of12\:35em {
+    width: 41.667% !important;
+  }
+
+  .u-size7of12\:35em {
+    width: 58.333% !important;
+  }
+  .u-size2of3\:35em,
+  .u-size4of6\:35em,
+  .u-size8of12\:35em {
+    width: 66.667% !important;
+  }
+};
+
+@include at-least(40em) {
+  .u-size1of4\:40em,
+  .u-size2of8\:40em,
+  .u-size3of12\:40em {
+    width: 25% !important;
+  }
+
+  .u-size1of3\:40em,
+  .u-size2of6\:40em,
+  .u-size4of12\:40em {
+    width: 33.333% !important;
+  }
+
+  .u-size1of2\:40em,
+  .u-size2of4\:40em,
+  .u-size3of6\:40em,
+  .u-size4of8\:40em,
+  .u-size5of10\:40em,
+  .u-size6of12\:40em {
+    width: 50% !important;
+  }
+
+  .u-size2of3\:40em,
+  .u-size4of6\:40em,
+  .u-size8of12\:40em {
+    width: 66.667% !important;
+  }
+
+  .u-size3of4\:40em,
+  .u-size6of8\:40em,
+  .u-size9of12\:40em {
+    width: 75% !important;
+  }
+
+  .u-size1of1\:40em {
+    width: 100% !important;
+  }
+};
+
+@include at-least(40em) {
+  .u-size1of4\:40em {
+    width: 25% !important;
+  }
+
+  .u-size1of3\:40em,
+  .u-size4of12\:40em {
+    width: 33.333% !important;
+  }
+
+  .u-size1of2\:40em {
+    width: 50% !important;
+  }
+
+  .u-size2of3\:40em,
+  .u-size4of6\:40em,
+  .u-size8of12\:40em {
+    width: 66.667% !important;
+  }
+
+  .u-size8of10\:40em,
+  .u-size4of5\:40em {
+    width: 80% !important;
+  }
+};
+
+@include at-least(60em) {
+  .u-size1of12\:60em {
+    width: 8.333% !important;
+  }
+
+  .u-size1of6\:60em,
+  .u-size2of12\:60em {
+    width: 16.667% !important;
+  }
+
+  .u-size1of4\:60em,
+  .u-size2of8\:60em,
+  .u-size3of12\:60em {
+    width: 25% !important;
+  }
+
+  .u-size1of3\:60em,
+  .u-size2of6\:60em,
+  .u-size4of12\:60em {
+    width: 33.333% !important;
+  }
+
+  .u-size5of12\:60em {
+    width: 41.667% !important;
+  }
+
+  .u-size1of2\:60em,
+  .u-size2of4\:60em,
+  .u-size3of6\:60em,
+  .u-size4of8\:60em,
+  .u-size5of10\:60em,
+  .u-size6of12\:60em {
+    width: 50% !important;
+  }
+
+  .u-size7of12\:60em {
+    width: 58.333% !important;
+  }
+
+  .u-size2of3\:60em,
+  .u-size4of6\:60em,
+  .u-size8of12\:60em {
+    width: 66.667% !important;
+  }
+
+  .u-size3of4\:60em {
+    width: 75% !important;
+  }
+
+  .u-size4of5\:60em,
+  .u-size8of10\:60em {
+    width: 80% !important;
+  }
+
+  .u-size10of12\:60em {
+    width: 83.333% !important;
+  }
+
+  .u-size1of1\:60em {
+    width: 100% !important;
+  }
+};

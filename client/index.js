@@ -5,6 +5,7 @@ import { AppContainer } from 'react-hot-loader';
 import configureStore from './utils/store';
 
 import './stylesheets/bootstrap-flat.css';
+import './stylesheets/app.scss';
 
 import Root from './Root';
 

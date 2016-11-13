@@ -1,0 +1,107 @@
+/**
+ * @atdoc utility
+ * @name isHidden
+ *
+ * @description
+ * Completely remove from the flow and screen readers.
+ */
+.u-isHidden {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/**
+ * @atdoc utility
+ * @name isHiddenVisually
+ *
+ * @description
+ * Completely remove from the flow but leave available to screen readers.
+ */
+.u-isHiddenVisually {
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  padding: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+
+  border: 0 !important;
+}
+
+/**
+ * @atdoc utility
+ * @name isVisible
+ *
+ * @description
+ * Control visibility without affecting flow.
+ */
+.u-isVisible {
+  visibility: visible !important;
+}
+
+/**
+ * @atdoc utility
+ * @name isInvisible
+ *
+ * @description
+ * Control visibility without affecting flow.
+ */
+.u-isInvisible {
+  visibility: hidden !important;
+}
+
+/* Interaction
+   ========================================================================== */
+
+/**
+ * @atdoc utility
+ * @name isActionable
+ *
+ * @description
+ * Indicate that the element is interactive.
+ */
+.u-isActionable {
+  cursor: pointer !important;
+}
+
+/**
+ * @atdoc utility
+ * @name isDraggable
+ *
+ * @description
+ * Indicate that the element is draggable.
+ */
+.u-isDraggable {
+  cursor: move !important;
+}
+
+/**
+ * @atdoc utility
+ * @name isDisabled
+ *
+ * @description
+ * Indicate that the element is not interactive.
+ */
+.u-isDisabled {
+  cursor: default !important;
+}
+
+/**
+ * @atdoc utility
+ * @name isUnselectable
+ *
+ * @description
+ * Prevent selection on the element.
+ */
+.u-isUnselectable {
+  user-select: none !important;
+}
+
+
+/**
+ * @atdoc utility
+ * @name isUntransitionable
+ */
+.u-isUntransitionable {
+  transition: none !important;
+}

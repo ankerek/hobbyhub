@@ -2,63 +2,88 @@ import React, { PropTypes as T } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import compose from 'compose-function';
+import { Button, InputGroup, Well, FormGroup, FormControl } from 'react-bootstrap';
+
 import { getAllEvents } from '../reducers';
 import { fetchEvents } from '../actions/events';
 import fetchData from '../components/fetchData';
-
-import { Grid, Row, Col, Button, ButtonToolbar, Jumbotron, Well, FormGroup, FormControl, Image } from 'react-bootstrap';
-
-import EventRow from '../components/EventRow';
+import EventsGrid from '../components/EventsGrid';
+import CategoryIcon from '../components/CategoryIcon';
+import { bm, be } from '../utils/bem';
 
 export const mapStateToProps = (state) => ({
   upcomingEvents: getAllEvents(state),
   categories: state.categories,
 });
 
-export const LandingScreenView = ({
+export const renderLandingScreen = ({
   upcomingEvents,
   categories,
 }) => (
   <div>
-    <Jumbotron>
-      <Grid>
-        <Row>
-          <Col lg={8}>
-              {categories.map(category => (
-                <Link key={category.id} to={`/events/categories/${category.id}`}><Image src="http://placehold.it/40x40" alt={category.name} style={{marginRight: 1 + 'em'}}></Image></Link>
-            ))}
-          </Col>
-          <Col lg={4}>
-            <FormGroup>
-              <FormControl type="text" placeholder="Enter event name..." />
-            </FormGroup>
-          </Col>
-        </Row>
-      </Grid>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet beatae deserunt earum enim maxime quas quis quos ut voluptatibus? Architecto cum cupiditate dolores error, libero odit provident vitae. Distinctio, expedita.</p>
-      <div className="text-center">
-        <Button bsStyle="primary" bsSize="large">
-          Sign Up
+    <div className={bm('Grid', '1col multiCol:60em alignMiddle gutterA5px')}>
+      <div className={`${be('Grid', 'cell')} u-size4of12:60em`}>
+        <p className="u-text24px">
+          <span className="u-text50px">Wanna play?</span>
           <br />
-          to get involved
-        </Button>
+          Soccer or chess
+          <br />
+          or anything<em>ness</em>?
+        </p>
       </div>
-    </Jumbotron>
-      <Grid>
-        <Row>
-          <Col lg={10}>
-            <h2>Upcoming Events</h2>
-          </Col>
-          <Col lg={2}>
-            <Button><Link to="/events">See all</Link></Button>
-          </Col>
-        </Row>
-      </Grid>
-      {upcomingEvents.length && upcomingEvents.map(event => (<EventRow key={event._id} event={event} />))}
+      <div className={`${be('Grid', 'cell')} u-size4of12:60em`}>
+        <div className={bm('Grid', 'multiCol fit alignMiddle gutterH20px')}>
+          <div className={be('Grid', 'cell')}>
+            <Link className="btn btn-success btn-lg" to="/sign-up">
+              Sign Up Now
+            </Link>
+          </div>
+          <div className={`${be('Grid', 'cell')} u-text30px`}>
+            <p>
+              and <strong>play!</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className={`${be('Grid', 'cell')} u-size4of12:60em`}>
+        <Well>
+          <div className="u-spacing20px">
+            <div className={bm('Grid', 'multiCol justifyCenter wrap fit gutterA10px')}>
+              {categories.map(category => (
+                <div className={be('Grid', 'cell')} key={category.id}>
+                  <Link to={`/events/categories/${category.id}`}>
+                    <CategoryIcon category={category} size={48} />
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+          <FormGroup className="u-spacingNone">
+            <InputGroup>
+              <FormControl type="text" placeholder="Enter event name..." />
+              <InputGroup.Button>
+                <Button bsStyle="success">Search</Button>
+              </InputGroup.Button>
+            </InputGroup>
+          </FormGroup>
+        </Well>
+      </div>
+    </div>
+    <div className="u-spacing20px">
+      <div className={bm('Grid', 'multiCol fit alignMiddle gutterA10px')}>
+        <div className={be('Grid', 'cell')}>
+          <h2>Upcoming Events</h2>
+        </div>
+        <div className={`${be('Grid', 'cell')}`}>
+          <Link className='btn btn-primary btn-sm' to="/events">See All</Link>
+        </div>
+      </div>
+    </div>
+    {upcomingEvents.length ? <EventsGrid events={upcomingEvents} /> : null}
   </div>
 );
 
-LandingScreenView.propTypes = {
+renderLandingScreen.propTypes = {
   upcomingEvents: T.array.isRequired,
   categories: T.array.isRequired,
 };
@@ -66,6 +91,6 @@ LandingScreenView.propTypes = {
 const LandingScreen = compose(
   connect(mapStateToProps),
   fetchData(fetchEvents),
-)(LandingScreenView);
+)(renderLandingScreen);
 
 export default LandingScreen;

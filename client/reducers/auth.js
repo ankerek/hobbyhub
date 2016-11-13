@@ -2,6 +2,7 @@ import Immutable from 'seamless-immutable';
 import * as actions from '../actions/auth';
 
 const anonymousUser = {
+  _id: 0,
   anonymous: true,
   email: 'Anonymous@hobbyhub.cz',
   fullName: 'Anonymous',
@@ -21,5 +22,9 @@ const authReducer = (state = initialState, { type, payload }) => {
       return state;
   }
 };
+
+export const getCurrentUser = (state) => state.auth.user;
+export const getCurrentUserId = (state) => getCurrentUser(state)._id;
+export const isAuthenticated = (state) => !getCurrentUser(state).anonymous;
 
 export default authReducer;
