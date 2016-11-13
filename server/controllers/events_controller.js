@@ -30,7 +30,7 @@ export function create(req, res, next) {
       apiEvent.organizer = userToAttendee(usr)
     })
     .then(() => {
-      Category
+      return Category
         .find().where('name').in(categories)
         .select('name').exec()
     })
