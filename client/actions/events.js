@@ -1,5 +1,15 @@
 import * as actions from '../constants/actions';
 
 export const fetchEvents = () => ({
-  type: actions.FETCH_EVENTS_REQUEST
-});
+  type: actions.FETCH_EVENTS_REQUEST,
+})
+
+export const fetchEvent = (id) => ({
+  type: actions.FETCH_EVENT_REQUEST,
+  id,
+})
+
+export const createEvent = (data) => ({
+  type: actions.CREATE_EVENT_REQUEST,
+  data,
+})

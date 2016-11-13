@@ -2,13 +2,16 @@ import React, { PropTypes as T } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import compose from 'compose-function';
+import { getAllEvents } from '../reducers';
+import { fetchEvents } from '../actions/events';
+import fetchData from '../components/fetchData';
 
 import { Grid, Row, Col, Button, ButtonToolbar, Jumbotron, Well, FormGroup, FormControl, Image } from 'react-bootstrap';
 
 import EventRow from '../components/EventRow';
 
 export const mapStateToProps = (state) => ({
-  upcomingEvents: state.upcomingEvents,
+  upcomingEvents: getAllEvents(state),
   categories: state.categories,
 });
 
@@ -47,11 +50,11 @@ export const LandingScreenView = ({
             <h2>Upcoming Events</h2>
           </Col>
           <Col lg={2}>
-            <Button href="/events">See all</Button>
+            <Button><Link to="/events">See all</Link></Button>
           </Col>
         </Row>
       </Grid>
-      {upcomingEvents.map(event => (<EventRow key={event.id} event={event} />))}
+      {upcomingEvents.length && upcomingEvents.map(event => (<EventRow key={event._id} event={event} />))}
   </div>
 );
 
@@ -61,7 +64,8 @@ LandingScreenView.propTypes = {
 };
 
 const LandingScreen = compose(
-  connect(mapStateToProps)
+  connect(mapStateToProps),
+  fetchData(fetchEvents),
 )(LandingScreenView);
 
 export default LandingScreen;
