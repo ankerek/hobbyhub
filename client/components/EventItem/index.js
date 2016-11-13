@@ -67,8 +67,8 @@ export const renderEventItem = ({
         <p className="u-spacing10px">{event.start}</p>
         <div className={bm('Grid', 'multiCol 5col gutterH5px')}>
           {event.attendees.map(user => (
-            <div className={`${be('Grid', 'cell')} u-textCenter`}>
-              <Link key={user.userId} to={`/users/${user.userId}`}>
+            <div key={user.userId} className={`${be('Grid', 'cell')} u-textCenter`}>
+              <Link to={`/users/${user.userId}`}>
                 <div className="u-spacing5px">
                   <UserAvatar user={user} size={48} />
                 </div>
