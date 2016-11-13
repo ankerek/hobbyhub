@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes as T } from 'react';
 
 import './index.scss';
 
@@ -15,6 +15,11 @@ export const renderCategoryIcon = ({
     <img src={categoryIcons[category]} alt={category} width={size} height={size} />
   </div>
 );
+
+renderCategoryIcon.propTypes = {
+  category: T.string.isRequired,
+  size: T.number,
+};
 
 const CategoryIcon = (renderCategoryIcon);
 

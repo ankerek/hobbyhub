@@ -5,7 +5,7 @@ import compose from 'compose-function';
 import { Form, Col, Button, FormGroup, Well } from 'react-bootstrap';
 
 import { bm, be } from '../utils/bem';
-import CustomField from './HorizontalField';
+import HorizontalField from './HorizontalField';
 
 const validate = values => {
   const errors = {};
@@ -21,6 +21,9 @@ const validate = values => {
   }
   if (!values.address) {
     errors.address = 'Required';
+  }
+  if (!values.categories) {
+    errors.categories = 'Required';
   }
   if (!values.minPeople) {
     errors.minPeople = 'Required';
@@ -50,7 +53,7 @@ const validate = values => {
 const renderCategories = ({ fields, meta: { error } }) => (
   <ul>
     <li>
-      <button type="button" onClick={() => fields.push()}>Add category</button>
+      <Button bsStyle="primary" type="button" onClick={() => fields.push()}>Add category</Button>
     </li>
     {fields.map((category, index) =>
       <li key={index}>
@@ -63,7 +66,7 @@ const renderCategories = ({ fields, meta: { error } }) => (
         <Field
           name={category}
           type="text"
-          component={CustomField}
+          component={HorizontalField}
           label={`Category #${index + 1}`}/>
       </li>
     )}
@@ -71,7 +74,7 @@ const renderCategories = ({ fields, meta: { error } }) => (
   </ul>
 );
 
-export const EventFormView = ({
+export const renderEventForm = ({
   handleSubmit
 }) => (
   <div className={bm('Grid', 'multiCol justifyCenter')}>
@@ -83,44 +86,50 @@ export const EventFormView = ({
                  rightSm={8}
                  label="Name"
                  type="text"
-                 component={CustomField} />
+                 component={HorizontalField} />
           <Field name="description"
                  leftSm={4}
                  rightSm={8}
                  label="Description"
                  type="text"
-                 component={CustomField} />
+                 component={HorizontalField} />
           <Field name="address"
                  leftSm={4}
                  rightSm={8}
                  label="Address"
                  type="text"
-                 component={CustomField} />
+                 component={HorizontalField} />
           <Field name="start"
                  leftSm={4}
                  rightSm={8}
                  label="Start"
                  type="datetime-local"
-                 component={CustomField} />
+                 component={HorizontalField} />
           <Field name="end"
                  leftSm={4}
                  rightSm={8}
                  label="End"
                  type="datetime-local"
-                 component={CustomField} />
+                 component={HorizontalField} />
           <Field name="minPeople"
                  leftSm={4}
                  rightSm={8}
                  label="Min people"
                  type="number"
-                 component={CustomField} />
+                 component={HorizontalField} />
           <Field name="maxPeople"
                  leftSm={4}
                  rightSm={8}
                  label="Max people"
                  type="number"
-                 component={CustomField} />
-          <FieldArray name="categories" component={renderCategories}/>
+                 component={HorizontalField} />
+          <Field name="categories"
+                 leftSm={4}
+                 rightSm={8}
+                 label="Category"
+                 type="text"
+                 component={HorizontalField} />
+          {/*<FieldArray name="categories" component={renderCategories}/>*/}
           <FormGroup>
             <Col smOffset={4} sm={8}>
               <Button bsStyle="primary" type="submit">Submit</Button>
@@ -132,7 +141,7 @@ export const EventFormView = ({
   </div>
 );
 
-EventFormView.propTypes = {
+renderEventForm.propTypes = {
   handleSubmit: T.func.isRequired,
 };
 
@@ -141,6 +150,6 @@ const EventForm = compose(
     form: 'event',
     validate,
   })
-)(EventFormView);
+)(renderEventForm);
 
 export default EventForm;

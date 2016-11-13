@@ -2,7 +2,7 @@ import React, { PropTypes as T } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import compose from 'compose-function';
-import { Row, Col, Button, Well } from 'react-bootstrap';
+import { Row, Col, Button, Well, Glyphicon } from 'react-bootstrap';
 
 import { getCurrentUserId, isAuthenticated } from '../reducers/auth';
 import { getEvent, getIsAttendee } from '../reducers/entities';
@@ -42,22 +42,24 @@ export const renderEventDetailScreen = ({
     ) : null}
     <Row>
       <Col lg={8}>
-          <h1>{event.name}</h1>
-          <p>{event.address}</p>
-          <p>{event.start}</p>
+        <h1 className="u-spacing10px">{event.name}</h1>
+        <p className="u-spacing5px">{event.address}</p>
+        <p className="u-spacing10px">{event.start}</p>
       </Col>
       <Col lg={4}>
        { isAuthenticated ? (
          isAttendee ? (
-           <Button bsStyle="danger"
-                   bsSize="large"
+           <Button bsStyle="warning"
                    className="u-pullRight"
-                   onClick={() => dispatch(leaveEvent(event._id))}>Leave event</Button>
+                   onClick={() => dispatch(leaveEvent(event._id))}>
+             <Glyphicon glyph="remove" /> Leave
+           </Button>
          ) : (
            <Button bsStyle="primary"
-                   bsSize="large"
                    className="u-pullRight"
-                   onClick={() => dispatch(joinEvent(event._id))}>Attend event</Button>
+                   onClick={() => dispatch(joinEvent(event._id))}>
+             <Glyphicon glyph="plus" /> Join
+           </Button>
          )
        ) : (
          <Link className="btn btn-primary u-pullRight" to="/sign-up">Sign Up to Attend</Link>
