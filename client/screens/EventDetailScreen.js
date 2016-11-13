@@ -24,19 +24,6 @@ class EventDetailContainer extends React.Component {
   }
 }
 
-class EventDetailContainer extends React.Component {
-  componentDidMount() {
-    const { params: { id }, dispatch } = this.props;
-    dispatch(fetchEvent(id));
-  }
-
-  render() {
-    return (
-      <EventDetailScreenView {...this.props} />
-    )
-  }
-}
-
 export const EventDetailScreenView = ({ event, isAttendee ,dispatch }) => (
   <Well>
     <Row>
@@ -55,7 +42,10 @@ export const EventDetailScreenView = ({ event, isAttendee ,dispatch }) => (
     <p>{event.description}</p>
     <h2>{event.attendees.length}/{event.maxPeople}</h2>
     {event.attendees.map(user => (
-      <Link key={user.userId} to={`/users/${user.userId}`}><Image src="http://placehold.it/35x35" alt={user.fullName} style={{marginRight: 0.5 + 'em'}}></Image>{user.fullName}</Link>
+      <Link key={user.userId} to={`/users/${user.userId}`}>
+        <Image src="http://placehold.it/35x35" alt={user.fullName} style={{marginRight: 0.5 + 'em'}} />
+        {user.fullName}
+      </Link>
     ))}
   </Well>
 );
