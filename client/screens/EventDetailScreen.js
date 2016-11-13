@@ -24,6 +24,19 @@ class EventDetailContainer extends React.Component {
   }
 }
 
+class EventDetailContainer extends React.Component {
+  componentDidMount() {
+    const { params: { id }, dispatch } = this.props;
+    dispatch(fetchEvent(id));
+  }
+
+  render() {
+    return (
+      <EventDetailScreenView {...this.props} />
+    )
+  }
+}
+
 export const EventDetailScreenView = ({ event, isAttendee ,dispatch }) => (
   <Well>
     <Row>
@@ -33,10 +46,10 @@ export const EventDetailScreenView = ({ event, isAttendee ,dispatch }) => (
           <p>{event.start}</p>
       </Col>
       <Col lg={4}>
-       { isAttendee 
+       { isAttendee
           ? <Button bsStyle="danger" bsSize="large" className="pull-right" onClick={() => dispatch(leaveEvent(event._id))}>Leave event</Button>
-          : <Button bsStyle="primary" bsSize="large" className="pull-right" onClick={() => dispatch(joinEvent(event._id))}>Attend event</Button> } 
-        
+          : <Button bsStyle="primary" bsSize="large" className="pull-right" onClick={() => dispatch(joinEvent(event._id))}>Attend event</Button> }
+
       </Col>
     </Row>
     <p>{event.description}</p>

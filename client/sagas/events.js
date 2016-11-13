@@ -31,7 +31,7 @@ function* createEvent({ data }) {
   try {
     const loggedUser = yield select(getLoggedUser);
     const payload = yield call(
-      api.fetch, 
+      api.fetch,
       '/api/events', {
         method: 'POST',
         headers: {
@@ -58,7 +58,7 @@ function* joinLeaveEvent({ type, id }) {
   try {
     const loggedUser = yield select(getLoggedUser);
     const payload = yield call(
-      api.fetch, 
+      api.fetch,
       `/api/events/${id}/attendees/${loggedUser._id}`, {
         method: type === actions.JOIN_EVENT_REQUEST ? 'PUT' : 'DELETE',
         headers: {

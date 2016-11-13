@@ -54,7 +54,7 @@ export const LandingScreenView = ({
           </Col>
         </Row>
       </Grid>
-      {upcomingEvents.map(event => (<EventRow key={event._id} event={event} />))}
+      {upcomingEvents.length && upcomingEvents.map(event => (<EventRow key={event._id} event={event} />))}
   </div>
 );
 
