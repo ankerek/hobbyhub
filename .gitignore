@@ -2,7 +2,7 @@ node_modules
 npm-debug.log
 .DS_Store
 dist
-static
+static/
 .idea
 yarn-error.log
 configs/myconfig.js
