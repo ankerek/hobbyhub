@@ -13,7 +13,7 @@ export const loginSuccess = ({ user }) => ({
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const loginFailure = ({ error }) => ({
   type: LOGIN_FAILURE,
-  payload: { error},
+  payload: { error },
 });
 
 export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
