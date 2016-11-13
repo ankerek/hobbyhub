@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt-nodejs';
 
 // rating sub-document schema
 const ratingSchema = new mongoose.Schema({
@@ -64,5 +65,13 @@ const UserSchema = new mongoose.Schema({
   },
   ratings: [ratingSchema],
 });
+
+UserSchema.statics.generateHash = function(password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+
+UserSchema.methods.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.password);
+};
 
 export default mongoose.model('User', UserSchema, 'users');

@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import passport from '../configs/passport';
 import path from 'path';
 import morgan from 'morgan';
 import config from '../configs';
@@ -17,6 +18,7 @@ mongoose.connection.on('error', () => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('tiny'));
+app.use(passport.initialize());
 app.use(routes);
 
 // server index.html file in production
