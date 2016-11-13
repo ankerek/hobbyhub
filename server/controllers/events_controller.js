@@ -73,7 +73,7 @@ function mapCategories(categoryNames) {
   if (!categoryNames || categoryNames.length == 0) {
     return defaultCategory;
   }
-  return categoryNames;
+  return _.map(categoryNames, catObj => catObj.name);
 }
 
 export function show(req, res, next) {
