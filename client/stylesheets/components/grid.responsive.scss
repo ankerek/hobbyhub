@@ -1,0 +1,157 @@
+@import "../mixins/responsive";
+
+@include at-least(25em) {
+  .Grid--multiCol\:25em {
+    flex-direction: row;
+  }
+  .Grid--fit\:25em > .Grid-cell {
+    width: auto;
+  }
+};
+
+@include at-least(30em) {
+  .Grid--multiCol\:30em {
+    flex-direction: row;
+  }
+  .Grid--fit\:30em > .Grid-cell {
+    width: auto;
+  }
+  .Grid--2col\:30em > .Grid-cell {
+    width: 50%;
+  }
+  .Grid--3col\:30em > .Grid-cell {
+    width: 33.333%;
+  }
+  .Grid--justifyRight\:30em {
+    justify-content: flex-end;
+  }
+};
+
+@include at-least(35em) {
+  .Grid--multiCol\:35em {
+    flex-direction: row;
+  }
+  .Grid--2col\:35em > .Grid-cell {
+    width: 50%;
+  }
+  .Grid--3col\:35em > .Grid-cell {
+    width: 33.333%;
+  }
+};
+
+@include at-least(40em) {
+  .Grid--gutterHRegular\:40em {
+    margin-left: -15px;
+  }
+  .Grid--gutterHRegular\:40em > .Grid-cell {
+    padding-left: 15px;
+  }
+  .Grid--multiCol\:40em {
+    flex-direction: row;
+  }
+  .Grid--fit\:40em > .Grid-cell {
+    width: auto;
+  }
+  .Grid--2col\:40em > .Grid-cell {
+    width: 50%;
+  }
+  .Grid--3col\:40em > .Grid-cell {
+    width: 33.333%;
+  }
+  .Grid--4col\:40em > .Grid-cell {
+    width: 25%;
+  }
+  .Grid--justifyLeft\:40em {
+    justify-content: flex-start;
+  }
+};
+
+@include at-least(45em) {
+  .Grid--gutterALarge\:45em {
+    margin-top: -20px;
+    margin-left: -20px;
+  }
+  .Grid--gutterALarge\:45em > .Grid-cell {
+    padding-top: 20px;
+    padding-left: 20px;
+  }
+  .Grid--multiCol\:45em {
+    flex-direction: row;
+  }
+  .Grid--2col\:45em > .Grid-cell {
+    width: 50%;
+  }
+  .Grid--3col\:45em > .Grid-cell {
+    width: 33.333%;
+  }
+  .Grid--4col\:45em > .Grid-cell {
+    width: 25%;
+  }
+  .Grid-cell--right\:45em {
+    margin-left: auto;
+  }
+};
+
+@include at-least(50em) {
+  .Grid--multiCol\:50em {
+    flex-direction: row;
+  }
+  .Grid--5col\:50em > .Grid-cell {
+    width: 20%;
+  }
+};
+
+@include at-least(60em) {
+  .Grid--1col\:60em {
+    flex-direction: column;
+  }
+
+  .Grid--multiCol\:60em {
+    flex-direction: row;
+  }
+
+  .Grid--fit\:60em > .Grid-cell {
+    width: auto;
+  }
+
+  .Grid--2col\:60em > .Grid-cell {
+    width: 50%;
+  }
+
+  .Grid--3col\:60em > .Grid-cell {
+    width: 33.333%;
+  }
+
+  .Grid--4col\:60em > .Grid-cell {
+    width: 25%;
+  }
+
+  .Grid--6col\:60em > .Grid-cell {
+    width: 16.666%;
+  }
+
+  .Grid--justifyRight\:60em {
+    justify-content: flex-end;
+  }
+  .Grid--5col\:60em > .Grid-cell {
+    width: 20%;
+  }
+};
+
+@include at-least(70em) {
+  .Grid--5col\:70em > .Grid-cell {
+    width: 20%;
+  }
+};
+
+@include at-least(80em) {
+  .Grid--2col\:80em > .Grid-cell {
+    width: 50%;
+  }
+};
+
+@include at-least(120em) {
+  .Grid--justifyLeft\:120em {
+    justify-content: flex-start;
+  };
+}

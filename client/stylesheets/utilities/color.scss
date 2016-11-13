@@ -1,0 +1,21 @@
+@import "../variables/colors";
+
+.u-colorPrimary {
+  color: $brand-primary !important;
+}
+
+.u-colorSuccess {
+  color: $brand-success !important;
+}
+
+.u-colorInfo {
+  color: $brand-info !important;
+}
+
+.u-colorWarning {
+  color: $brand-warning !important;
+}
+
+.u-colorDanger {
+  color: $brand-danger !important;
+}

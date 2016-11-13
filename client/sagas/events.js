@@ -3,7 +3,7 @@ import { call, fork, put, select } from 'redux-saga/effects';
 import { normalize, arrayOf } from 'normalizr';
 import { api } from '../utils/api';
 import eventSchema from '../schemas/event';
-import { getUser } from '../reducers';
+import { getCurrentUser } from '../reducers/auth';
 import { navigate } from '../actions/router';
 import * as actions from '../constants/actions';
 
@@ -29,7 +29,7 @@ function* fetchEvent({ id }) {
 
 function* createEvent({ data }) {
   try {
-    const loggedUser = yield select(getUser);
+    const loggedUser = yield select(getCurrentUser);
     const payload = yield call(
       api.fetch,
       '/api/events', {
@@ -56,7 +56,7 @@ function* createEvent({ data }) {
 
 function* joinLeaveEvent({ type, id }) {
   try {
-    const loggedUser = yield select(getUser);
+    const loggedUser = yield select(getCurrentUser);
     const payload = yield call(
       api.fetch,
       `/api/events/${id}/attendees/${loggedUser._id}`, {

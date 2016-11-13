@@ -1,0 +1,427 @@
+/* Inline axis alignment
+   ========================================================================== */
+
+/**
+ * Content alignment.
+ *
+ * Flex container: justifies items in its rows.
+ */
+
+/**
+ * @atdoc utility
+ * @name justifyCStart
+ * @category alignment
+ *
+ * @description
+ * Visualisation: |X|X|X|------|
+ */
+.u-justifyCStart {
+  justify-content: flex-start !important;
+}
+
+/**
+ * @atdoc utility
+ * @name justifyCCenter
+ * @category alignment
+ *
+ * @description
+ * Visualisation: |---|X|X|X|---|
+ */
+.u-justifyCCenter {
+  justify-content: center !important;
+}
+
+/**
+ * @atdoc utility
+ * @name justifyCEnd
+ * @category alignment
+ *
+ * @description
+ * Visualisation: |------|X|X|X|
+ */
+.u-justifyCEnd {
+  justify-content: flex-end !important;
+}
+
+/**
+ * @atdoc utility
+ * @name justifyCBetween
+ * @category alignment
+ *
+ * @description
+ * Visualisation: |X|---|X|---|X|
+ */
+.u-justifyCBetween {
+  justify-content: space-between !important;
+}
+
+/**
+ * @atdoc utility
+ * @name justifyCAround
+ * @category alignment
+ *
+ * @description
+ * Visualisation: |-|X|--|X|--|X|-|
+ */
+.u-justifyCAround {
+  justify-content: space-around !important;
+}
+
+/* Stacking (block) axis alignment
+   ========================================================================== */
+
+/**
+ * Content alignment.
+ *
+ * Flex container: aligns rows.
+ */
+
+/**
+ * @atdoc utility
+ * @name alignCStart
+ * @category alignment
+ *
+ * @description
+ * Visualisation: |XXXXXXXXXX|
+ *                |YYYYYYYYYY|
+ *                |ZZZZZZZZZZ|
+ *                |----------|
+ *                |----------|
+ *                |----------|
+ *                |----------|
+ *                |----------|
+ *                |----------|
+ */
+.u-alignCStart {
+  align-content: flex-start !important;
+}
+
+/**
+ * @atdoc utility
+ * @name alignCCenter
+ * @category alignment
+ *
+ * @description
+ * Visualisation: |----------|
+ *                |----------|
+ *                |----------|
+ *                |XXXXXXXXXX|
+ *                |YYYYYYYYYY|
+ *                |ZZZZZZZZZZ|
+ *                |----------|
+ *                |----------|
+ *                |----------|
+ */
+.u-alignCCenter {
+  align-content: center !important;
+}
+
+/**
+ * @atdoc utility
+ * @name alignCEnd
+ * @category alignment
+ *
+ * @description
+ * Visualisation: |----------|
+ *                |----------|
+ *                |----------|
+ *                |----------|
+ *                |----------|
+ *                |----------|
+ *                |XXXXXXXXXX|
+ *                |YYYYYYYYYY|
+ *                |ZZZZZZZZZZ|
+ */
+.u-alignCEnd {
+  align-content: flex-end !important;
+}
+
+/**
+ * @atdoc utility
+ * @name alignCBetween
+ * @category alignment
+ *
+ * @description
+ * Visualisation: |XXXXXXXXXX|
+ *                |----------|
+ *                |----------|
+ *                |----------|
+ *                |YYYYYYYYYY|
+ *                |----------|
+ *                |----------|
+ *                |----------|
+ *                |ZZZZZZZZZZ|
+ */
+.u-alignCBetween {
+  align-content: space-between !important;
+}
+
+/**
+ * @atdoc utility
+ * @name alignCAround
+ * @category alignment
+ *
+ * @description
+ * Visualisation: |----------|
+ *                |XXXXXXXXXX|
+ *                |----------|
+ *                |----------|
+ *                |YYYYYYYYYY|
+ *                |----------|
+ *                |----------|
+ *                |ZZZZZZZZZZ|
+ *                |----------|
+ */
+.u-alignCAround {
+  align-content: space-around !important;
+}
+
+/**
+ * @atdoc utility
+ * @name alignCStretch
+ * @category alignment
+ *
+ * @description
+ * Visualisation: |XXXXXXXXXX|
+ *                |XXXXXXXXXX|
+ *                |XXXXXXXXXX|
+ *                |YYYYYYYYYY|
+ *                |YYYYYYYYYY|
+ *                |YYYYYYYYYY|
+ *                |ZZZZZZZZZZ|
+ *                |ZZZZZZZZZZ|
+ *                |ZZZZZZZZZZ|
+ */
+.u-alignCStretch {
+  align-content: stretch !important;
+}
+
+/**
+ * Items alignment.
+ *
+ * Flex container: aligns items in rows.
+ */
+
+/**
+ * @atdoc utility
+ * @name alignIStart
+ * @category alignment
+ *
+ * @description
+ * Visualisation: |-|X|-|Y|-|Z|-|
+ *                |-|X|-----|Z|-|
+ *                |-|X|-----|Z|-|
+ *                |---------|Z|-|
+ *                |---------|Z|-|
+ */
+.u-alignIStart {
+  align-items: flex-start !important;
+}
+
+/**
+ * @atdoc utility
+ * @name alignSStart
+ * @category alignment
+ *
+ * @description
+ * Same as for `alignIStart`, but for a single element.
+ */
+.u-alignSStart {
+  align-self: flex-start !important;
+}
+
+/**
+ * @atdoc utility
+ * @name alignICenter
+ * @category alignment
+ *
+ * @description
+ * Visualisation: |---------|Z|-|
+ *                |-|X|-----|Z|-|
+ *                |-|X|-|Y|-|Z|-|
+ *                |-|X|-----|Z|-|
+ *                |---------|Z|-|
+ */
+.u-alignICenter {
+  align-items: center !important;
+}
+
+/**
+ * @atdoc utility
+ * @name alignSCenter
+ * @category alignment
+ *
+ * @description
+ * Same as for `alignICenter`, but for a single element.
+ */
+.u-alignSCenter {
+  align-self: center !important;
+}
+
+/**
+ * @atdoc utility
+ * @name alignIEnd
+ * @category alignment
+ *
+ * @description
+ * Visualisation: |---------|Z|-|
+ *                |---------|Z|-|
+ *                |-|X|-----|Z|-|
+ *                |-|X|-----|Z|-|
+ *                |-|X|-|Y|-|Z|-|
+ */
+.u-alignIEnd {
+  align-items: flex-end !important;
+}
+
+/**
+ * @atdoc utility
+ * @name alignSEnd
+ * @category alignment
+ *
+ * @description
+ * Same as for `alignIEnd`, but for a single element.
+ */
+.u-alignSEnd {
+  align-self: flex-end !important;
+}
+
+/**
+ * @atdoc utility
+ * @name alignIStretch
+ * @category alignment
+ *
+ * @description
+ * Visualisation: |-|X|-|Y|-|Z|-|
+ *                |-|X|-|Y|-|Z|-|
+ *                |-|X|-|Y|-|Z|-|
+ *                |-|X|-|Y|-|Z|-|
+ *                |-|X|-|Y|-|Z|-|
+ */
+.u-alignIStretch {
+  align-items: stretch !important;
+}
+
+/**
+ * @atdoc utility
+ * @name alignSStretch
+ * @category alignment
+ *
+ * @description
+ * Same as for `alignIStretch`, but for a single element.
+ */
+.u-alignSStretch {
+  align-self: stretch !important;
+}
+
+/* Margin distribution
+   ========================================================================== */
+
+/**
+ * Works for:
+ * - Flex items
+ * - Absolutely positioned elements with width and height defined
+ */
+
+/**
+ * @atdoc utility
+ * @name sendLeft
+ * @category alignment
+ *
+ * @description
+ * Distribute free horizontal space to right margin, aligning the subject
+ * to left.
+ */
+.u-sendLeft {
+  margin-right: auto !important;
+}
+
+/**
+ * @atdoc utility
+ * @name sendRight
+ * @category alignment
+ *
+ * @description
+ * Distribute free horizontal space to left margin, aligning the subject
+ * to right.
+ */
+.u-sendRight {
+  margin-left: auto !important;
+}
+
+/**
+ * @atdoc utility
+ * @name sendBottom
+ * @category alignment
+ *
+ * @description
+ * Distribute free vertical space to top margin, aligning the subject to bottom.
+ */
+.u-sendBottom {
+  margin-top: auto !important;
+}
+
+/**
+ * @atdoc utility
+ * @name sendTop
+ * @category alignment
+ *
+ * @description
+ * Distribute free vertical space to bottom margin, aligning the subject to top.
+ */
+.u-sendTop {
+  margin-bottom: auto !important;
+}
+
+/**
+ * @atdoc utility
+ * @name centerize
+ * @category alignment
+ *
+ * @description
+ * Distribute free vertical and horizontal space to all margins equally,
+ * centering the subject both horizontally and vertically.
+ */
+.u-centerize {
+  margin: auto !important;
+}
+
+/**
+ * @atdoc utility
+ * @name centerizeHorizontally
+ * @category alignment
+ *
+ * @description
+ * Distribute free horizontal space to left and right margin equally, centering
+ * the subject horizontally.
+ */
+.u-centerizeHorizontally {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/**
+ * @atdoc utility
+ * @name centerizeVertically
+ * @category alignment
+ *
+ * @description
+ * Distribute free vertical space to top and bottom margin equally, centering
+ * the subject vertically.
+ */
+.u-centerizeVertically {
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+}
+
+/**
+ * @atdoc utility
+ * @name order1
+ * @category alignment
+ *
+ * @description
+ * Set flex order to 1.
+ */
+.u-order1 {
+  order: 1 !important;
+}

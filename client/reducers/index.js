@@ -22,5 +22,3 @@ export default rootReducer;
 
 export const getAllEvents = (state) =>
   state.events.map(id => getEvent(state.entities, id))
-
-export const getUser = (state) => state.auth.user;

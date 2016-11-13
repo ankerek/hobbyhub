@@ -53,11 +53,15 @@ module.exports = {
         loader: 'file-loader'
       },
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
+        test: /\.(jpe?g|png|gif)$/i,
         loaders: [
                 'url?limit=8192',
                 'img'
                 ]
+      },
+      {
+        test: /\.svg$/i,
+        loader: 'img',
       },
     ],
   },

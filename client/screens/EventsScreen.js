@@ -2,12 +2,14 @@ import React, { PropTypes as T } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import compose from 'compose-function';
+import { Grid, Row, Col, Jumbotron, FormGroup, FormControl, InputGroup, Button, Image, Well } from 'react-bootstrap';
+
 import { getAllEvents } from '../reducers';
 import { fetchEvents } from '../actions/events';
 import fetchData from '../components/fetchData';
-
-import { Grid, Row, Col, Button, Jumbotron, FormGroup, FormControl, Well, Image } from 'react-bootstrap';
-import EventRow from '../components/EventRow';
+import CategoryIcon from '../components/CategoryIcon';
+import EventsGrid from '../components/EventsGrid';
+import { bm, be } from '../utils/bem';
 
 export const mapStateToProps = (state) => ({
   categories: state.categories,
@@ -19,27 +21,31 @@ export const EventsScreenView = ({
   events,
 }) => (
   <div>
-    <Jumbotron>
-      <Grid>
-        <Row>
-          <Col lg={8}>
-            {categories.map(category => (
-                <Link key={category.id} to={`/events/categories/${category.id}`}><Image src="http://placehold.it/40x40" alt={category.name} style={{marginRight: 1 + 'em'}}></Image></Link>
-            ))}
-          </Col>
-          <Col lg={4}>
-            <FormGroup>
-              <FormControl type="text" placeholder="Enter event name..." />
-            </FormGroup>
-          </Col>
-        </Row>
-      </Grid>
-      <p>
-        More filters...
-      </p>
-    </Jumbotron>
-      <h2>Events</h2>
-      {events.map(event => (<EventRow key={event._id} event={event} />))}
+    <Well>
+      <div className="u-spacing20px">
+        <div className={bm('Grid', 'multiCol justifyCenter alignMiddle wrap fit gutterA10px')}>
+          {categories.map(category => (
+            <div className={be('Grid', 'cell')} key={category.id}>
+              <Link to={`/events/categories/${category.id}`}>
+                <CategoryIcon category={category} size={48} />
+              </Link>
+            </div>
+          ))}
+        </div>
+      </div>
+      <FormGroup className="u-spacingNone">
+        <InputGroup>
+          <FormControl type="text" placeholder="Enter event name..." />
+          <InputGroup.Button>
+            <Button bsStyle="success">Search</Button>
+          </InputGroup.Button>
+        </InputGroup>
+      </FormGroup>
+    </Well>
+    <h2 className="u-spacing20px">Events</h2>
+    <div className="u-spacing80px">
+      <EventsGrid events={events} />
+    </div>
   </div>
 );
 

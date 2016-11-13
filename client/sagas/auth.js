@@ -3,7 +3,7 @@ import { call, fork, put, select } from 'redux-saga/effects';
 import { normalize, arrayOf } from 'normalizr';
 import { api } from '../utils/api';
 import eventSchema from '../schemas/event';
-import { getUser } from '../reducers';
+import { getCurrentUser } from '../reducers/auth';
 import { navigate } from '../actions/router';
 import * as actions from '../actions/auth';
 

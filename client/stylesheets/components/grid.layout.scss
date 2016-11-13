@@ -1,0 +1,86 @@
+/* Component modifiers
+   ========================================================================== */
+
+/**
+ * @atdoc componentModifier
+ * @name 1col
+ * @component Grid
+ *
+ * @description
+ * 1-column grid.
+ */
+.Grid--1col {
+  flex-direction: column;
+}
+
+/**
+ * @atdoc componentModifier
+ * @name multiCol
+ * @component Grid
+ *
+ * @description
+ * Multi-column grid. Use in conjunction with `Grid--Xcol` classes, where X > 1.
+ */
+.Grid--multiCol {
+  flex-direction: row;
+}
+
+/**
+ * @atdoc componentModifier
+ * @name 2col
+ * @component Grid
+ *
+ * @description
+ * 2-column grid.
+ */
+.Grid--2col > .Grid-cell {
+  width: 50%;
+}
+
+/**
+ * @atdoc componentModifier
+ * @name 3col
+ * @component Grid
+ *
+ * @description
+ * 3-column grid.
+ */
+.Grid--3col > .Grid-cell {
+  width: 33.333%;
+}
+
+/**
+ * @atdoc componentModifier
+ * @name 4col
+ * @component Grid
+ *
+ * @description
+ * 4-column grid.
+ */
+.Grid--4col > .Grid-cell {
+  width: 25%;
+}
+
+/**
+ * @atdoc componentModifier
+ * @name 5col
+ * @component Grid
+ *
+ * @description
+ * 5-column grid.
+ */
+.Grid--5col > .Grid-cell {
+  width: 20%;
+}
+
+/**
+ * @atdoc componentModifier
+ * @name 6col
+ * @component Grid
+ *
+ * @description
+ * 6-column grid.
+ */
+.Grid--6col > .Grid-cell {
+  width: 16.666%;
+}
