@@ -44,7 +44,7 @@ export const AppView = ({ location, action, dispatch }) => (
           <Match exactly pattern={props.pathname} component={LandingScreen} />
           <Match exactly pattern={`${props.pathname}events`} component={EventsScreen} />
           <Match pattern={`${props.pathname}events/:id`} component={EventDetailScreen} />
-          <Match pattern={`${props.pathname}create-event`} component={EventFormScreen} />
+          <Match pattern={`${props.pathname}add-event`} component={EventFormScreen} />
           <Miss component={() => (
             <div>
               I missed the route:

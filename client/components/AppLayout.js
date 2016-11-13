@@ -29,7 +29,7 @@ export const AppLayoutView = ({
           </Col>
         </Row>
       </Grid>
-      <Link to="/create-event">Create new event</Link>
+      <Link to="/add-event">Create new event</Link>
     </div>
     {children}
     </div>
