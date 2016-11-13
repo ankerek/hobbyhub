@@ -21,6 +21,8 @@ app.use(morgan('tiny'));
 app.use(passport.initialize());
 app.use(routes);
 
+app.use('/static', express.static(path.resolve(process.cwd(), 'client', 'static')));
+
 // server index.html file in production
 if(config.env === 'production') {
   const publicPath = '/';
@@ -29,6 +31,7 @@ if(config.env === 'production') {
   app.use(publicPath, express.static(outputPath));
   app.use('/static', express.static(path.resolve(outputPath, 'apidoc')));
   app.get('/static/apidoc', (req, res) => res.sendFile(path.resolve(outputPath, 'apidoc', 'index.html')));
+
   app.get('*', (req, res) => res.sendFile(path.resolve(outputPath, 'index.html')));
 }
 
