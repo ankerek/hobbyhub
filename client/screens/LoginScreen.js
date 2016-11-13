@@ -4,10 +4,7 @@ import compose from 'compose-function';
 import { login } from '../actions/auth';
 import LoginForm from '../components/LoginForm';
 
-const mapStateToProps = (state) => ({
-  // categories: state.categories,
-  // events: getAllEvents(state),
-});
+const mapStateToProps = null;
 
 const mapDispatchToProps = {
   handleLogin: login,
