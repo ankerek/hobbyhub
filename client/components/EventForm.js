@@ -1,7 +1,7 @@
 import React, { PropTypes as T } from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import moment from 'moment';
-import CustomField from '../components/CustomField';
+import CustomField from './HorizontalField';
 
 
 const validate = values => {
@@ -73,13 +73,13 @@ export const EventFormView = ({
 }) => (
   <div>
     <form onSubmit={handleSubmit}>
-      <Field name="name" label="Name" component="input" type="text" component={CustomField} />
-      <Field name="description" label="Description" component="input" type="text" component={CustomField} />
-      <Field name="address" label="Address" component="input" type="text" component={CustomField} />
-      <Field name="start" label="Start" component="input" type="datetime-local" component={CustomField} />
-      <Field name="end" label="End" component="input" type="datetime-local" component={CustomField} />
-      <Field name="minPeople" label="Min people" component="input" type="number" component={CustomField} />
-      <Field name="maxPeople" label="Max people" component="input" type="number" component={CustomField} />
+      <Field name="name" label="Name" type="text" component={CustomField} />
+      <Field name="description" label="Description" type="text" component={CustomField} />
+      <Field name="address" label="Address" type="text" component={CustomField} />
+      <Field name="start" label="Start" type="datetime-local" component={CustomField} />
+      <Field name="end" label="End" type="datetime-local" component={CustomField} />
+      <Field name="minPeople" label="Min people" type="number" component={CustomField} />
+      <Field name="maxPeople" label="Max people" type="number" component={CustomField} />
       {/*<FieldArray name="categories" component={renderCategories}/>*/}
 
       <button type="submit">Submit</button>
@@ -91,7 +91,7 @@ EventFormView.propTypes = {
   handleSubmit: T.func.isRequired,
 };
 
-const EventForm = reduxForm({ 
+const EventForm = reduxForm({
   form: 'event',
   validate,
 })(EventFormView);

@@ -3,7 +3,7 @@ import { call, fork, put, select } from 'redux-saga/effects';
 import { normalize, arrayOf } from 'normalizr';
 import { api } from '../utils/api';
 import eventSchema from '../schemas/event';
-import { getLoggedUser } from '../reducers';
+import { getUser } from '../reducers';
 import { navigate } from '../actions/router';
 import * as actions from '../constants/actions';
 
@@ -29,7 +29,7 @@ function* fetchEvent({ id }) {
 
 function* createEvent({ data }) {
   try {
-    const loggedUser = yield select(getLoggedUser);
+    const loggedUser = yield select(getUser);
     const payload = yield call(
       api.fetch,
       '/api/events', {
@@ -46,7 +46,7 @@ function* createEvent({ data }) {
     );
 
     yield put({ type: actions.CREATE_EVENT_SUCCESS, payload });
-    yield put(navigate({ location: { pathname: `/events/${payload._id}` }, action: 'PUSH' }));
+    yield put(navigate({ pathname: `/events/${payload._id}` }));
   } catch (error) {
     console.log('error', error);
     // TODO show error
@@ -56,7 +56,7 @@ function* createEvent({ data }) {
 
 function* joinLeaveEvent({ type, id }) {
   try {
-    const loggedUser = yield select(getLoggedUser);
+    const loggedUser = yield select(getUser);
     const payload = yield call(
       api.fetch,
       `/api/events/${id}/attendees/${loggedUser._id}`, {
