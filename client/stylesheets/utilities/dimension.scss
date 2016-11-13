@@ -273,3 +273,11 @@
 .u-sizingBorderBox {
   box-sizing: border-box !important;
 }
+
+/**
+ * @description
+ * Include border and padding to width calculation.
+ */
+.u-maxWidth640px {
+  max-width: 640px !important;
+}

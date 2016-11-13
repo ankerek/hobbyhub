@@ -1,8 +1,11 @@
 import React, { PropTypes as T } from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import moment from 'moment';
-import CustomField from './HorizontalField';
+import compose from 'compose-function';
+import { Form, Col, Button, FormGroup, Well } from 'react-bootstrap';
 
+import { bm, be } from '../utils/bem';
+import CustomField from './HorizontalField';
 
 const validate = values => {
   const errors = {};
@@ -42,7 +45,7 @@ const validate = values => {
   }
 
   return errors;
-}
+};
 
 const renderCategories = ({ fields, meta: { error } }) => (
   <ul>
@@ -66,24 +69,66 @@ const renderCategories = ({ fields, meta: { error } }) => (
     )}
     {error && <li className="error">{error}</li>}
   </ul>
-)
+);
 
 export const EventFormView = ({
   handleSubmit
 }) => (
-  <div>
-    <form onSubmit={handleSubmit}>
-      <Field name="name" label="Name" type="text" component={CustomField} />
-      <Field name="description" label="Description" type="text" component={CustomField} />
-      <Field name="address" label="Address" type="text" component={CustomField} />
-      <Field name="start" label="Start" type="datetime-local" component={CustomField} />
-      <Field name="end" label="End" type="datetime-local" component={CustomField} />
-      <Field name="minPeople" label="Min people" type="number" component={CustomField} />
-      <Field name="maxPeople" label="Max people" type="number" component={CustomField} />
-      {/*<FieldArray name="categories" component={renderCategories}/>*/}
-
-      <button type="submit">Submit</button>
-    </form>
+  <div className={bm('Grid', 'multiCol justifyCenter')}>
+    <div className={`${be('Grid', 'cell')} u-maxWidth640px`}>
+      <Well>
+        <Form horizontal onSubmit={handleSubmit}>
+          <Field name="name"
+                 leftSm={4}
+                 rightSm={8}
+                 label="Name"
+                 type="text"
+                 component={CustomField} />
+          <Field name="description"
+                 leftSm={4}
+                 rightSm={8}
+                 label="Description"
+                 type="text"
+                 component={CustomField} />
+          <Field name="address"
+                 leftSm={4}
+                 rightSm={8}
+                 label="Address"
+                 type="text"
+                 component={CustomField} />
+          <Field name="start"
+                 leftSm={4}
+                 rightSm={8}
+                 label="Start"
+                 type="datetime-local"
+                 component={CustomField} />
+          <Field name="end"
+                 leftSm={4}
+                 rightSm={8}
+                 label="End"
+                 type="datetime-local"
+                 component={CustomField} />
+          <Field name="minPeople"
+                 leftSm={4}
+                 rightSm={8}
+                 label="Min people"
+                 type="number"
+                 component={CustomField} />
+          <Field name="maxPeople"
+                 leftSm={4}
+                 rightSm={8}
+                 label="Max people"
+                 type="number"
+                 component={CustomField} />
+          <FieldArray name="categories" component={renderCategories}/>
+          <FormGroup>
+            <Col smOffset={4} sm={8}>
+              <Button bsStyle="primary" type="submit">Submit</Button>
+            </Col>
+          </FormGroup>
+        </Form>
+      </Well>
+    </div>
   </div>
 );
 
@@ -91,9 +136,11 @@ EventFormView.propTypes = {
   handleSubmit: T.func.isRequired,
 };
 
-const EventForm = reduxForm({
-  form: 'event',
-  validate,
-})(EventFormView);
+const EventForm = compose(
+  reduxForm({
+    form: 'event',
+    validate,
+  })
+)(EventFormView);
 
 export default EventForm;

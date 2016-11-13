@@ -4,10 +4,16 @@ import compose from 'compose-function';
 import { createEvent } from '../actions/events';
 import EventForm from '../components/EventForm';
 
+const mapStateToProps = null;
+
+const mapDispatchToProps = {
+  handleCreateEvent: createEvent,
+};
+
 export const EventFormScreenView = ({
-  dispatch,
+  handleCreateEvent,
 }) => (
-  <EventForm onSubmit={(data) => dispatch(createEvent(data))} />
+  <EventForm onSubmit={handleCreateEvent} />
 );
 
 EventFormScreenView.propTypes = {
@@ -15,7 +21,7 @@ EventFormScreenView.propTypes = {
 };
 
 const EventFormScreen = compose(
-  connect(),
+  connect(mapStateToProps, mapDispatchToProps),
 )(EventFormScreenView);
 
 export default EventFormScreen;
