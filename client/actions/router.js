@@ -1,6 +1,16 @@
-import * as actions from '../constants/actions';
+export const NAVIGATE = 'NAVIGATE';
+export const navigate = ({ location, pathname, action = 'PUSH' }) => {
+  let newLocation = location;
 
-export const navigate = (payload) => ({
-  type: actions.NAVIGATE,
-  payload,
-})
+  if (!newLocation) {
+    newLocation = { pathname };
+  }
+
+  return ({
+    type: NAVIGATE,
+    payload: {
+      location: newLocation,
+      action,
+    },
+  });
+};

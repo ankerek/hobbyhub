@@ -1,11 +1,11 @@
 import Immutable from 'seamless-immutable';
 import { history } from '../utils/router';
-import * as actions from '../constants/actions';
+import * as actions from '../actions/router';
 
 const initialState = Immutable.from({
   location: history.location,
   action: history.action,
-})
+});
 
 const reducer = (state = initialState, { type, payload }) => {
   if (type === actions.NAVIGATE) {
@@ -13,6 +13,6 @@ const reducer = (state = initialState, { type, payload }) => {
   } else {
     return state
   }
-}
+};
 
 export default reducer;

@@ -7,6 +7,8 @@ import { history } from '../utils/router';
 
 import AppLayout from './AppLayout';
 import LandingScreen from '../screens/LandingScreen';
+import LoginScreen from '../screens/LoginScreen';
+// import SignUpScreen from '../screens/SignUpScreen';
 import EventsScreen from '../screens/EventsScreen';
 import EventDetailScreen from '../screens/EventDetailScreen';
 import EventFormScreen from '../screens/EventFormScreen';
@@ -42,6 +44,8 @@ export const AppView = ({ location, action, dispatch }) => (
       <Match pattern="/" render={props => (
         <AppLayout {...props}>
           <Match exactly pattern={props.pathname} component={LandingScreen} />
+          <Match pattern={`${props.pathname}login`} component={LoginScreen} />
+          {/*<Match pattern={`${props.pathname}sign-up`} component={SignUpScreen} />*/}
           <Match exactly pattern={`${props.pathname}events`} component={EventsScreen} />
           <Match pattern={`${props.pathname}events/:id`} component={EventDetailScreen} />
           <Match pattern={`${props.pathname}add-event`} component={EventFormScreen} />
