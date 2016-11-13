@@ -20,6 +20,10 @@ const attendeeSchema = new mongoose.Schema({
     min: 0, max: 100,
     required: false,
   },
+  pictureUrl: {
+    type: String,
+    required: false,
+  },
   state: {
     type: String,
     enum: ['PENDING', 'ACCEPTED', 'REJECTED'], default: 'PENDING',

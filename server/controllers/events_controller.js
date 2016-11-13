@@ -62,6 +62,7 @@ function userToAttendee(user) {
   attendee.fullName = `${user.firstName} ${user.lastName}`;
   attendee.averageRating = 85; //TODO: implemented when rating is ready
   attendee.state = 'ACCEPTED';
+  attendee.pictureUrl = user.pictureUrl;
 
   return attendee;
 }
