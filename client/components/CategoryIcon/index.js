@@ -12,7 +12,7 @@ export const renderCategoryIcon = ({
   size = 64,
 } = {}) => (
   <div className={bm(moduleName, modifiers)}>
-    <img src={categoryIcons[category.name]} alt={category.name} width={size} height={size} />
+    <img src={categoryIcons[category]} alt={category} width={size} height={size} />
   </div>
 );
 

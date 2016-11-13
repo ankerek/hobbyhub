@@ -1,0 +1,45 @@
+/**
+ * @atdoc utility
+ * @name imageReplace
+ * @category image
+ *
+ * @description
+ * Image replacement technique, see http://bit.ly/NgnSfH for details.
+ *
+ * 1. If the IR'ed element has bottom-padding, then either it needs to be
+ *    removed or the height needs to be bumped up (e.g., set to 200%).
+ */
+.u-imageReplace {
+  overflow: hidden !important;
+
+  border: 0 !important;
+  background-color: transparent !important;
+  background-repeat: no-repeat !important;
+
+  /* 1 */
+  &:before {
+    content: "" !important;
+
+    display: block !important;
+    width: 0 !important;
+    height: 150% !important;
+  }
+}
+
+/**
+ * @atdoc utility
+ * @name imageResponsive
+ * @category image
+ *
+ * @description
+ * Image that scales down on narrower screens.
+ *
+ * 1. Maximum width of its parent.
+ * 2. Remove the gap between images and the bottom of their containers.
+ * 3. Scale the height properly ensuring the right ratio.
+ */
+.u-imageResponsive {
+  max-width: 100% !important; /* 1 */
+  vertical-align: middle !important; /* 2 */
+  height: auto !important; /* 3 */
+}

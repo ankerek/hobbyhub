@@ -44,9 +44,11 @@ export const renderEventItem = ({
   <div className={bm(moduleName, modifiers)} onClick={() => navigate({ pathname: `/events/${event._id}` })}>
     <div className={bm('Grid', '1col multiCol:60em fit:60em gutterA20px')}>
       <div className={`${be('Grid', 'cell')}`}>
-        <div className="u-spacing10px">
-          <CategoryIcon category={{name: 'soccer'}} />
-        </div>
+        {event.categories && event.categories[0] ? (
+          <div className="u-spacing10px">
+            <CategoryIcon category={event.categories[0]} />
+          </div>
+        ) : null}
         {isAuthenticated ? (
           isAttendee ? (
             <Button bsStyle="warning" bsSize="sm" onClick={dontPropagate(() => leaveEvent(event._id))}>
@@ -68,12 +70,7 @@ export const renderEventItem = ({
         <div className={bm('Grid', 'multiCol 5col gutterH5px')}>
           {event.attendees.map(user => (
             <div key={user.userId} className={`${be('Grid', 'cell')} u-textCenter`}>
-              <Link to={`/users/${user.userId}`}>
-                <div className="u-spacing5px">
-                  <UserAvatar user={user} size={48} />
-                </div>
-                {user.fullName}
-              </Link>
+              <UserAvatar user={user} size={48} />
             </div>
           ))}
         </div>
