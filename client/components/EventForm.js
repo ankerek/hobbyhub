@@ -50,32 +50,9 @@ const validate = values => {
   return errors;
 };
 
-const renderCategories = ({ fields, meta: { error } }) => (
-  <ul>
-    <li>
-      <Button bsStyle="primary" type="button" onClick={() => fields.push()}>Add category</Button>
-    </li>
-    {fields.map((category, index) =>
-      <li key={index}>
-        <button
-          type="button"
-          onClick={() => fields.remove(index)}
-        >
-          Remove category
-        </button>
-        <Field
-          name={category}
-          type="text"
-          component={HorizontalField}
-          label={`Category #${index + 1}`}/>
-      </li>
-    )}
-    {error && <li className="error">{error}</li>}
-  </ul>
-);
-
 export const renderEventForm = ({
-  handleSubmit
+  handleSubmit,
+  categories,
 }) => (
   <div className={bm('Grid', 'multiCol justifyCenter')}>
     <div className={`${be('Grid', 'cell')} u-maxWidth640px`}>
@@ -127,9 +104,12 @@ export const renderEventForm = ({
                  leftSm={4}
                  rightSm={8}
                  label="Category"
-                 type="text"
-                 component={HorizontalField} />
-          {/*<FieldArray name="categories" component={renderCategories}/>*/}
+                 type="select"
+                 component={HorizontalField}>
+            <option></option>
+            {categories.map(category => (<option value={category}>{category}</option>))}
+          </Field>
+
           <FormGroup>
             <Col smOffset={4} sm={8}>
               <Button bsStyle="primary" type="submit">Submit</Button>

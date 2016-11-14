@@ -1,19 +1,23 @@
 import React, { PropTypes as T } from 'react';
 import { connect } from 'react-redux';
 import compose from 'compose-function';
+import { getAllCategoriesNames } from '../reducers';
 import { createEvent } from '../actions/events';
 import EventForm from '../components/EventForm';
 
-const mapStateToProps = null;
+const mapStateToProps = (state) => ({
+  categories: getAllCategoriesNames(state),
+});
 
 const mapDispatchToProps = {
   handleCreateEvent: createEvent,
 };
 
 export const EventFormScreenView = ({
+  categories,
   handleCreateEvent,
 }) => (
-  <EventForm onSubmit={handleCreateEvent} />
+  <EventForm onSubmit={handleCreateEvent} categories={categories} />
 );
 
 EventFormScreenView.propTypes = {
