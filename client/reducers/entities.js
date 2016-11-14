@@ -25,6 +25,8 @@ export const getEvent = (state, id) => ({
 })
 export const getUser = (state, id) => state.users[id]
 
+export const getCategory = (state, id) => state.categories[id]
+
 export const getUsersByEvent = (state, ids) =>
   ids.map(id => getUser(state, id))
 

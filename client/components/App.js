@@ -4,6 +4,7 @@ import { Match, Miss } from 'react-router';
 import BrowserRouter from 'react-router-addons-controlled/ControlledBrowserRouter';
 import { navigate } from '../actions/router';
 import { history } from '../utils/router';
+import { fetchCategories } from '../actions/categories';
 
 import AppLayout from './AppLayout';
 import LandingScreen from '../screens/LandingScreen';
@@ -20,7 +21,22 @@ export const mapStateToProps = (state) => ({
   action: state.router.action,
 });
 
-export const AppView = ({ location, action, dispatch }) => (
+const mapDispatchToProps = {
+  fetchCategories,
+  navigate,
+};
+
+class AppContainer extends React.Component {
+  componentDidMount() {
+    this.props.fetchCategories();
+  }
+
+  render() {
+    return renderAppView(this.props);
+  }
+}
+
+export const renderAppView = ({ location, action, navigate }) => (
   <BrowserRouter
     history={history}
     location={location}
@@ -30,11 +46,11 @@ export const AppView = ({ location, action, dispatch }) => (
       // because, guess what? you can't actual control the browser history!
       // anyway, use your current action not "SYNC"
       if (currentAction === 'SYNC') {
-        dispatch(navigate({ location: currentLocation, action }))
+        navigate({ location: currentLocation, action })
       } else if (!window.block) {
         // if you want to block transitions go into the console and type in
         // `window.block = true` and transitions won't happen anymore
-        dispatch(navigate({ location: currentLocation, action: currentAction }))
+        navigate({ location: currentLocation, action: currentAction })
       } else {
         console.log('blocked!');
       }
@@ -47,6 +63,7 @@ export const AppView = ({ location, action, dispatch }) => (
           <Match pattern={`${props.pathname}login`} component={LoginScreen} />
           <Match pattern={`${props.pathname}sign-up`} component={SignupScreen} />
           <Match exactly pattern={`${props.pathname}events`} component={EventsScreen} />
+          <Match exactly pattern={`${props.pathname}events/categories/:categoryId`} component={EventsScreen} />
           <Match pattern={`${props.pathname}events/:id`} component={EventDetailScreen} />
           <Match pattern={`${props.pathname}add-event`} component={EventFormScreen} />
           <Miss component={() => (
@@ -62,6 +79,6 @@ export const AppView = ({ location, action, dispatch }) => (
   </BrowserRouter>
 );
 
-const App = connect(mapStateToProps)(AppView);
+const App = connect(mapStateToProps, mapDispatchToProps)(AppContainer);
 
 export default App;

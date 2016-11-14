@@ -6,7 +6,7 @@ import upcomingEvents from './upcomingEvents';
 import events from './events';
 import auth from './auth';
 import router from './router';
-import { getEvent } from './entities';
+import { getEvent, getCategory } from './entities';
 
 const rootReducer = combineReducers({
   entities,
@@ -22,3 +22,6 @@ export default rootReducer;
 
 export const getAllEvents = (state) =>
   state.events.map(id => getEvent(state.entities, id))
+
+export const getAllCategories = (state) =>
+  state.categories.map(id => getCategory(state.entities, id))

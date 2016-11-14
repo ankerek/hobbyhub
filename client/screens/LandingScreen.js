@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import compose from 'compose-function';
 import { Button, InputGroup, Well, FormGroup, FormControl } from 'react-bootstrap';
 
-import { getAllEvents } from '../reducers';
+import { getAllEvents, getAllCategories } from '../reducers';
 import { fetchEvents } from '../actions/events';
 import fetchData from '../components/fetchData';
 import EventsGrid from '../components/EventsGrid';
@@ -13,7 +13,7 @@ import { bm, be } from '../utils/bem';
 
 export const mapStateToProps = (state) => ({
   upcomingEvents: getAllEvents(state),
-  categories: state.categories,
+  categories: getAllCategories(state),
 });
 
 export const renderLandingScreen = ({
@@ -50,9 +50,9 @@ export const renderLandingScreen = ({
           <div className="u-spacing20px">
             <div className={bm('Grid', 'multiCol justifyCenter wrap fit gutterA10px')}>
               {categories.map(category => (
-                <div className={be('Grid', 'cell')} key={category.id}>
-                  <Link to={`/events/categories/${category.id}`}>
-                    <CategoryIcon category={category} size={48} />
+                <div className={be('Grid', 'cell')} key={category._id}>
+                  <Link to={`/events/categories/${category._id}`}>
+                    <CategoryIcon category={category.name} size={48} />
                   </Link>
                 </div>
               ))}
