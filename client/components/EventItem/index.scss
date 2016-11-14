@@ -17,10 +17,10 @@
   background-color: rgba($gray-light, .5);
 }
 
-.EventTitle {
+.EventItem-title {
   color: $brand-success;
 }
 
-.EventTitle:hover {
+.EventItem-title:hover {
   text-decoration: underline;
 }

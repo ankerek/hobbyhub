@@ -1,6 +1,5 @@
 import React, { PropTypes as T } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import { getCurrentUserId, isAuthenticated } from '../../reducers/auth';
 import { getIsAttendee } from '../../reducers/entities';
 import { joinEvent, leaveEvent } from '../../actions/events';
@@ -63,7 +62,7 @@ export const renderEventItem = ({
       </div>
       <div className={`${be('Grid', 'cell')} u-flexOne`}>
         <h3 className="u-spacing5px">
-          ({event.attendees.length}/{event.maxPeople}) <span className="EventTitle">{event.name}</span>
+          ({event.attendees.length}/{event.maxPeople}) <span className="EventItem-title">{event.name}</span>
         </h3>
         <p className="u-spacing5px">{event.address}</p>
         <p className="u-spacing10px">{event.start}</p>
