@@ -8,6 +8,7 @@ const HorizontalField = ({
   input,
   label,
   type,
+  children,
   meta: { touched, error, warning },
 }) => (
   <FormGroup controlId={controlId} validationState={touched ? (error ? 'error' : (warning ? 'warning' : 'success')) : null}>
@@ -15,7 +16,13 @@ const HorizontalField = ({
       {label}
     </Col>
     <Col sm={rightSm}>
-      <input {...input} className="form-control" placeholder={label} type={type}/>
+      { type !== 'select'
+        ? <input {...input} className="form-control" placeholder={label} type={type}/>
+        : <select {...input} className="form-control" placeholder={label}>
+            {children}
+          </select>
+      }
+      
       {touched && ((error && <span className="help-block">{error}</span>) || (warning && <span className="help-block">{warning}</span>))}
     </Col>
   </FormGroup>
