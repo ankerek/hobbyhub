@@ -63,7 +63,7 @@ export const renderEventItem = ({
       </div>
       <div className={`${be('Grid', 'cell')} u-flexOne`}>
         <h3 className="u-spacing5px">
-          ({event.attendees.length}/{event.maxPeople}) <Link to={`/events/${event._id}`}>{event.name}</Link>
+          ({event.attendees.length}/{event.maxPeople}) <span className="EventTitle">{event.name}</span>
         </h3>
         <p className="u-spacing5px">{event.address}</p>
         <p className="u-spacing10px">{event.start}</p>

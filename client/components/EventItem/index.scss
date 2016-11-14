@@ -16,3 +16,11 @@
 .EventItem:hover {
   background-color: rgba($gray-light, .5);
 }
+
+.EventTitle {
+  color: $brand-success;
+}
+
+.EventTitle:hover {
+  text-decoration: underline;
+}
