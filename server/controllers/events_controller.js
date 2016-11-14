@@ -6,7 +6,7 @@ import Category from '../models/category'
 
 export function index(req, res, next) {
   Event
-    .find()
+    .find().sort({_id: 'desc'})
     .exec((err, events) => {
       if (err) {
         return next(err);
