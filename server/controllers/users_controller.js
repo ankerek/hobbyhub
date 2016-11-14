@@ -1,4 +1,4 @@
-import User from '../models/user';
+import User, {Token} from '../models/user';
 import passport from '../../configs/passport';
 
 export function index(req, res, next) {
@@ -39,7 +39,7 @@ export function show(req, res, next) {
   })
 }
 
-export function auth(req, res, next) {
+export function login(req, res, next) {
   passport.authenticate('local-signin', {
     session: false
   }, (err, user, info) => {
@@ -52,9 +52,73 @@ export function auth(req, res, next) {
         .status(401)
         .json(info);
     } else {
-      res
-        .status(200)
-        .json(user);
+      User.createUserToken(user.email, (err, usersToken) => {
+        console.log('token generated: ' + usersToken);
+        if (err) {
+          res.json({error: 'Issue generating token'});
+        } else {
+          res.json({token: usersToken});
+        }
+      });
     }
   })(req, res, next);
+}
+
+export function auth(req, res, next) {
+  const incomingToken = req.headers.token;
+  const decoded = User.decode(incomingToken);
+  console.log('incomingToken: ' + incomingToken);
+  if (decoded && decoded.email) {
+    User.findUser(decoded.email, incomingToken, (err, user) => {
+      if (err) {
+        res
+          .status(401)
+          .json({error: 'Issue finding user.'});
+      } else {
+        if (Token.hasExpired(user.token.date_created)) {
+          res
+            .status(401)
+            .json({error: 'Token expired. You need to log in again.'});
+        } else {
+          res
+            .status(200)
+            .json({
+              user: {
+                email: user.email,
+                token: user.token.token
+              }
+            });
+        }
+      }
+    });
+  } else {
+    res
+      .status(401)
+      .json({error: 'Issue decoding incoming token.'});
+  }
+}
+
+export function logout(req, res, next) {
+  const incomingToken = req.headers.token;
+  console.log('LOGOUT: incomingToken: ' + incomingToken);
+  if (incomingToken) {
+    const decoded = User.decode(incomingToken);
+    if (decoded && decoded.email) {
+      User.invalidateUserToken(decoded.email, (err, user) => {
+        if (err) {
+          res
+            .status(401)
+            .json({error: 'Issue finding user (in unsuccessful attempt to invalidate token).'});
+        } else {
+          res
+            .status(200)
+            .json({message: 'logged out'});
+        }
+      });
+    } else {
+      res
+        .status(401)
+        .json({error: 'Issue decoding incoming token.'});
+    }
+  }
 }

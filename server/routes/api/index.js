@@ -268,8 +268,13 @@ router.route('/users')
 router.route('/users/:userId')
   .get(UsersController.show);
 
+router.route('/logout(\\?)?')
+  .get(UsersController.logout);
+  
+router.route('/auth')
+  .get(UsersController.auth);
 
-router.route('/users/auth')
+router.route('/login')
   /**
    * @api {POST} /users/auth Authenticates user credentials
    * @apiVersion 0.0.1
@@ -298,6 +303,6 @@ router.route('/users/auth')
    *
    * @apiError InvalidCredentials Provided credentials were not valid
    */
-  .post(UsersController.auth);
+  .post(UsersController.login);
 
 export default router;

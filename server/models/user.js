@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt-nodejs';
 import jwt from 'jwt-simple';
+import config from '../../configs';
 
 const TokenSchema = new mongoose.Schema({
   token: {
@@ -102,15 +103,15 @@ UserSchema.methods.validPassword = function (password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-UserSchema.statics.encode = (data) => {
+UserSchema.statics.encode = function(data) {
   return jwt.encode(data, 'Team-8-HobbyHub');
 };
 
-UserSchema.statics.decode = (data) => {
+UserSchema.statics.decode = function(data) {
   return jwt.decode(data, 'Team-8-HobbyHub');
 };
 
-UserSchema.statics.findUserByEmailOnly = (email, cb) => {
+UserSchema.statics.findUserByEmailOnly = function(email, cb) {
   this.findOne({
     email: email
   }, (err, user) => {
@@ -122,7 +123,7 @@ UserSchema.statics.findUserByEmailOnly = (email, cb) => {
   });
 };
 
-UserSchema.statics.findUser = (email, token, cb) => {
+UserSchema.statics.findUser = function(email, token, cb) {
   this.findOne({
     email: email
   }, (err, user) => {
@@ -139,7 +140,7 @@ UserSchema.statics.findUser = (email, token, cb) => {
   });
 };
 
-UserSchema.statics.createUserToken = (email, cb) => {
+UserSchema.statics.createUserToken = function(email, cb) {
   const self = this;
   this.findOne({
     email: email
@@ -161,7 +162,7 @@ UserSchema.statics.createUserToken = (email, cb) => {
   });
 };
 
-UserSchema.statics.invalidateUserToken = (email, cb) => {
+UserSchema.statics.invalidateUserToken = function(email, cb) {
   this.findOne({
     email: email
   }, (err, user) => {
@@ -179,7 +180,7 @@ UserSchema.statics.invalidateUserToken = (email, cb) => {
   });
 };
 
-UserSchema.statics.generateResetToken = (email, cb) => {
+UserSchema.statics.generateResetToken = function(email, cb){
   console.log('in generateResetToken....');
   this.findUserByEmailOnly(email, (err, user) => {
     if (err) {
@@ -190,7 +191,7 @@ UserSchema.statics.generateResetToken = (email, cb) => {
         .randomBytes(32)
         .toString('hex');
       const now = new Date();
-      const expires = new Date(now.getTime() + (20 * 60 * 1000)).getTime();
+      const expires = new Date(now.getTime() + config.authExpiration).getTime();
       user.resetTokenExpiresMillis = expires;
       user.save();
       cb(false, user);
