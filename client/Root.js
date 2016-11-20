@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 
 import App from './components/App';
@@ -7,7 +8,9 @@ export const RootView = ({
   store,
 }) => (
   <Provider store={store}>
-    <App />
+    <IntlProvider locale="en">
+      <App />
+    </IntlProvider>
   </Provider>
 );
 

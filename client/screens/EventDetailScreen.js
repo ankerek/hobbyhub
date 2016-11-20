@@ -1,4 +1,5 @@
 import React, { PropTypes as T } from 'react';
+import { FormattedTime } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import compose from 'compose-function';
@@ -44,7 +45,9 @@ export const renderEventDetailScreen = ({
       <Col lg={8}>
         <h1 className="u-spacing10px">{event.name}</h1>
         <p className="u-spacing5px">{event.address}</p>
-        <p className="u-spacing10px">{event.start}</p>
+        <p className="u-spacing10px">
+          <FormattedTime day="numeric" month="long" year="numeric" time="long" value={event.start} />
+        </p>
       </Col>
       <Col lg={4}>
        { isAuthenticated ? (

@@ -1,4 +1,5 @@
 import React, { PropTypes as T } from 'react';
+import { FormattedTime } from 'react-intl';
 import { connect } from 'react-redux';
 import { getCurrentUserId, isAuthenticated } from '../../reducers/auth';
 import { getIsAttendee } from '../../reducers/entities';
@@ -65,7 +66,9 @@ export const renderEventItem = ({
           ({event.attendees.length}/{event.maxPeople}) <span className="EventItem-title">{event.name}</span>
         </h3>
         <p className="u-spacing5px">{event.address}</p>
-        <p className="u-spacing10px">{event.start}</p>
+        <p className="u-spacing10px">
+          <FormattedTime day="numeric" month="long" year="numeric" time="long" value={event.start} />
+        </p>
         <div className={bm('Grid', 'multiCol 5col gutterH5px')}>
           {event.attendees.map(user => (
             <div key={user.userId} className={`${be('Grid', 'cell')} u-textCenter`}>
