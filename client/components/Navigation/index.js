@@ -6,9 +6,12 @@ import { Button, Navbar, Nav, NavDropdown, NavItem, MenuItem, Glyphicon} from 'r
 
 // import logo from '../stylesheets/img/logo.png';
 
-import { getCurrentUser } from '../reducers/auth';
-import { logout } from '../actions/auth';
-import { navigate } from '../actions/router';
+import { getCurrentUser } from '../../reducers/auth';
+import { logout } from '../../actions/auth';
+import { navigate } from '../../actions/router';
+import { bm } from '../../utils/bem';
+
+import './index.scss';
 
 const mapStateToProps = (state) => ({
   user: getCurrentUser(state),
@@ -55,11 +58,16 @@ export const renderNavigation = ({
   navigate,
   handleLogout,
 } = {}) => (
-<Navbar collapseOnSelect>
+<Navbar className={bm('Navigation')} collapseOnSelect>
   <Navbar.Header>
     <Navbar.Brand>
-      <Link to="/">HobbyHub</Link>
+      {user.anonymous ? (
+        <Link to="/">HobbyHub</Link>
+      ) : (
+        <Link to="/events">HobbyHub</Link>
+      )}
     </Navbar.Brand>
+    <Navbar.Toggle />
   </Navbar.Header>
   <Navbar.Collapse>
     {user.anonymous ? (
