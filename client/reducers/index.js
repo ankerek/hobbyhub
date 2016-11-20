@@ -21,10 +21,23 @@ const rootReducer = combineReducers({
 export default rootReducer;
 
 export const getAllEvents = (state) =>
-  state.events.map(id => getEvent(state.entities, id))
+  state.events.map(id => getEvent(state.entities, id));
+
+export const getCategoryEvents = (categoryId) =>
+  (state) => {
+    const categories = getAllCategories(state);
+    const category = categories.find(category => category._id === categoryId);
+
+    return state.events
+      .map(id => getEvent(state.entities, id))
+      .filter(event => event.categories[0] === category.name);
+  };
 
 export const getAllCategories = (state) =>
-  state.categories.map(id => getCategory(state.entities, id))
+  state.categories.map(id => getCategory(state.entities, id));
 
 export const getAllCategoriesNames = (state) =>
-  state.categories.map(id => getCategoryName(state.entities, id))
+  state.categories.map(id => getCategoryName(state.entities, id));
+
+export const getCurrentLocation = (state) =>
+  state.router.location;

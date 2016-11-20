@@ -46,7 +46,7 @@ export const renderEventItem = ({
       <div className={`${be('Grid', 'cell')}`}>
         {event.categories && event.categories[0] ? (
           <div className="u-spacing10px">
-            <CategoryIcon category={event.categories[0]} />
+            <CategoryIcon category={{ name: event.categories[0] }} />
           </div>
         ) : null}
         {isAuthenticated ? (
@@ -65,9 +65,15 @@ export const renderEventItem = ({
         <h3 className="u-spacing5px">
           ({event.attendees.length}/{event.maxPeople}) <span className="EventItem-title">{event.name}</span>
         </h3>
-        <p className="u-spacing5px">{event.address}</p>
+        <p className="u-spacing5px">
+          <strong>
+            <FormattedTime day="numeric" month="long" year="numeric" time="long" value={event.start} />
+          </strong>
+          <span className="u-indent5px">-</span>
+          <span className="u-indent5px">{event.address}</span>
+        </p>
         <p className="u-spacing10px">
-          <FormattedTime day="numeric" month="long" year="numeric" time="long" value={event.start} />
+          Minimum players: <strong>{event.minPeople}</strong>
         </p>
         <div className={bm('Grid', 'multiCol 5col gutterH5px')}>
           {event.attendees.map(user => (
