@@ -68,6 +68,7 @@
     "react-redux": "^4.4.5",
     "react-router": "next",
     "react-router-addons-controlled": "^0.0.1",
+    "react-tooltip": "^3.2.1",
     "redux": "^3.6.0",
     "redux-form": "^6.2.0",
     "redux-logger": "^2.7.4",

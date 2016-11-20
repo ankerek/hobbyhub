@@ -1,4 +1,5 @@
 import React, { PropTypes as T } from 'react';
+import ReactTooltip from 'react-tooltip';
 
 import './index.scss';
 
@@ -9,15 +10,25 @@ export const renderCategoryIcon = ({
   moduleName = 'CategoryIcon',
   modifiers = 'gray',
   category,
+  isSelected,
   size = 64,
 } = {}) => (
-  <div className={bm(moduleName, modifiers)}>
-    <img src={categoryIcons[category]} alt={category} width={size} height={size} />
+  <div className={`${bm(moduleName, modifiers)} ${isSelected ? 'is-selected' : ''}`}>
+    <img data-tip
+         data-for={`categoryIcon-${category.name}`}
+         src={categoryIcons[category.name]}
+         alt={category.name}
+         width={size}
+         height={size} />
+    <ReactTooltip id={`categoryIcon-${category.name}`} effect="solid">
+      {category.name}
+    </ReactTooltip>
   </div>
 );
 
 renderCategoryIcon.propTypes = {
-  category: T.string.isRequired,
+  category: T.object.isRequired,
+  isSelected: T.bool,
   size: T.number,
 };
 

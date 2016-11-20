@@ -52,7 +52,7 @@ export const renderLandingScreen = ({
               {categories.map(category => (
                 <div className={be('Grid', 'cell')} key={category._id}>
                   <Link to={`/events/categories/${category._id}`}>
-                    <CategoryIcon category={category.name} size={48} />
+                    <CategoryIcon category={category} size={48} />
                   </Link>
                 </div>
               ))}

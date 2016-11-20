@@ -1,3 +1,5 @@
+@import '../../stylesheets/variables/colors';
+
 .CategoryIcon {
   display: inline-block;
   padding: 5px;
@@ -6,5 +8,9 @@
 }
 
 .CategoryIcon--gray {
-  background-color: #95a5a6;
+  background-color: $gray;
+}
+
+.CategoryIcon--gray.is-selected {
+  background-color: $brand-success;
 }
