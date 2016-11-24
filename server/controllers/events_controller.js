@@ -81,6 +81,20 @@ export function show(req, res, next) {
     });
 }
 
+/**
+ * Current search only based on category
+ */
+export function search(req, res, next) {
+  const { categories } = req.body;
+  console.log("req.categories", categories);
+  Event
+    .find().where('category').in(categories)
+    .exec()
+    .then(events => {
+      res.json(events);
+    });
+}
+
 export function update(req, res, next) {
   const { eventId } = req.params;
   const { name, start, end, address, minPeople, maxPeople, description, category } = req.body;

@@ -110,6 +110,26 @@ router.route('/events')
   .post(EventsController.create)
   .get(EventsController.index);
 
+router.route('/events/search')
+  /**
+   * @api {POST} /events/search Search for an event
+   * @apiVersion 0.0.1
+   * @apiName EventSearch
+   * @apiGroup Event
+   * @apiPermission anonymous
+   *
+   * @apiDescription This call return an array of events based on the payload criteria (currently categories only)
+   * @apiSampleRequest http://hobbyhub8.herokuapp.com/api/events/search
+   *
+   * @apiParamExample {json} Request-Example:
+   *     {
+   *       "categories": ["football", "chess"]
+   *     }
+   *
+   * @apiSuccess {Event} Event Array of Event objects
+   */
+  .post(EventsController.search);
+
 router.route('/events/:eventId')
   /**
    * @api {GET} /events/:eventId Read data of event
