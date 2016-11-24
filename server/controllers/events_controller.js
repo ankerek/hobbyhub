@@ -4,6 +4,8 @@ import Event from '../models/event'
 import User from '../models/user'
 import Category from '../models/category'
 
+const UNSPECIFIED_NAME = 'unspecified';
+
 export function index(req, res, next) {
   Event
     .find().sort({_id: 'desc'})
@@ -16,7 +18,7 @@ export function index(req, res, next) {
 }
 
 export function create(req, res, next) {
-  const { name, start, end, address, minPeople, maxPeople, description, organizer, categories } = req.body;
+  const { name, start, end, address, minPeople, maxPeople, description, organizer, category } = req.body;
   let apiEvent = { name, start, end, address, minPeople, maxPeople, description, comments: [], attendees: [] };
   let error = { status: 500, reason: "UnknownError" };
 
@@ -27,15 +29,16 @@ export function create(req, res, next) {
         error = { status: 404, reason: "User with given email not found." };
         throw error;
       }
-      apiEvent.organizer = userToAttendee(usr)
+      let organizer = userToAttendee(usr);
+      organizer.state = 'ACCEPTED';
+      apiEvent.organizer = organizer;
+      apiEvent.attendees.push(organizer);
     })
     .then(() => {
-      return Category
-        .find().where('name').in(categories)
-        .select('name').exec()
+      return Category.findOne({ 'name': category }).exec()
     })
-    .then((validCategories) => {
-      apiEvent.categories = mapCategories(validCategories)
+    .then((validCategory) => {
+      apiEvent.categories = validCategory ? validCategory.name : UNSPECIFIED_NAME;
     })
     .then(() => new Event(apiEvent).save())
     .then((savedEvent) => {
@@ -61,19 +64,10 @@ function userToAttendee(user) {
   attendee.email = user.email;
   attendee.fullName = `${user.firstName} ${user.lastName}`;
   attendee.averageRating = 85; //TODO: implemented when rating is ready
-  attendee.state = 'ACCEPTED';
+  attendee.state = 'PENDING';
   attendee.pictureUrl = user.pictureUrl;
 
   return attendee;
-}
-
-function mapCategories(categoryNames) {
-  const defaultCategory = ["unspecified"];
-
-  if (!categoryNames || categoryNames.length == 0) {
-    return defaultCategory;
-  }
-  return _.map(categoryNames, catObj => catObj.name);
 }
 
 export function show(req, res, next) {
@@ -84,6 +78,57 @@ export function show(req, res, next) {
         return next(err);
       }
       res.json(event);
+    });
+}
+
+export function update(req, res, next) {
+  const { eventId } = req.params;
+  const { name, start, end, address, minPeople, maxPeople, description, category } = req.body;
+  let apiEvent = { name, start, end, address, minPeople, maxPeople, description, comments: [], attendees: [] };
+  let error = { status: 500, reason: "UnknownError" };
+  let mongooseEvent = {};
+
+  Event
+    .findOne({ _id: eventId }).exec()
+    .then((event) => {
+      if (!event) {
+        error = { status: 404, reason: "Event with given eventId not found." };
+        throw error;
+      }
+      mongooseEvent = event;
+      mongooseEvent.name = name;
+      mongooseEvent.start = start;
+      mongooseEvent.end = end;
+      mongooseEvent.address = address;
+      mongooseEvent.minPeople = minPeople;
+      mongooseEvent.maxPeople = maxPeople;
+      mongooseEvent.description = description;
+      apiEvent._id = eventId;
+      apiEvent.comments = mongooseEvent.comments;
+      apiEvent.attendees = mongooseEvent.attendees;
+    })
+    .then(() => {
+      console.log('category', category);
+      return Category.findOne({ 'name': category }).exec()
+    })
+    .then((validCategory) => {
+      console.log('validCategory', validCategory);
+      mongooseEvent.category = validCategory ? validCategory.name : UNSPECIFIED_NAME;
+      apiEvent.category = mongooseEvent.category;
+    })
+    .then(() => mongooseEvent.save())
+    .then((savedEvent) => {
+      if (savedEvent) {
+        res.json(apiEvent)
+      }
+    })
+    .catch((err) => {
+      if (err.name && err.name === "MongoError") {
+        error = { status: 400, reason: err.errmsg }
+      } else if (err.name && err.name === "ValidationError") {
+        error = { status: 400, reason: err.errors[Object.keys(err.errors)[0]].message };
+      }
+      res.status(error.status).json(error);
     });
 }
 
@@ -111,6 +156,41 @@ export function leave(req, res, next) {
       }
       res.status(error.status).json(_.omit(error, "known"));
     });
+}
+
+export function approve(req, res, next) {
+  //TODO: authorization
+  const { eventId, userId } = req.params;
+  let error = { status: 500, reason: "UnknownError" };
+  let mongooseEvent = {};
+
+  return Event
+    .findOne({ _id: eventId }).exec()
+    .then((validEvent) => {
+      if (!validEvent) {
+        throw { status: 404, reason: "Event not found", known: true };
+      }
+      mongooseEvent = validEvent;
+      return User.findOne({ _id: userId }).exec();
+    })
+    .then((validUser) => {
+      if (!validUser) {
+        error =  { status: 404, reason: "User not found", known: true };
+        throw error;
+      }
+      if (!attending(userId, mongooseEvent)) {
+        error = { status: 400, reason: "User is not attending the event.", known: true };
+        throw error;
+      }
+      _.find(mongooseEvent.attendees, attendee => attendee.userId == userId).state = 'ACCEPTED'
+      res.json({ 'msg': 'approved' });
+      })
+      .catch((err) => {
+        if (err.known) {
+          error = err;
+        }
+        res.status(error.status).json(_.omit(error, "known"));
+      });
 }
 
 /**
