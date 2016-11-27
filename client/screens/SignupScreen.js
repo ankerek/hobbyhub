@@ -1,13 +1,13 @@
 import React, { PropTypes as T } from 'react';
 import { connect } from 'react-redux';
 import compose from 'compose-function';
-import { login } from '../actions/auth';
+import { register } from '../actions/auth';
 import SignupForm from '../components/SignupForm';
 
 const mapStateToProps = null;
 
 const mapDispatchToProps = {
-  handleSignup: login, // TODO: actually signup and then login, this is for testing purposes.
+  handleSignup: register,
 };
 
 export const renderSignupScreen = ({
