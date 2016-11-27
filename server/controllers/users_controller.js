@@ -57,7 +57,10 @@ export function login(req, res, next) {
         if (err) {
           res.json({error: 'Issue generating token'});
         } else {
-          res.json({token: usersToken});
+          res.json({
+            user,
+            token: usersToken,
+          });
         }
       });
     }
@@ -82,12 +85,7 @@ export function auth(req, res, next) {
         } else {
           res
             .status(200)
-            .json({
-              user: {
-                email: user.email,
-                token: user.token.token
-              }
-            });
+            .json(user);
         }
       }
     });
