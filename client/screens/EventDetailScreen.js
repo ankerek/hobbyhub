@@ -6,8 +6,8 @@ import compose from 'compose-function';
 import { Row, Col, Button, Well, Glyphicon } from 'react-bootstrap';
 
 import { getCurrentUserId, isAuthenticated } from '../reducers/auth';
-import { getEvent, getIsAttendee } from '../reducers/entities';
-import { fetchEvent, joinEvent, leaveEvent } from '../actions/events';
+import { getEvent, getIsAttendee, getIsOrganizer } from '../reducers/entities';
+import { fetchEvent, joinEvent, leaveEvent, removeEvent } from '../actions/events';
 import { bm, be } from '../utils/bem';
 import UserAvatar from '../components/UserAvatar';
 import EventPoster from '../components/EventPoster';
@@ -16,12 +16,20 @@ export const mapStateToProps = (state, { params: { id } }) => ({
   event: getEvent(state.entities, id),
   isAuthenticated: isAuthenticated(state),
   isAttendee: getIsAttendee(state.entities, id, getCurrentUserId(state)),
+  isOrganizer: getIsOrganizer(state.entities, id, getCurrentUserId(state)),
 });
+
+export const mapDispatchToProps = {
+  fetchEvent,
+  joinEvent,
+  leaveEvent,
+  removeEvent,
+};
 
 class EventDetailContainer extends React.Component {
   componentDidMount() {
-    const { params: { id }, dispatch } = this.props;
-    dispatch(fetchEvent(id));
+    const { params: { id }, fetchEvent } = this.props;
+    fetchEvent(id);
   }
 
   render() {
@@ -33,7 +41,10 @@ export const renderEventDetailScreen = ({
   event,
   isAuthenticated,
   isAttendee,
-  dispatch,
+  isOrganizer,
+  joinEvent,
+  leaveEvent,
+  removeEvent,
 }) => (
   <Well>
     <div className="u-spacing20px">
@@ -48,17 +59,27 @@ export const renderEventDetailScreen = ({
         </p>
       </Col>
       <Col lg={4}>
+       { isOrganizer && (
+          <div>           
+            <Button bsStyle="danger"
+                    className="u-pullRight"
+                    onClick={() => removeEvent(event._id)}>
+             <Glyphicon glyph="trash" /> Delete
+           </Button>
+            <Link className="btn btn-warning u-pullRight" to={`/events/${event._id}/edit`}><Glyphicon glyph="pencil" /> Edit</Link>
+          </div>
+        ) }
        { isAuthenticated ? (
          isAttendee ? (
            <Button bsStyle="warning"
                    className="u-pullRight"
-                   onClick={() => dispatch(leaveEvent(event._id))}>
+                   onClick={() => leaveEvent(event._id)}>
              <Glyphicon glyph="remove" /> Leave
            </Button>
          ) : (
            <Button bsStyle="primary"
                    className="u-pullRight"
-                   onClick={() => dispatch(joinEvent(event._id))}>
+                   onClick={() => joinEvent(event._id)}>
              <Glyphicon glyph="plus" /> Join
            </Button>
          )
@@ -82,11 +103,13 @@ export const renderEventDetailScreen = ({
 
 renderEventDetailScreen.propTypes = {
   event: T.object.isRequired,
-  dispatch: T.func.isRequired,
+  fetchEvent: T.func.isRequired,
+  joinEvent: T.func.isRequired,
+  leaveEvent: T.func.isRequired,
 };
 
 const EventDetailScreen = compose(
-  connect(mapStateToProps)
+  connect(mapStateToProps, mapDispatchToProps)
 )(EventDetailContainer);
 
 export default EventDetailScreen;

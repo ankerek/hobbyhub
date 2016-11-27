@@ -27,5 +27,6 @@ export const getUser = (state, id) => state.users[id]
 export const getUsersByEvent = (state, ids) =>
   ids.map(id => getUser(state, id))
 export const getIsAttendee = (state, eventId, userId) => state.events[eventId] && state.events[eventId].attendees.includes(userId)
+export const getIsOrganizer = (state, eventId, userId) => state.events[eventId] && state.users[userId] && state.events[eventId].organizer === userId
 export const getCategory = (state, id) => state.categories[id]
 export const getCategoryName = (state, id) => state.categories[id].name

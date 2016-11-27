@@ -5,35 +5,36 @@ import { api } from '../utils/api';
 import eventSchema from '../schemas/event';
 import { getCurrentUser } from '../reducers/auth';
 import { navigate } from '../actions/router';
-import * as actions from '../constants/actions';
+import * as actions from '../actions/events';
 
 function* fetchEvents() {
   try {
     const payload = yield call(api.fetch, '/api/events', { method: 'GET' });
-    yield put({ type: actions.FETCH_EVENTS_SUCCESS, payload: normalize(payload, arrayOf(eventSchema)) });
+    yield put(actions.fetchEventsSuccess(normalize(payload, arrayOf(eventSchema))));
   } catch (error) {
     console.log(error);
-    yield put({ type: actions.FETCH_EVENTS_FAILURE });
+    yield put(actions.fetchEventsFailure({ error }));
   }
 }
 
 function* fetchEvent({ id }) {
   try {
     const payload = yield call(api.fetch, `/api/events/${id}`, { method: 'GET' });
-    yield put({ type: actions.FETCH_EVENT_SUCCESS, payload: normalize(payload, eventSchema) });
+    yield put(actions.fetchEventSuccess(normalize(payload, eventSchema)));
   } catch (error) {
     console.log(error);
-    yield put({ type: actions.FETCH_EVENT_FAILURE });
+    yield put(actions.fetchEventFailure({ error }));
   }
 }
 
 function* createEvent({ data }) {
   try {
+    const isEdit = !!data._id;
     const loggedUser = yield select(getCurrentUser);
     const payload = yield call(
       api.fetch,
-      '/api/events', {
-        method: 'POST',
+      `/api/events${isEdit ? `/${data._id}` : ''}`, {
+        method: isEdit ? 'PUT' : 'POST',
         body: {
           ...data,
           organizer: loggedUser.email,
@@ -41,12 +42,23 @@ function* createEvent({ data }) {
       }
     );
 
-    yield put({ type: actions.CREATE_EVENT_SUCCESS, payload });
+    yield put(actions.createEventSuccess(payload));
     yield put(navigate({ pathname: `/events/${payload._id}` }));
   } catch (error) {
     console.log('error', error);
     // TODO show error
-    yield put({ type: actions.CREATE_EVENT_FAILURE, });
+    yield put(actions.createEventFailure({ error }));
+  }
+}
+
+function* removeEvent({ id }) {
+  try {
+    yield call(api.fetch, `/api/events/${id}`, { method: 'DELETE' });
+    yield put(actions.removeEventSuccess());
+    yield put(navigate({ pathname: '/events' }));
+  } catch (error) {
+    console.log(error);
+    yield put(actions.removeEventFailure({ error }));
   }
 }
 
@@ -60,11 +72,13 @@ function* joinLeaveEvent({ type, id }) {
       }
     );
 
-    yield put({ type: type === actions.JOIN_EVENT_REQUEST ? actions.JOIN_EVENT_SUCCESS : actions.LEAVE_EVENT_SUCCESS, payload: normalize(payload, eventSchema) });
+    const normalized = normalize(payload, eventSchema);
+
+    yield put(type === actions.JOIN_EVENT_REQUEST ? actions.joinEventSuccess(normalized) : actions.leaveEventSuccess(normalized));
   } catch (error) {
     console.log('error', error);
     // TODO show error
-    yield put({ type: type === actions.JOIN_EVENT_REQUEST ? actions.JOIN_EVENT_FAILURE : actions.LEAVE_EVENT_FAILURE, });
+    yield put(type === actions.JOIN_EVENT_REQUEST ? actions.joinEventFailure({ error }) : actions.leaveEventFailure({ error }));
   }
 }
 
@@ -84,6 +98,10 @@ function* watchCreateEvent() {
   yield* takeLatest(actions.CREATE_EVENT_REQUEST, createEvent);
 }
 
+function* watchRemoveEvent() {
+  yield* takeLatest(actions.REMOVE_EVENT_REQUEST, removeEvent);
+}
+
 function* watchJoinLeaveEvent() {
   yield* takeLatest([actions.JOIN_EVENT_REQUEST, actions.LEAVE_EVENT_REQUEST], joinLeaveEvent);
 }
@@ -96,6 +114,7 @@ const eventsSagas = [
   fork(watchFetchEvents),
   fork(watchFetchEvent),
   fork(watchCreateEvent),
+  fork(watchRemoveEvent),
   fork(watchJoinLeaveEvent),
 ];
 
