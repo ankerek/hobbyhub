@@ -86,7 +86,6 @@ export function show(req, res, next) {
  */
 export function search(req, res, next) {
   const { categories } = req.body;
-  console.log("req.categories", categories);
   Event
     .find().where('category').in(categories)
     .exec()
@@ -108,7 +107,7 @@ export function update(req, res, next) {
       if (!event) {
         error = { status: 404, reason: "Event with given eventId not found." };
         throw error;
-      }
+      } //TODO: easier unwrap?
       mongooseEvent = event;
       mongooseEvent.name = name;
       mongooseEvent.start = start;
@@ -122,11 +121,9 @@ export function update(req, res, next) {
       apiEvent.attendees = mongooseEvent.attendees;
     })
     .then(() => {
-      console.log('category', category);
       return Category.findOne({ 'name': category }).exec()
     })
     .then((validCategory) => {
-      console.log('validCategory', validCategory);
       mongooseEvent.category = validCategory ? validCategory.name : UNSPECIFIED_NAME;
       apiEvent.category = mongooseEvent.category;
     })
@@ -142,6 +139,23 @@ export function update(req, res, next) {
       } else if (err.name && err.name === "ValidationError") {
         error = { status: 400, reason: err.errors[Object.keys(err.errors)[0]].message };
       }
+      res.status(error.status).json(error);
+    });
+}
+
+export function destroy(req, res, next) {
+  const { eventId } = req.params;
+  let error = { status: 500, reason: "UnknownError" };
+  Event
+    .findOneAndRemove({ _id: eventId }).exec()
+    .then(event => {
+      if (!event) {
+        error = { status: 404, reason: "Event with given eventId not found." };
+        throw error;
+      }
+      res.json(event)
+    })
+    .catch(err => {
       res.status(error.status).json(error);
     });
 }
@@ -174,6 +188,7 @@ export function leave(req, res, next) {
 
 export function approve(req, res, next) {
   //TODO: authorization
+  //TODO: ask -> return whole json or is status ok?
   const { eventId, userId } = req.params;
   let error = { status: 500, reason: "UnknownError" };
   let mongooseEvent = {};
@@ -198,13 +213,13 @@ export function approve(req, res, next) {
       }
       _.find(mongooseEvent.attendees, attendee => attendee.userId == userId).state = 'ACCEPTED'
       res.json({ 'msg': 'approved' });
-      })
-      .catch((err) => {
-        if (err.known) {
-          error = err;
-        }
-        res.status(error.status).json(_.omit(error, "known"));
-      });
+    })
+    .catch((err) => {
+      if (err.known) {
+        error = err;
+      }
+      res.status(error.status).json(_.omit(error, "known"));
+    });
 }
 
 /**

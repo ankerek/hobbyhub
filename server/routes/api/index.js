@@ -206,7 +206,19 @@ router.route('/events/:eventId')
    *       "maxPeople": 8
    *     }
    */
-  .put(EventsController.update);
+  .put(EventsController.update)
+  /**
+   * @api {DELETE} /events/:eventId Delete existing event
+   * @apiVersion 0.0.1
+   * @apiName DeleteEvent
+   * @apiGroup Event
+   * @apiPermission authenticatedUser (organizer)
+   *
+   * @apiDescription This call will delete an existing event. Note that comments and attendees are ignored. Use the appropriate endpoint for those properties.
+   * @apiSampleRequest http://hobbyhub8.herokuapp.com/api/events/:eventId
+   *
+   */
+  .delete(EventsController.destroy);
 
 router.route('/events/:eventId/attendees/:userId')
   /**
