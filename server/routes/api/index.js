@@ -8,7 +8,7 @@ const router = express.Router();
 
 
 router.route('/categories')
-  .post(CategoriesController.create)
+  .post(UsersController.isAuthenticated,CategoriesController.create)
   /**
    * @api {GET} /categories/ Get list of categories
    * @apiVersion 0.0.1
@@ -107,7 +107,7 @@ router.route('/events')
    *
    * @apiError EventNotFound The <code>eventId</code> of an Event has not been found
    */
-  .post(EventsController.create)
+  .post(UsersController.isAuthenticated,EventsController.create)
   .get(EventsController.index);
 
 router.route('/events/search')
@@ -238,7 +238,7 @@ router.route('/events/:eventId/attendees/:userId')
    * @apiError UserNotFound An User with specified <code>userId</code> has not been found
    * @apiError EventNotFound An Event with specified <code>eventId</code> has not been found
    */
-  .put(EventsController.attend)
+  .put(UsersController.isAuthenticated,EventsController.attend)
   /**
    * @api {DELETE} /events/:eventId/attendees/:userId Remove user as attendee
    * @apiVersion 0.0.1
@@ -251,7 +251,7 @@ router.route('/events/:eventId/attendees/:userId')
    * @apiError UserNotFound An User with specified <code>userId</code> has not been found
    * @apiError EventNotFound An Event with specified <code>eventId</code> has not been found
    */
-  .delete(EventsController.leave)
+  .delete(UsersController.isAuthenticated,EventsController.leave)
   /**
    * @api {PATCH} /events/:eventId/attendees/:userId Approve user as attendee
    * @apiVersion 0.0.1
@@ -274,25 +274,34 @@ router.route('/users/:userId')
   .get(UsersController.show);
 
 router.route('/logout(\\?)?')
+  /**
+   * @api {GET} /users/logout Logs user out
+   * @apiVersion 0.0.1
+   * @apiName LogoutUser
+   * @apiGroup User
+   * @apiPermission anon
+   *
+   * @apiDescription This call will attempt to logout User with given access token
+   *
+   * @apiSuccessExample {json} Successful User Response
+   *    HTTP/1.1 200 OK
+   *    {
+   *      "message": "logged out"
+   *    }
+   *
+   * @apiError InvalidToken Provided token was not valid
+   */
   .get(UsersController.logout);
 
 router.route('/auth')
-  .get(UsersController.auth);
-
-router.route('/login')
   /**
-   * @api {POST} /users/auth Authenticates user credentials
+   * @api {GET} /users/auth Authenticates user
    * @apiVersion 0.0.1
    * @apiName AuthUser
    * @apiGroup User
    * @apiPermission anon
    *
-   * @apiDescription This call will attempt to authenticate User with given credentials and return its entire object on success
-   * @apiParamExample {json} Request-Example:
-   *     {
-   *       "email": "bob@bob.bob",
-   *       "password": "myplaintextpassword"
-   *     }
+   * @apiDescription This call will attempt to authenticate User with given access token and return its entire object on success
    *
    * @apiSuccess {User} User The User object
    * @apiSuccessExample {json} Successful User Response
@@ -304,6 +313,40 @@ router.route('/login')
    *      "pictureUrl": "placehold.it/100x100",
    *      "introduction": "Hi, I'm bob.",
    *      "phone": "+42012356789"
+   *    }
+   *
+   * @apiError InvalidToken Provided token was not valid
+   */
+  .get(UsersController.auth);
+
+router.route('/login')
+  /**
+   * @api {POST} /users/login Logs user in
+   * @apiVersion 0.0.1
+   * @apiName LoginUser
+   * @apiGroup User
+   * @apiPermission anon
+   *
+   * @apiDescription This call will attempt to authenticate User with given credentials and return its entire object and generated access token on success
+   * @apiParamExample {json} Request-Example:
+   *     {
+   *       "email": "bob@bob.bob",
+   *       "password": "myplaintextpassword"
+   *     }
+   *
+   * @apiSuccess {User} User The User object
+   * @apiSuccessExample {json} Successful User Response
+   *    HTTP/1.1 200 OK
+   *    {
+   *      "user": {
+   *        "email": "bob@bob.bob",
+   *        "firstName": "bob",
+   *        "lastName": "bob",
+   *        "pictureUrl": "placehold.it/100x100",
+   *        "introduction": "Hi, I'm bob.",
+   *        "phone": "+42012356789"
+   *        },
+   *      "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJl..."
    *    }
    *
    * @apiError InvalidCredentials Provided credentials were not valid
