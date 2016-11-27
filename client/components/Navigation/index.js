@@ -36,7 +36,12 @@ const renderLoggedIn = ({
 } = {}) => (
   <div>
     <Nav pullRight>
-      <NavItem onClick={() => navigate({ pathname: `/profile/${user._id}`})}>{user.fullName}</NavItem>
+      <NavItem onClick={() => navigate({ pathname: `/profile/${user._id}`})}>
+        <div className="u-flex u-alignICenter">
+          <img src="/static/img/user-avatars/avatar-5.svg" alt={user.fullName} width={24} height={24} />
+          <span className="u-indent5px">{user.fullName}</span>
+        </div>
+      </NavItem>
       <NavDropdown eventKey={3} title="My Account" id="basic-nav-dropdown">
         <MenuItem eventKey={3.1}>Settings</MenuItem>
         <MenuItem divider />
