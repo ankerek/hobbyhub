@@ -30,7 +30,7 @@ export const getCategoryEvents = (categoryId) =>
 
     return state.events
       .map(id => getEvent(state.entities, id))
-      .filter(event => event.categories[0] === category.name);
+      .filter(event => event.category === category.name);
   };
 
 export const getAllCategories = (state) =>
