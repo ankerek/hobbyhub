@@ -81,7 +81,7 @@ const UserSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-    required: true
+    required: false
   },
   ratings: [ratingSchema],
   token: {
@@ -130,10 +130,7 @@ UserSchema.statics.findUser = function(email, token, cb) {
     if (err || !user) {
       cb(err, null);
     } else if (user.token && user.token.token && token === user.token.token) {
-      cb(false, {
-        email: user.email,
-        token: user.token
-      });
+      cb(false, user);
     } else {
       cb(new Error('Token does not exist or does not match.'), null);
     }

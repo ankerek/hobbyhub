@@ -34,14 +34,10 @@ function* createEvent({ data }) {
       api.fetch,
       '/api/events', {
         method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+        body: {
           ...data,
           organizer: loggedUser.email,
-        })
+        },
       }
     );
 
@@ -61,10 +57,6 @@ function* joinLeaveEvent({ type, id }) {
       api.fetch,
       `/api/events/${id}/attendees/${loggedUser._id}`, {
         method: type === actions.JOIN_EVENT_REQUEST ? 'PUT' : 'DELETE',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        }
       }
     );
 

@@ -1,9 +1,15 @@
 import React, { PropTypes as T } from 'react';
+import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import compose from 'compose-function';
+import { getRegisterError } from '../reducers/auth';
 import { Form, Grid, Row, Col, Button, FormGroup, Well } from 'react-bootstrap';
 
 import HorizontalField from './HorizontalField';
+
+const mapStateToProps = (state) => ({
+  registerError: getRegisterError(state),
+});
 
 const validate = values => {
   const errors = {};
@@ -34,6 +40,7 @@ const validate = values => {
 };
 
 export const renderSignupForm = ({
+  registerError,
   handleSubmit,
 }) => (
   <Grid>
@@ -41,6 +48,14 @@ export const renderSignupForm = ({
       <Col lg={6} lgOffset={3}>
         <Well>
           <Form horizontal onSubmit={handleSubmit}>
+            {registerError ? (
+              <FormGroup>
+                <Col smOffset={2} sm={10}>
+                  <p className="u-spacing10px u-colorDanger">{registerError.message}</p>
+                </Col>
+              </FormGroup>
+            ) : null}
+
             <Field controlId="formHorizontalFullName"
                    leftSm={3}
                    rightSm={9}
@@ -96,6 +111,7 @@ renderSignupForm.propTypes = {
 };
 
 const SignupScreen = compose(
+  connect(mapStateToProps),
   reduxForm({
     form: 'signup',
     validate,
