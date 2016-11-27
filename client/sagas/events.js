@@ -29,11 +29,12 @@ function* fetchEvent({ id }) {
 
 function* createEvent({ data }) {
   try {
+    const isEdit = !!data._id;
     const loggedUser = yield select(getCurrentUser);
     const payload = yield call(
       api.fetch,
-      '/api/events', {
-        method: 'POST',
+      `/api/events${isEdit ? `/${data._id}` : ''}`, {
+        method: isEdit ? 'PUT' : 'POST',
         body: {
           ...data,
           organizer: loggedUser.email,

@@ -1,5 +1,5 @@
 import React, { PropTypes as T } from 'react';
-import { Field, FieldArray, reduxForm } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import moment from 'moment';
 import compose from 'compose-function';
 import { Form, Col, Button, FormGroup, Well } from 'react-bootstrap';
@@ -100,14 +100,14 @@ export const renderEventForm = ({
                  label="Max people"
                  type="number"
                  component={HorizontalField} />
-          <Field name="categories"
+          <Field name="category"
                  leftSm={4}
                  rightSm={8}
                  label="Category"
                  type="select"
                  component={HorizontalField}>
             <option></option>
-            {categories.map(category => (<option value={category}>{category}</option>))}
+            {categories.map((category, i) => (<option value={category} key={i}>{category}</option>))}
           </Field>
 
           <FormGroup>

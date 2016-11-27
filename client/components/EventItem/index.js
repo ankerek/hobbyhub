@@ -44,9 +44,9 @@ export const renderEventItem = ({
   <div className={bm(moduleName, modifiers)} onClick={() => navigate({ pathname: `/events/${event._id}` })}>
     <div className={bm('Grid', '1col multiCol:60em fit:60em gutterA20px')}>
       <div className={`${be('Grid', 'cell')}`}>
-        {event.categories && event.categories[0] ? (
+        {event.category ? (
           <div className="u-spacing10px">
-            <CategoryIcon category={{ name: event.categories[0] }} />
+            <CategoryIcon category={{ name: event.category }} />
           </div>
         ) : null}
         {isAuthenticated ? (

@@ -9,16 +9,10 @@ export const fetchEvent = (id) => ({
   id,
 });
 
-export const createEvent = (data) => {
-  if (!Array.isArray(data.categories)) {
-    data.categories = [data.categories];
-  }
-
-  return ({
-    type: actions.CREATE_EVENT_REQUEST,
-    data,
-  });
-};
+export const createEvent = (data) => ({
+  type: actions.CREATE_EVENT_REQUEST,
+  data,
+});
 
 export const joinEvent = (id) => ({
   type: actions.JOIN_EVENT_REQUEST,

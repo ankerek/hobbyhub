@@ -64,6 +64,7 @@ export const renderAppView = ({ location, action, navigate }) => (
           <Match pattern={`${props.pathname}sign-up`} component={SignupScreen} />
           <Match exactly pattern={`${props.pathname}events`} component={EventsScreen} />
           <Match exactly pattern={`${props.pathname}events/:id`} component={EventDetailScreen} />
+          <Match exactly pattern={`${props.pathname}events/:id/edit`} component={EventFormScreen} />
           <Match exactly pattern={`${props.pathname}events/categories/:categoryId`} component={EventsScreen} />
           <Match pattern={`${props.pathname}add-event`} component={EventFormScreen} />
           <Miss component={() => (
