@@ -75,7 +75,7 @@ export const renderEventItem = ({
         <p className="u-spacing10px">
           Minimum players: <strong>{event.minPeople}</strong>
         </p>
-        <div className={bm('Grid', 'multiCol 5col gutterH5px')}>
+        <div className={bm('Grid', 'multiCol wrap 3col 4col:40em gutterH5px')}>
           {event.attendees.map(user => (
             <div key={user.userId} className={`${be('Grid', 'cell')} u-textCenter`}>
               <UserAvatar user={user} size={48} />
