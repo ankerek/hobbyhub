@@ -71,9 +71,9 @@ const EventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  categories: {
-    type: [String],
-    default: [],
+  category: {
+    type: String,
+    default: 'unspecified',
     required: true,
   },
   start: {

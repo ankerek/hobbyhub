@@ -76,9 +76,7 @@ router.route('/events')
    *       "name": "eventName",
    *       "organizer": "bob@bob.bob"
    *       "description": "This is the coolest event ever";
-   *       "categories": [
-   *        "sport", "football", "nonexistentCategory"
-   *       ],
+   *       "category": "football",
    *       "start": 1478623941,
    *       "end": 1478623941,
    *       "address": "Vodičkova 25, Praha",
@@ -97,9 +95,7 @@ router.route('/events')
    *        ...
    *      },
    *      "description": "This is the coolest event ever",
-   *      "categories": [
-   *        "sport", "football"
-   *      ],
+   *      "category": "football",
    *      "start": 1478623941,
    *      "end": 1478623941,
    *      "address": "Vodičkova 25, Praha",
@@ -113,6 +109,26 @@ router.route('/events')
    */
   .post(EventsController.create)
   .get(EventsController.index);
+
+router.route('/events/search')
+  /**
+   * @api {POST} /events/search Search for an event
+   * @apiVersion 0.0.1
+   * @apiName EventSearch
+   * @apiGroup Event
+   * @apiPermission anonymous
+   *
+   * @apiDescription This call return an array of events based on the payload criteria (currently categories only)
+   * @apiSampleRequest http://hobbyhub8.herokuapp.com/api/events/search
+   *
+   * @apiParamExample {json} Request-Example:
+   *     {
+   *       "categories": ["football", "chess"]
+   *     }
+   *
+   * @apiSuccess {Event} Event Array of Event objects
+   */
+  .post(EventsController.search);
 
 router.route('/events/:eventId')
   /**
@@ -136,9 +152,7 @@ router.route('/events/:eventId')
    *        ...
    *      },
    *      "description": "This is the coolest event ever",
-   *      "categories": [
-   *        "sport", "football"
-   *      ],
+   *      "category": "football",
    *      "start": 1478623941,
    *      "end": 1478623941,
    *      "address": "Vodičkova 25, Praha",
@@ -169,7 +183,42 @@ router.route('/events/:eventId')
    *
    * @apiError EventNotFound The <code>eventId</code> of an Event has not been found
    */
-  .get(EventsController.show);
+  .get(EventsController.show)
+  /**
+   * @api {PUT} /events/:eventId Update existing event
+   * @apiVersion 0.0.1
+   * @apiName UpdateEvent
+   * @apiGroup Event
+   * @apiPermission authenticatedUser (organizer)
+   *
+   * @apiDescription This call will update an existing event. Note that comments and attendees are ignored. Use the appropriate endpoint for those properties.
+   * @apiSampleRequest http://hobbyhub8.herokuapp.com/api/events/:eventId
+   *
+   * @apiParamExample {json} Request-Example:
+   *     {
+   *       "name": "eventName",
+   *       "description": "This is the coolest event ever";
+   *       "category": "football",
+   *       "start": 1478623941,
+   *       "end": 1478623941,
+   *       "address": "Vodičkova 25, Praha",
+   *       "minPeople": 2,
+   *       "maxPeople": 8
+   *     }
+   */
+  .put(EventsController.update)
+  /**
+   * @api {DELETE} /events/:eventId Delete existing event
+   * @apiVersion 0.0.1
+   * @apiName DeleteEvent
+   * @apiGroup Event
+   * @apiPermission authenticatedUser (organizer)
+   *
+   * @apiDescription This call will delete an existing event. Note that comments and attendees are ignored. Use the appropriate endpoint for those properties.
+   * @apiSampleRequest http://hobbyhub8.herokuapp.com/api/events/:eventId
+   *
+   */
+  .delete(EventsController.destroy);
 
 router.route('/events/:eventId/attendees/:userId')
   /**
@@ -197,7 +246,20 @@ router.route('/events/:eventId/attendees/:userId')
    * @apiError UserNotFound An User with specified <code>userId</code> has not been found
    * @apiError EventNotFound An Event with specified <code>eventId</code> has not been found
    */
-  .delete(EventsController.leave);
+  .delete(EventsController.leave)
+  /**
+   * @api {PATCH} /events/:eventId/attendees/:userId Approve user as attendee
+   * @apiVersion 0.0.1
+   * @apiName ApproveUser
+   * @apiGroup Event
+   * @apiPermission authenticatedUser (organizer)
+   *
+   * @apiDescription This call change the attendee's state from PENDING to APPROVED
+   *
+   * @apiError UserNotFound An User with specified <code>userId</code> has not been found
+   * @apiError EventNotFound An Event with specified <code>eventId</code> has not been found
+   */
+  .patch(EventsController.approve);
 
 router.route('/users')
   .post(UsersController.create)
