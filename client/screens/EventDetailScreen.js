@@ -36,11 +36,9 @@ export const renderEventDetailScreen = ({
   dispatch,
 }) => (
   <Well>
-    {event.categories && event.categories[0] ? (
-      <div className="u-spacing20px">
-        <EventPoster modifiers="inWell" category={event.categories[0]} />
-      </div>
-    ) : null}
+    <div className="u-spacing20px">
+      <EventPoster modifiers="inWell" category={event.category} />
+    </div>
     <Row>
       <Col lg={8}>
         <h1 className="u-spacing10px">{event.name}</h1>
