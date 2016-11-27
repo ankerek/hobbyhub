@@ -1,6 +1,5 @@
 import React, { PropTypes as T } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import Datetime from 'react-datetime';
 import moment from 'moment';
 import compose from 'compose-function';
 import { Form, Col, Button, FormGroup, Well } from 'react-bootstrap';
