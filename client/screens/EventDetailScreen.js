@@ -45,11 +45,9 @@ export const renderEventDetailScreen = ({
   leaveEvent,
 }) => (
   <Well>
-    {event.category ? (
-      <div className="u-spacing20px">
-        <EventPoster modifiers="inWell" category={event.category} />
-      </div>
-    ) : null}
+    <div className="u-spacing20px">
+      <EventPoster modifiers="inWell" category={event.category} />
+    </div>
     <Row>
       <Col lg={8}>
         <h1 className="u-spacing10px">{event.name}</h1>
@@ -84,7 +82,7 @@ export const renderEventDetailScreen = ({
     </Row>
     <p className="u-spacing40px">{event.description}</p>
     <h2 className="u-spacing20px">Attendees ({event.attendees.length}/{event.maxPeople})</h2>
-    <div className={bm('Grid', 'multiCol 5col wrap gutterH5px')}>
+    <div className={bm('Grid', 'multiCol wrap 3col 4col:40em 5col:50em gutterH5px')}>
       {event.attendees.map(user => (
         <div key={user.userId} className={`${be('Grid', 'cell')}`}>
           <UserAvatar user={user} size={48} withRating />
