@@ -38,7 +38,7 @@ export function create(req, res, next) {
       return Category.findOne({ 'name': category }).exec()
     })
     .then((validCategory) => {
-      apiEvent.categories = validCategory ? validCategory.name : UNSPECIFIED_NAME;
+      apiEvent.category = validCategory ? validCategory.name : UNSPECIFIED_NAME;
     })
     .then(() => new Event(apiEvent).save())
     .then((savedEvent) => {
