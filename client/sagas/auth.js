@@ -70,8 +70,8 @@ function* logoutTask() {
 function* registerTask(action) {
   try {
     const { email, password, fullName } = action.payload;
-    const [firstName, lastName] = fullName.split(/\s+/);
-    const data = { email, password, firstName, lastName };
+    const [firstName, ...lastName] = fullName.split(/\s+/);
+    const data = { email, password, firstName, lastName: lastName.join(' ') };
 
     const user = yield call(api.fetch, '/api/users', { method: 'POST', body: data });
     yield put(
