@@ -51,6 +51,17 @@ function* createEvent({ data }) {
   }
 }
 
+function* removeEvent({ id }) {
+  try {
+    yield call(api.fetch, `/api/events/${id}`, { method: 'DELETE' });
+    yield put(actions.removeEventSuccess());
+    yield put(navigate({ pathname: '/events' }));
+  } catch (error) {
+    console.log(error);
+    yield put(actions.removeEventFailure({ error }));
+  }
+}
+
 function* joinLeaveEvent({ type, id }) {
   try {
     const loggedUser = yield select(getCurrentUser);
@@ -87,6 +98,10 @@ function* watchCreateEvent() {
   yield* takeLatest(actions.CREATE_EVENT_REQUEST, createEvent);
 }
 
+function* watchRemoveEvent() {
+  yield* takeLatest(actions.REMOVE_EVENT_REQUEST, removeEvent);
+}
+
 function* watchJoinLeaveEvent() {
   yield* takeLatest([actions.JOIN_EVENT_REQUEST, actions.LEAVE_EVENT_REQUEST], joinLeaveEvent);
 }
@@ -99,6 +114,7 @@ const eventsSagas = [
   fork(watchFetchEvents),
   fork(watchFetchEvent),
   fork(watchCreateEvent),
+  fork(watchRemoveEvent),
   fork(watchJoinLeaveEvent),
 ];
 

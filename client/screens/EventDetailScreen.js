@@ -7,7 +7,7 @@ import { Row, Col, Button, Well, Glyphicon } from 'react-bootstrap';
 
 import { getCurrentUserId, isAuthenticated } from '../reducers/auth';
 import { getEvent, getIsAttendee, getIsOrganizer } from '../reducers/entities';
-import { fetchEvent, joinEvent, leaveEvent } from '../actions/events';
+import { fetchEvent, joinEvent, leaveEvent, removeEvent } from '../actions/events';
 import { bm, be } from '../utils/bem';
 import UserAvatar from '../components/UserAvatar';
 import EventPoster from '../components/EventPoster';
@@ -23,6 +23,7 @@ export const mapDispatchToProps = {
   fetchEvent,
   joinEvent,
   leaveEvent,
+  removeEvent,
 };
 
 class EventDetailContainer extends React.Component {
@@ -43,6 +44,7 @@ export const renderEventDetailScreen = ({
   isOrganizer,
   joinEvent,
   leaveEvent,
+  removeEvent,
 }) => (
   <Well>
     <div className="u-spacing20px">
@@ -58,7 +60,14 @@ export const renderEventDetailScreen = ({
       </Col>
       <Col lg={4}>
        { isOrganizer && (
-          <Link className="btn btn-warning u-pullRight" to={`/events/${event._id}/edit`}><Glyphicon glyph="pencil" /> Edit</Link>
+          <div>           
+            <Button bsStyle="danger"
+                    className="u-pullRight"
+                    onClick={() => removeEvent(event._id)}>
+             <Glyphicon glyph="trash" /> Delete
+           </Button>
+            <Link className="btn btn-warning u-pullRight" to={`/events/${event._id}/edit`}><Glyphicon glyph="pencil" /> Edit</Link>
+          </div>
         ) }
        { isAuthenticated ? (
          isAttendee ? (

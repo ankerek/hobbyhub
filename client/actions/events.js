@@ -51,6 +51,23 @@ export const createEventFailure = ({ error }) => ({
   payload: { error },
 })
 
+export const REMOVE_EVENT_REQUEST = 'REMOVE_EVENT_REQUEST';
+export const removeEvent = (id) => ({
+  type: REMOVE_EVENT_REQUEST,
+  id,
+});
+
+export const REMOVE_EVENT_SUCCESS = 'REMOVE_EVENT_SUCCESS';
+export const removeEventSuccess = () => ({
+  type: REMOVE_EVENT_SUCCESS,
+});
+
+export const REMOVE_EVENT_FAILURE = 'REMOVE_EVENT_FAILURE';
+export const removeEventFailure = ({ error }) => ({
+  type: REMOVE_EVENT_FAILURE,
+  payload: { error },
+})
+
 export const JOIN_EVENT_REQUEST = 'JOIN_EVENT_REQUEST';
 export const joinEvent = (id) => ({
   type: JOIN_EVENT_REQUEST,
