@@ -1,5 +1,5 @@
 import Immutable from 'seamless-immutable';
-import * as actions from '../constants/actions';
+import * as actions from '../actions/events';
 
 // TODO: fetch on init
 const initialState = Immutable.from([]);
