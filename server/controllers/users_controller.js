@@ -65,7 +65,7 @@ export function login(req, res, next) {
 }
 
 export function auth(req, res, next) {
-  const incomingToken = req.headers.token;
+  const incomingToken = req.headers['x-auth-token'];
   const decoded = User.decode(incomingToken);
   console.log('incomingToken: ' + incomingToken);
   if (decoded && decoded.email) {
@@ -99,7 +99,7 @@ export function auth(req, res, next) {
 }
 
 export function logout(req, res, next) {
-  const incomingToken = req.headers.token;
+  const incomingToken = req.headers['x-auth-token'];
   console.log('LOGOUT: incomingToken: ' + incomingToken);
   if (incomingToken) {
     const decoded = User.decode(incomingToken);
