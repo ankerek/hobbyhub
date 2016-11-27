@@ -24,7 +24,7 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loader: 'babel',
+        loader: 'babel-loader',
         query: {
           babelrc: false,
           presets: [
@@ -38,11 +38,11 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loader: 'style!css!postcss-loader'
+        loader: 'style-loader!css-loader!postcss-loader'
       },
       {
         test: /\.scss/,
-        loader: 'style!css!postcss-loader!resolve-url!sass?sourceMap'
+        loader: 'style-loader!css-loader!postcss-loader!resolve-url-loader!sass-loader?sourceMap'
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -55,13 +55,13 @@ module.exports = {
       {
         test: /\.(jpe?g|png|gif)$/i,
         loaders: [
-                'url?limit=8192',
-                'img'
-                ]
+          'url-loader?limit=8192',
+          'img-loader'
+        ]
       },
       {
         test: /\.svg$/i,
-        loader: 'img',
+        loader: 'img-loader',
       },
     ],
   },

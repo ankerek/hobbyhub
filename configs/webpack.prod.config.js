@@ -21,7 +21,7 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel',
+        loader: 'babel-loader',
         query: {
           babelrc: false,
           presets: [
@@ -36,14 +36,14 @@ module.exports = {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract({
           fallbackLoader: 'style-loader',
-          loader: 'css?minimize!postcss',
+          loader: 'css-loader?minimize!postcss-loader',
         }),
       },
       {
         test: /\.scss$/,
         loader: ExtractTextPlugin.extract({
           fallbackLoader: 'style-loader',
-          loader: 'css?minimize!postcss!resolve-url!sass?sourceMap',
+          loader: 'css-loader?minimize!postcss-loader!resolve-url-loader!sass-loader?sourceMap',
         }),
       },
       {
@@ -57,13 +57,13 @@ module.exports = {
       {
         test: /\.(jpe?g|png|gif)$/i,
         loaders: [
-          'url?limit=8192',
-          'img'
+          'url-loader?limit=8192',
+          'img-loader'
         ]
       },
       {
         test: /\.svg$/i,
-        loader: 'img',
+        loader: 'img-loader',
       },
     ],
   },
@@ -82,8 +82,6 @@ module.exports = {
       async: true,
     }),
     new webpack.optimize.OccurrenceOrderPlugin(true),
-    // Merge all duplicate modules
-    new webpack.optimize.DedupePlugin(),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
       debug: false,
