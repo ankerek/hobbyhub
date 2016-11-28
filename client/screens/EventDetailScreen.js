@@ -59,34 +59,49 @@ export const renderEventDetailScreen = ({
         </p>
       </Col>
       <Col lg={4}>
-       { isOrganizer && (
-          <div>           
-            <Button bsStyle="danger"
-                    className="u-pullRight"
-                    onClick={() => removeEvent(event._id)}>
-             <Glyphicon glyph="trash" /> Delete
-           </Button>
-            <Link className="btn btn-warning u-pullRight" to={`/events/${event._id}/edit`}><Glyphicon glyph="pencil" /> Edit</Link>
-          </div>
-        ) }
-       { isAuthenticated ? (
-         isAttendee ? (
-           <Button bsStyle="warning"
-                   className="u-pullRight"
-                   onClick={() => leaveEvent(event._id)}>
-             <Glyphicon glyph="remove" /> Leave
-           </Button>
-         ) : (
-           <Button bsStyle="primary"
-                   className="u-pullRight"
-                   onClick={() => joinEvent(event._id)}>
-             <Glyphicon glyph="plus" /> Join
-           </Button>
-         )
-       ) : (
-         <Link className="btn btn-primary u-pullRight" to="/sign-up">Sign Up to Attend</Link>
-       )}
-
+        <div className={bm('Grid', '1col multiCol:30em fit:30em justifyRight gutterH5px')}>
+          { isOrganizer && (
+            <div className={be('Grid', 'cell')}>
+              <div className={bm('Grid', '1col multiCol:30em fit:30em gutterH5px')}>
+                <div className={be('Grid', 'cell')}>
+                  <Button bsStyle="danger"
+                          className="u-pullRight"
+                          onClick={() => removeEvent(event._id)}>
+                   <Glyphicon glyph="trash" /> Delete
+                  </Button>
+                </div>
+                <div className={be('Grid', 'cell')}>
+                  <Link className="btn btn-success u-pullRight" to={`/events/${event._id}/edit`}>
+                    <Glyphicon glyph="pencil" /> Edit
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ) }
+          { isAuthenticated ? (
+            isAttendee ? (
+              <div className={be('Grid', 'cell')}>
+                <Button bsStyle="warning"
+                        className="u-pullRight"
+                        onClick={() => leaveEvent(event._id)}>
+                  <Glyphicon glyph="remove" /> Leave
+                </Button>
+              </div>
+            ) : (
+              <div className={be('Grid', 'cell')}>
+                <Button bsStyle="primary"
+                        className="u-pullRight"
+                        onClick={() => joinEvent(event._id)}>
+                  <Glyphicon glyph="plus" /> Join
+                </Button>
+              </div>
+            )
+          ) : (
+            <div className={be('Grid', 'cell')}>
+              <Link className="btn btn-primary u-pullRight" to="/sign-up">Sign Up to Attend</Link>
+            </div>
+          )}
+        </div>
       </Col>
     </Row>
     <p className="u-spacing40px">{event.description}</p>
