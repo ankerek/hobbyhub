@@ -118,12 +118,17 @@ router.route('/events/search')
    * @apiGroup Event
    * @apiPermission anonymous
    *
-   * @apiDescription This call return an array of events based on the payload criteria (currently categories only)
+   * @apiDescription This call return an array of events based on the payload criteria. NOTE the time: milliseconds unix
    * @apiSampleRequest http://hobbyhub8.herokuapp.com/api/events/search
    *
    * @apiParamExample {json} Request-Example:
    *     {
-   *       "categories": ["football", "chess"]
+   *       "categories": ["football", "chess"],
+   *       "startBefore": 1512064920000,
+   *       "startAfter": 1512064920000,
+   *       "full": false,
+   *       "empty": true,
+   *       "spotsRemaining": 4
    *     }
    *
    * @apiSuccess {Event} Event Array of Event objects
@@ -270,7 +275,7 @@ router.route('/users/:userId')
 
 router.route('/logout(\\?)?')
   .get(UsersController.logout);
-  
+
 router.route('/auth')
   .get(UsersController.auth);
 

@@ -85,13 +85,31 @@ export function show(req, res, next) {
  * Current search only based on category
  */
 export function search(req, res, next) {
-  const { categories } = req.body;
-  Event
-    .find().where('category').in(categories)
-    .exec()
-    .then(events => {
-      res.json(events);
-    });
+  const { categories, startBefore, startAfter, empty, full, spotsRemaining } = req.body;
+  let query = Event.find();
+  if (categories) {
+    query = query.where('category').in(categories);
+  }
+  if (startBefore) {
+    query = query.where('start').lte(new Date(startBefore));
+  }
+  if (startAfter) {
+    query = query.where('start').gte(new Date(startAfter));
+  }
+  query.exec().then(events => {
+    // this is much easier in JS for now
+    let results = events;
+    if (empty != null) {
+      results = empty ? _.filter(results, e => e.attendees.length == 0) : _.filter(results, e => e.attendees.length > 0);
+    }
+    if (full != null) {
+      results = full ? _.filter(results, e => e.attendees.length == e.maxPeople) : _.filter(results, e => e.attendees.length < e.maxPeople);
+    }
+    if (spotsRemaining != null) {
+      results = _.filter(results, e => e.maxPeople - e.attendees.length == spotsRemaining);
+    }
+    res.json(results)
+  });
 }
 
 export function update(req, res, next) {
