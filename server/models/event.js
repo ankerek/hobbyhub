@@ -3,26 +3,28 @@ import mongoose from 'mongoose';
 // reused for organiser and individual attendees
 const attendeeSchema = new mongoose.Schema({
   _id: false,
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-  fullName: {
-    type: String,
-    required: true,
-  },
-  averageRating: {
-    type: Number,
-    min: 0, max: 100,
-    required: false,
-  },
-  pictureUrl: {
-    type: String,
-    required: false,
+  user: {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    fullName: {
+      type: String,
+      required: true,
+    },
+    averageRating: {
+      type: Number,
+      min: 0, max: 100,
+      required: false,
+    },
+    pictureUrl: {
+      type: String,
+      required: false,
+    },
   },
   state: {
     type: String,

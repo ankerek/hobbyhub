@@ -58,16 +58,15 @@ export function create(req, res, next) {
 }
 
 function userToAttendee(user) {
-  let attendee = {};
+  let userProjection = {};
 
-  attendee.userId = user._id;
-  attendee.email = user.email;
-  attendee.fullName = `${user.firstName} ${user.lastName}`;
-  attendee.averageRating = 85; //TODO: implemented when rating is ready
-  attendee.state = 'PENDING';
-  attendee.pictureUrl = user.pictureUrl;
+  userProjection.userId = user._id;
+  userProjection.email = user.email;
+  userProjection.fullName = `${user.firstName} ${user.lastName}`;
+  userProjection.averageRating = 85; //TODO: implemented when rating is ready
+  userProjection.pictureUrl = user.pictureUrl;
 
-  return attendee;
+  return { user: userProjection, state: 'PENDING'};
 }
 
 export function show(req, res, next) {
@@ -229,7 +228,7 @@ export function approve(req, res, next) {
         error = { status: 400, reason: "User is not attending the event.", known: true };
         throw error;
       }
-      _.find(mongooseEvent.attendees, attendee => attendee.userId == userId).state = 'ACCEPTED'
+      _.find(mongooseEvent.attendees, attendee => attendee.user.userId == userId).state = 'ACCEPTED'
       res.json({ 'msg': 'approved' });
     })
     .catch((err) => {
@@ -261,7 +260,7 @@ export function addComment(req, res, next){
     })
     .then(() => {
       return Event.findOne({ _id: eventId }).exec()
-    })    
+    })
     .then((validEvent) => {
       if (!validEvent) {
         error = { status: 404, reason: 'Event not found', known: true };
@@ -343,7 +342,7 @@ export function addReply(req, res, next){
  */
 function attending(userId, apiEvent) {
   return _.find(apiEvent.attendees, attendee => {
-    return attendee.userId == userId
+    return attendee.user.userId == userId
   });
 }
 
@@ -386,7 +385,7 @@ function attendLeaveHelper(eventId, userId, adding) {
         throw { status: 400, reason: "User is not attending the event.", known: true };
       }
       _.remove(apiEvent.attendees, attendee => {
-        return attendee.userId == userId
+        return attendee.user.userId == userId
       });
       return new Event(apiEvent).save();
     });
