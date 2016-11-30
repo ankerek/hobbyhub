@@ -228,8 +228,13 @@ export function approve(req, res, next) {
         error = { status: 400, reason: "User is not attending the event.", known: true };
         throw error;
       }
-      _.find(mongooseEvent.attendees, attendee => attendee.user.userId == userId).state = 'ACCEPTED'
-      res.json({ 'msg': 'approved' });
+      _.find(mongooseEvent.attendees, attendee => attendee.user.userId == userId).state = 'ACCEPTED';
+    })
+    .then(() => mongooseEvent.save())
+    .then((savedEvent) => {
+      if (savedEvent) {
+        res.json(savedEvent);
+      }
     })
     .catch((err) => {
       if (err.known) {
@@ -375,6 +380,10 @@ function attendLeaveHelper(eventId, userId, adding) {
       if (adding) {
         if (alreadyAttending) {
           throw { status: 400, reason: "User already attending the event.", known: true };
+        }
+        let newAttendee = userToAttendee(validUser);
+        if (apiEvent.organizer.user.userId == userId) {
+          newAttendee.state = 'ACCEPTED';
         }
         apiEvent.attendees.push(userToAttendee(validUser));
         return new Event(apiEvent).save();
