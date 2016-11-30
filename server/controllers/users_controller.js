@@ -58,7 +58,7 @@ export function login(req, res, next) {
           res.json({error: 'Issue generating token'});
         } else {
           res.json({
-            user,
+            user, 
             token: usersToken,
           });
         }
@@ -69,30 +69,36 @@ export function login(req, res, next) {
 
 export function auth(req, res, next) {
   const incomingToken = req.headers['x-auth-token'];
-  const decoded = User.decode(incomingToken);
-  console.log('incomingToken: ' + incomingToken);
-  if (decoded && decoded.email) {
-    User.findUser(decoded.email, incomingToken, (err, user) => {
-      if (err) {
-        res
-          .status(401)
-          .json({error: 'Issue finding user.'});
-      } else {
-        if (Token.hasExpired(user.token.date_created)) {
+  if (incomingToken) {
+    const decoded = User.decode(incomingToken);
+    console.log('incomingToken: ' + incomingToken);
+    if (decoded && decoded.email) {
+      User.findUser(decoded.email, incomingToken, (err, user) => {
+        if (err) {
           res
             .status(401)
-            .json({error: 'Token expired. You need to log in again.'});
+            .json({error: 'Issue finding user.'});
         } else {
-          res
-            .status(200)
-            .json(user);
+          if (Token.hasExpired(user.token.date_created)) {
+            res
+              .status(401)
+              .json({error: 'Token expired. You need to log in again.'});
+          } else {
+            res
+              .status(200)
+              .json(user);
+          }
         }
-      }
-    });
+      });
+    } else {
+      res
+        .status(401)
+        .json({error: 'Issue decoding incoming token.'});
+    }
   } else {
     res
       .status(401)
-      .json({error: 'Issue decoding incoming token.'});
+      .json({error: 'No token provided.'});
   }
 }
 
@@ -118,5 +124,43 @@ export function logout(req, res, next) {
         .status(401)
         .json({error: 'Issue decoding incoming token.'});
     }
+  } else {
+    res
+      .status(401)
+      .json({error: 'No token provided.'});
   }
+}
+
+export function isAuthenticated(req, res, next) {
+  const incomingToken = req.headers['x-auth-token'];
+  if (incomingToken) {
+    const decoded = User.decode(incomingToken);
+    console.log('incomingToken: ' + incomingToken);
+    if (decoded && decoded.email) {
+      User.findUser(decoded.email, incomingToken, (err, user) => {
+        if (err) {
+          res
+            .status(401)
+            .json({error: 'Issue finding user.'});
+        } else {
+          if (Token.hasExpired(user.token.date_created)) {
+            res
+              .status(401)
+              .json({error: 'Token expired. You need to log in again.'});
+          } else {
+            next();
+          }
+        }
+      });
+    } else {
+      res
+        .status(401)
+        .json({error: 'Issue decoding incoming token.'});
+    }
+  } else {
+    res
+      .status(401)
+      .json({error: 'No token provided.'});
+  }
+
 }

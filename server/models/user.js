@@ -95,6 +95,11 @@ const UserSchema = new mongoose.Schema({
   }
 });
 
+UserSchema.statics.generatePictureUrl = (low, high) => {
+  const pictureNumber = Math.floor(Math.random() * (high - low) + low);
+  return `/static/img/user-avatars/avatar-${pictureNumber}.svg`;
+}
+
 UserSchema.statics.generateHash = function (password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
@@ -103,15 +108,15 @@ UserSchema.methods.validPassword = function (password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-UserSchema.statics.encode = function(data) {
+UserSchema.statics.encode = function (data) {
   return jwt.encode(data, 'Team-8-HobbyHub');
 };
 
-UserSchema.statics.decode = function(data) {
+UserSchema.statics.decode = function (data) {
   return jwt.decode(data, 'Team-8-HobbyHub');
 };
 
-UserSchema.statics.findUserByEmailOnly = function(email, cb) {
+UserSchema.statics.findUserByEmailOnly = function (email, cb) {
   this.findOne({
     email: email
   }, (err, user) => {
@@ -123,7 +128,7 @@ UserSchema.statics.findUserByEmailOnly = function(email, cb) {
   });
 };
 
-UserSchema.statics.findUser = function(email, token, cb) {
+UserSchema.statics.findUser = function (email, token, cb) {
   this.findOne({
     email: email
   }, (err, user) => {
@@ -137,7 +142,7 @@ UserSchema.statics.findUser = function(email, token, cb) {
   });
 };
 
-UserSchema.statics.createUserToken = function(email, cb) {
+UserSchema.statics.createUserToken = function (email, cb) {
   const self = this;
   this.findOne({
     email: email
@@ -159,7 +164,7 @@ UserSchema.statics.createUserToken = function(email, cb) {
   });
 };
 
-UserSchema.statics.invalidateUserToken = function(email, cb) {
+UserSchema.statics.invalidateUserToken = function (email, cb) {
   this.findOne({
     email: email
   }, (err, user) => {
@@ -177,7 +182,7 @@ UserSchema.statics.invalidateUserToken = function(email, cb) {
   });
 };
 
-UserSchema.statics.generateResetToken = function(email, cb){
+UserSchema.statics.generateResetToken = function (email, cb) {
   console.log('in generateResetToken....');
   this.findUserByEmailOnly(email, (err, user) => {
     if (err) {

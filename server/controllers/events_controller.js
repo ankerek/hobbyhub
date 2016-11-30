@@ -240,6 +240,101 @@ export function approve(req, res, next) {
     });
 }
 
+export function addComment(req, res, next){
+  const { eventId } = req.params;
+  const { author, text } = req.body;
+  let mongooseEvent = {};
+  let apiComment = { };
+  let error = { status: 500, reason: 'UnknownError' };
+
+  User
+    .findOne({ 'email': author }).exec()
+    .then(user => {
+      if (!user) {
+        error = { status: 404, reason: 'User with given email not found.',known: true };
+        throw error;
+      }
+      apiComment.author = user;
+      apiComment.authorName = `${user.firstName} ${user.lastName}`;
+      apiComment.text = text;
+      apiComment.replies = [];
+    })
+    .then(() => {
+      return Event.findOne({ _id: eventId }).exec()
+    })    
+    .then((validEvent) => {
+      if (!validEvent) {
+        error = { status: 404, reason: 'Event not found', known: true };
+        throw error;
+      }
+      mongooseEvent = validEvent;
+      mongooseEvent.comments.push(apiComment);
+    })
+    .then(() => mongooseEvent.save())
+    .then((savedEvent) => {
+          if (savedEvent) {
+            res.json(mongooseEvent);
+          }
+        })
+    .catch((err) => {
+      if (err.known) {
+        error = err;
+      }
+      res.status(error.status).json(_.omit(error, 'known'));
+    });
+}
+
+export function addReply(req, res, next){
+  const { eventId, commentId } = req.params;
+  const { author, text } = req.body;
+  let apiComment = { };
+  let mongooseEvent = { };
+  let error = { status: 500, reason: 'UnknownError' };
+
+  User
+    .findOne({ 'email': author }).exec()
+    .then(user => {
+      if (!user) {
+        error = { status: 404, reason: 'User with given email not found.',known: true };
+        throw error;
+      }
+      apiComment.author = user;
+      apiComment.authorName = `${user.firstName} ${user.lastName}`;
+      apiComment.text = text;
+      apiComment.replies = [];
+    })
+    .then(() => {
+      return Event.findOne({ _id: eventId }).exec()
+    })
+    .then((validEvent) => {
+      if (!validEvent) {
+        error = { status: 404, reason: 'Event not found', known: true };
+        throw error;
+      }
+      mongooseEvent = validEvent;
+      return _.find(mongooseEvent.comments, comment => comment._id == commentId);
+    })
+    .then((parentComment)=>{
+      if(!parentComment){
+        error = { status: 404, reason: 'Comment not found', known: true };
+        throw error;
+      }
+      parentComment.replies.push(apiComment);
+    })
+    .then(() => mongooseEvent.save())
+    .then((savedEvent) => {
+      if (savedEvent) {
+        res.json(mongooseEvent);
+      }
+    })
+    .catch((err) => {
+      if (err.known) {
+        error = err;
+      }
+      res.status(error.status).json(_.omit(error, 'known'));
+    });
+}
+
 /**
  *
  * @param userId

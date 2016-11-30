@@ -35,7 +35,6 @@ const attendeeSchema = new mongoose.Schema({
 const commentSchema = new mongoose.Schema();
 
 commentSchema.add({
-  _id: false,
   author: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,

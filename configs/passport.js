@@ -19,6 +19,7 @@ passport.use('local-signup', new LocalStrategy({
       } else {
         const newUser = new User(req.body);
         newUser.password = User.generateHash(password);
+        newUser.pictureUrl = User.generatePictureUrl(1,40);
         newUser.save((err) => {
           if (err) {
             throw err;
