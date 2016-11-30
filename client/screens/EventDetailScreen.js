@@ -6,7 +6,7 @@ import compose from 'compose-function';
 import { Row, Col, Button, Well, Glyphicon } from 'react-bootstrap';
 
 import { getCurrentUserId, isAuthenticated } from '../reducers/auth';
-import { getEvent, getIsAttendee, getIsOrganizer } from '../reducers/entities';
+import { getEvent, getIsAcceptedAttendee, getIsPendingAttendee, getIsOrganizer } from '../reducers/entities';
 import { fetchEvent, joinEvent, leaveEvent, removeEvent } from '../actions/events';
 import { bm, be } from '../utils/bem';
 import UserAvatar from '../components/UserAvatar';
@@ -15,7 +15,8 @@ import EventPoster from '../components/EventPoster';
 export const mapStateToProps = (state, { params: { id } }) => ({
   event: getEvent(state.entities, id),
   isAuthenticated: isAuthenticated(state),
-  isAttendee: getIsAttendee(state.entities, id, getCurrentUserId(state)),
+  isAcceptedAttendee: getIsAcceptedAttendee(state.entities, id, getCurrentUserId(state)),
+  isPendingAttendee: getIsPendingAttendee(state.entities, id, getCurrentUserId(state)),
   isOrganizer: getIsOrganizer(state.entities, id, getCurrentUserId(state)),
 });
 
@@ -40,7 +41,8 @@ class EventDetailContainer extends React.Component {
 export const renderEventDetailScreen = ({
   event,
   isAuthenticated,
-  isAttendee,
+  isAcceptedAttendee,
+  isPendingAttendee,
   isOrganizer,
   joinEvent,
   leaveEvent,
@@ -59,7 +61,7 @@ export const renderEventDetailScreen = ({
         </p>
       </Col>
       <Col lg={4}>
-        <div className={bm('Grid', '1col multiCol:30em fit:30em justifyRight gutterH5px')}>
+        <div className={`${bm('Grid', '1col multiCol:30em fit:30em justifyRight gutterH5px')} u-spacing10px`}>
           { isOrganizer && (
             <div className={be('Grid', 'cell')}>
               <div className={bm('Grid', '1col multiCol:30em fit:30em gutterH5px')}>
@@ -79,7 +81,7 @@ export const renderEventDetailScreen = ({
             </div>
           ) }
           { isAuthenticated ? (
-            isAttendee ? (
+            (isAcceptedAttendee || isPendingAttendee) ? (
               <div className={be('Grid', 'cell')}>
                 <Button bsStyle="warning"
                         className="u-pullRight"
@@ -102,6 +104,13 @@ export const renderEventDetailScreen = ({
             </div>
           )}
         </div>
+        {(isAuthenticated && isPendingAttendee) ? (
+          <p className="u-colorInfo u-textRight">
+            Pending Acceptance
+          </p>
+        ) : (
+          null
+        )}
       </Col>
     </Row>
     <p className="u-spacing40px">{event.description}</p>

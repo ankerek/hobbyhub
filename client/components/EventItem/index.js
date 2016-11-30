@@ -2,7 +2,7 @@ import React, { PropTypes as T } from 'react';
 import { FormattedTime } from 'react-intl';
 import { connect } from 'react-redux';
 import { getCurrentUserId, isAuthenticated } from '../../reducers/auth';
-import { getIsAttendee } from '../../reducers/entities';
+import { getIsAcceptedAttendee, getIsPendingAttendee, } from '../../reducers/entities';
 import { joinEvent, leaveEvent } from '../../actions/events';
 import { navigate } from '../../actions/router';
 
@@ -15,7 +15,8 @@ import './index.scss';
 
 export const mapStateToProps = (state, { event }) => ({
   isAuthenticated: isAuthenticated(state),
-  isAttendee: getIsAttendee(state.entities, event._id, getCurrentUserId(state)),
+  isAcceptedAttendee: getIsAcceptedAttendee(state.entities, event._id, getCurrentUserId(state)),
+  isPendingAttendee: getIsPendingAttendee(state.entities, event._id, getCurrentUserId(state)),
 });
 
 export const mapDispatchToProps = {
@@ -36,7 +37,8 @@ export const renderEventItem = ({
   modifiers = '',
   event,
   isAuthenticated,
-  isAttendee,
+  isAcceptedAttendee,
+  isPendingAttendee,
   navigate,
   joinEvent,
   leaveEvent,
@@ -48,10 +50,20 @@ export const renderEventItem = ({
           <CategoryIcon category={{ name: event.category }} />
         </div>
         {isAuthenticated ? (
-          isAttendee ? (
-            <Button bsStyle="warning" bsSize="sm" onClick={dontPropagate(() => leaveEvent(event._id))}>
-              <Glyphicon glyph="remove" /> Leave
-            </Button>
+          (isPendingAttendee || isAcceptedAttendee) ? (
+            <div>
+              <p className="u-spacing5px">
+                <Button bsStyle="warning" bsSize="sm" onClick={dontPropagate(() => leaveEvent(event._id))}>
+                  <Glyphicon glyph="remove" /> Leave
+                </Button>
+              </p>
+              {isPendingAttendee ? (
+                  <p className="u-colorInfo">
+                    Pending<br/>Acceptance
+                  </p>
+                ) : (null)
+              }
+            </div>
           ) : (
             <Button bsStyle="primary" bsSize="sm" onClick={dontPropagate(() => joinEvent(event._id))}>
               <Glyphicon glyph="plus" /> Join
