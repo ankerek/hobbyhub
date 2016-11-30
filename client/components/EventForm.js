@@ -106,7 +106,6 @@ export const renderEventForm = ({
                  label="Category"
                  type="select"
                  component={HorizontalField}>
-            <option></option>
             {categories.map((category, i) => (<option value={category} key={i}>{category}</option>))}
           </Field>
 
