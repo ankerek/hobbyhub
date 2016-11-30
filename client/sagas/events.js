@@ -2,7 +2,6 @@ import { takeLatest } from 'redux-saga';
 import { call, fork, put, select } from 'redux-saga/effects';
 import { normalize, arrayOf } from 'normalizr';
 import { api } from '../utils/api';
-import attendeeSchema from '../schemas/attendee';
 import eventSchema from '../schemas/event';
 import { getCurrentUser } from '../reducers/auth';
 import { navigate } from '../actions/router';
@@ -94,7 +93,7 @@ function* acceptEventAttendee({ payload: { id, userId } }) {
       }
     );
 
-    const normalized = normalize(payload, attendeeSchema);
+    const normalized = normalize(payload, eventSchema);
 
     yield put(actions.acceptAttendeeSuccess(normalized));
   } catch (error) {
