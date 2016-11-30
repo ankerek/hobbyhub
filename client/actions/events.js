@@ -7,13 +7,13 @@ export const FETCH_EVENTS_SUCCESS = 'FETCH_EVENTS_SUCCESS';
 export const fetchEventsSuccess = ({ entities, result }) => ({
   type: FETCH_EVENTS_SUCCESS,
   payload: { entities, result },
-})
+});
 
 export const FETCH_EVENTS_FAILURE = 'FETCH_EVENTS_FAILURE';
 export const fetchEventsFailure = ({ error }) => ({
   type: FETCH_EVENTS_FAILURE,
   payload: { error },
-})
+});
 
 export const FETCH_EVENT_REQUEST = 'FETCH_EVENT_REQUEST';
 export const fetchEvent = (id) => ({
@@ -25,13 +25,13 @@ export const FETCH_EVENT_SUCCESS = 'FETCH_EVENT_SUCCESS';
 export const fetchEventSuccess = ({ entities, result }) => ({
   type: FETCH_EVENT_SUCCESS,
   payload: { entities, result },
-})
+});
 
 export const FETCH_EVENT_FAILURE = 'FETCH_EVENT_FAILURE';
 export const fetchEventFailure = ({ error }) => ({
   type: FETCH_EVENT_FAILURE,
   payload: { error },
-})
+});
 
 export const CREATE_EVENT_REQUEST = 'CREATE_EVENT_REQUEST';
 export const createEvent = (data) => ({
@@ -49,7 +49,7 @@ export const CREATE_EVENT_FAILURE = 'CREATE_EVENT_FAILURE';
 export const createEventFailure = ({ error }) => ({
   type: CREATE_EVENT_FAILURE,
   payload: { error },
-})
+});
 
 export const REMOVE_EVENT_REQUEST = 'REMOVE_EVENT_REQUEST';
 export const removeEvent = (id) => ({
@@ -66,40 +66,58 @@ export const REMOVE_EVENT_FAILURE = 'REMOVE_EVENT_FAILURE';
 export const removeEventFailure = ({ error }) => ({
   type: REMOVE_EVENT_FAILURE,
   payload: { error },
-})
+});
 
 export const JOIN_EVENT_REQUEST = 'JOIN_EVENT_REQUEST';
-export const joinEvent = (id) => ({
+export const joinEvent = ({ id, userId }) => ({
   type: JOIN_EVENT_REQUEST,
-  id,
+  payload: { id, userId },
 });
 
 export const JOIN_EVENT_SUCCESS = 'JOIN_EVENT_SUCCESS';
 export const joinEventSuccess = ({ entities, result }) => ({
   type: JOIN_EVENT_SUCCESS,
   payload: { entities, result },
-})
+});
 
 export const JOIN_EVENT_FAILURE = 'JOIN_EVENT_FAILURE';
 export const joinEventFailure = ({ error }) => ({
   type: JOIN_EVENT_FAILURE,
   payload: { error },
-})
+});
 
 export const LEAVE_EVENT_REQUEST = 'LEAVE_EVENT_REQUEST';
-export const leaveEvent = (id) => ({
+export const leaveEvent = ({ id, userId }) => ({
   type: LEAVE_EVENT_REQUEST,
-  id,
+  payload: { id, userId },
 });
 
 export const LEAVE_EVENT_SUCCESS = 'LEAVE_EVENT_SUCCESS';
 export const leaveEventSuccess = ({ entities, result }) => ({
   type: LEAVE_EVENT_SUCCESS,
   payload: { entities, result },
-})
+});
 
 export const LEAVE_EVENT_FAILURE = 'LEAVE_EVENT_FAILURE';
 export const leaveEventFailure = ({ error }) => ({
   type: LEAVE_EVENT_FAILURE,
   payload: { error },
-})
+});
+
+export const ACCEPT_ATTENDEE_REQUEST = 'ACCEPT_ATTENDEE_REQUEST';
+export const acceptAttendee = ({ id, userId }) => ({
+  type: ACCEPT_ATTENDEE_REQUEST,
+  payload: { id, userId },
+});
+
+export const ACCEPT_ATTENDEE_SUCCESS = 'ACCEPT_ATTENDEE_SUCCESS';
+export const acceptAttendeeSuccess = ({ entities, result }) => ({
+  type: ACCEPT_ATTENDEE_SUCCESS,
+  payload: { entities, result },
+});
+
+export const ACCEPT_ATTENDEE_FAILURE = 'ACCEPT_ATTENDEE_FAILURE';
+export const acceptAttendeeFailure = ({ error }) => ({
+  type: ACCEPT_ATTENDEE_FAILURE,
+  payload: { error },
+});

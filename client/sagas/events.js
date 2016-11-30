@@ -2,6 +2,7 @@ import { takeLatest } from 'redux-saga';
 import { call, fork, put, select } from 'redux-saga/effects';
 import { normalize, arrayOf } from 'normalizr';
 import { api } from '../utils/api';
+import attendeeSchema from '../schemas/attendee';
 import eventSchema from '../schemas/event';
 import { getCurrentUser } from '../reducers/auth';
 import { navigate } from '../actions/router';
@@ -62,12 +63,14 @@ function* removeEvent({ id }) {
   }
 }
 
-function* joinLeaveEvent({ type, id }) {
+function* joinLeaveEvent({ type, payload: { id, userId } }) {
   try {
     const loggedUser = yield select(getCurrentUser);
+    const targetUserId = userId || loggedUser._id;
+
     const payload = yield call(
       api.fetch,
-      `/api/events/${id}/attendees/${loggedUser._id}`, {
+      `/api/events/${id}/attendees/${targetUserId}`, {
         method: type === actions.JOIN_EVENT_REQUEST ? 'PUT' : 'DELETE',
       }
     );
@@ -79,6 +82,25 @@ function* joinLeaveEvent({ type, id }) {
     console.log('error', error);
     // TODO show error
     yield put(type === actions.JOIN_EVENT_REQUEST ? actions.joinEventFailure({ error }) : actions.leaveEventFailure({ error }));
+  }
+}
+
+function* acceptEventAttendee({ payload: { id, userId } }) {
+  try {
+    const payload = yield call(
+      api.fetch,
+      `/api/events/${id}/attendees/${userId}`, {
+        method: 'PATCH',
+      }
+    );
+
+    const normalized = normalize(payload, attendeeSchema);
+
+    yield put(actions.acceptAttendeeSuccess(normalized));
+  } catch (error) {
+    console.log('error', error);
+    // TODO show error
+    yield put(actions.acceptAttendeeFailure({ error }));
   }
 }
 
@@ -106,6 +128,10 @@ function* watchJoinLeaveEvent() {
   yield* takeLatest([actions.JOIN_EVENT_REQUEST, actions.LEAVE_EVENT_REQUEST], joinLeaveEvent);
 }
 
+function* watchAcceptEventAttendee() {
+  yield* takeLatest(actions.ACCEPT_ATTENDEE_REQUEST, acceptEventAttendee);
+}
+
 //=====================================
 //  ROOT
 //-------------------------------------
@@ -116,6 +142,7 @@ const eventsSagas = [
   fork(watchCreateEvent),
   fork(watchRemoveEvent),
   fork(watchJoinLeaveEvent),
+  fork(watchAcceptEventAttendee),
 ];
 
 export default eventsSagas;

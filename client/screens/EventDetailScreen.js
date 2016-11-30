@@ -5,9 +5,10 @@ import { Link } from 'react-router';
 import compose from 'compose-function';
 import { Row, Col, Button, Well, Glyphicon } from 'react-bootstrap';
 
+import * as attendeeStatus from '../constants/attendeeStatus';
 import { getCurrentUserId, isAuthenticated } from '../reducers/auth';
 import { getEvent, getIsAcceptedAttendee, getIsPendingAttendee, getIsOrganizer } from '../reducers/entities';
-import { fetchEvent, joinEvent, leaveEvent, removeEvent } from '../actions/events';
+import { fetchEvent, joinEvent, leaveEvent, removeEvent, acceptAttendee } from '../actions/events';
 import { bm, be } from '../utils/bem';
 import UserAvatar from '../components/UserAvatar';
 import EventPoster from '../components/EventPoster';
@@ -25,6 +26,7 @@ export const mapDispatchToProps = {
   joinEvent,
   leaveEvent,
   removeEvent,
+  acceptAttendee,
 };
 
 class EventDetailContainer extends React.Component {
@@ -47,6 +49,7 @@ export const renderEventDetailScreen = ({
   joinEvent,
   leaveEvent,
   removeEvent,
+  acceptAttendee,
 }) => (
   <Well>
     <div className="u-spacing20px">
@@ -85,7 +88,7 @@ export const renderEventDetailScreen = ({
               <div className={be('Grid', 'cell')}>
                 <Button bsStyle="warning"
                         className="u-pullRight"
-                        onClick={() => leaveEvent(event._id)}>
+                        onClick={() => leaveEvent({ id: event._id })}>
                   <Glyphicon glyph="remove" /> Leave
                 </Button>
               </div>
@@ -93,7 +96,7 @@ export const renderEventDetailScreen = ({
               <div className={be('Grid', 'cell')}>
                 <Button bsStyle="primary"
                         className="u-pullRight"
-                        onClick={() => joinEvent(event._id)}>
+                        onClick={() => joinEvent({ id: event._id })}>
                   <Glyphicon glyph="plus" /> Join
                 </Button>
               </div>
@@ -116,9 +119,31 @@ export const renderEventDetailScreen = ({
     <p className="u-spacing40px">{event.description}</p>
     <h2 className="u-spacing20px">Attendees ({event.attendees.length}/{event.maxPeople})</h2>
     <div className={bm('Grid', 'multiCol wrap 3col 4col:40em 5col:50em gutterH5px')}>
-      {event.attendees.map(user => (
-        <div key={user.userId} className={`${be('Grid', 'cell')}`}>
-          <UserAvatar user={user} size={48} withRating />
+      {event.attendees.map(attendee => (
+        <div key={attendee.user.userId} className={`${be('Grid', 'cell')}`}>
+          <UserAvatar user={attendee.user} size={48} withRating />
+          {isOrganizer ? (
+            <div>
+              {attendee.state === attendeeStatus.STATUS_PENDING ? (
+                <p className="u-textCenter u-spacing5px">
+                  <Button bsStyle="success"
+                          onClick={() => acceptAttendee({ id: event._id, userId: attendee.user.userId })}>
+                    <Glyphicon glyph="check" /> Accept
+                  </Button>
+                </p>
+              ) : (
+                null
+              )}
+              <p className="u-textCenter">
+                <Button bsStyle="warning"
+                        onClick={() => leaveEvent({ id: event._id, userId: attendee.user.userId })}>
+                  <Glyphicon glyph="remove" /> Remove
+                </Button>
+              </p>
+            </div>
+          ) : (
+            null
+          )}
         </div>
       ))}
     </div>

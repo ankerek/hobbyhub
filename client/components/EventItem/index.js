@@ -53,7 +53,7 @@ export const renderEventItem = ({
           (isPendingAttendee || isAcceptedAttendee) ? (
             <div>
               <p className="u-spacing5px">
-                <Button bsStyle="warning" bsSize="sm" onClick={dontPropagate(() => leaveEvent(event._id))}>
+                <Button bsStyle="warning" bsSize="sm" onClick={dontPropagate(() => leaveEvent({ id: event._id }))}>
                   <Glyphicon glyph="remove" /> Leave
                 </Button>
               </p>
@@ -65,7 +65,7 @@ export const renderEventItem = ({
               }
             </div>
           ) : (
-            <Button bsStyle="primary" bsSize="sm" onClick={dontPropagate(() => joinEvent(event._id))}>
+            <Button bsStyle="primary" bsSize="sm" onClick={dontPropagate(() => joinEvent({ id: event._id }))}>
               <Glyphicon glyph="plus" /> Join
             </Button>
           )
@@ -86,9 +86,9 @@ export const renderEventItem = ({
           Minimum players: <strong>{event.minPeople}</strong>
         </p>
         <div className={bm('Grid', 'multiCol wrap 3col 4col:40em gutterH5px')}>
-          {event.attendees.map(user => (
-            <div key={user.userId} className={`${be('Grid', 'cell')} u-textCenter`}>
-              <UserAvatar user={user} size={48} />
+          {event.attendees.map(attendee => (
+            <div key={attendee.user.userId} className={`${be('Grid', 'cell')} u-textCenter`}>
+              <UserAvatar user={attendee.user} size={48} />
             </div>
           ))}
         </div>

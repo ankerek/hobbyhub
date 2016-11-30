@@ -5,6 +5,8 @@ const initialState = Immutable.from({
   categories: {},
   events: {},
   users: {},
+  attendees: {},
+  organizers: {},
   comments: {},
 });
 
@@ -22,12 +24,18 @@ export default entities;
 
 export const getEvent = (state, id) => ({
   ...state.events[id],
-  attendees: state.events[id] ? getUsersByEvent(state, state.events[id].attendees) : [],
+  attendees: state.events[id] ? getAttendeesByEvent(state, state.events[id].attendees) : [],
 });
 export const getUser = (state, id) => state.users[id];
-export const getAttendee = (state, id) => state.users[id];
+export const getAttendee = (state, id) => ({
+  ...state.attendees[id],
+  user: getUser(state, id),
+});
 export const getUsersByEvent = (state, ids) =>
   ids.map(id => getUser(state, id));
+
+export const getAttendeesByEvent = (state, ids) =>
+  ids.map(id => getAttendee(state, id));
 
 export const getIsAttendee = (state, eventId, userId) =>
   state.events[eventId] &&
