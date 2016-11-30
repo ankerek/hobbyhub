@@ -382,10 +382,11 @@ function attendLeaveHelper(eventId, userId, adding) {
           throw { status: 400, reason: "User already attending the event.", known: true };
         }
         let newAttendee = userToAttendee(validUser);
+
         if (apiEvent.organizer.user.userId == userId) {
           newAttendee.state = 'ACCEPTED';
         }
-        apiEvent.attendees.push(userToAttendee(validUser));
+        apiEvent.attendees.push(newAttendee);
         return new Event(apiEvent).save();
       }
 
