@@ -225,6 +225,93 @@ router.route('/events/:eventId')
    */
   .delete(EventsController.destroy);
 
+router.route('/events/:eventId/comments')
+  /**
+   * @api {POST} /events/:eventId/comments Add comment to event
+   * @apiVersion 0.0.1
+   * @apiName AddComment
+   * @apiGroup Event
+   * @apiPermission authenticatedUser
+   *
+   * @apiDescription This call will add a new comment to event
+   * @apiSampleRequest http://hobbyhub8.herokuapp.com/api/events/:eventId/comments
+   *
+   * @apiParamExample {json} Request-Example:
+   *    {
+   *      "author": "bob@bob.bob",
+   *      "text": "Awsome comment. FACT!"
+   *    }
+   *
+   * @apiSuccess {Event} Event The Event object
+   * @apiSuccessExample {json} Successful Event Response
+   *    HTTP/1.1 200 OK
+   *    {
+   *      "name": "eventNameString"
+   *      "organizer": {
+   *        "email": "bob@bob.bob,
+   *        "firstName": "bob",
+   *        ...
+   *      },
+   *      "description": "This is the coolest event ever",
+   *      "category": "football",
+   *      "start": 1478623941,
+   *      "end": 1478623941,
+   *      "address": "Vodičkova 25, Praha",
+   *      "minPeople": 2,
+   *      "maxPeople": 8,
+   *      "attendees": []
+   *      "comments": []
+   *    }
+   *
+   * @apiError UserNotFound The <code>email</code> of an User has not been found
+   * @apiError EventNotFound The <code>eventId</code> of an Event has not been found
+   */
+  .post(UsersController.isAuthenticated,EventsController.addComment);
+
+router.route('/events/:eventId/comments/:commentId/replies/')
+  /**
+   * @api {POST} /events/:eventId/comments Add simple reply to comment
+   * @apiVersion 0.0.1
+   * @apiName AddReply
+   * @apiGroup Event
+   * @apiPermission authenticatedUser
+   *
+   * @apiDescription This call will add a new comment to event
+   * @apiSampleRequest http://hobbyhub8.herokuapp.com/api/events/:eventId/comments/:commentId/replies
+   *
+   * @apiParamExample {json} Request-Example:
+   *    {
+   *      "author": "bob@bob.bob",
+   *      "text": "Awsome reply. FACT!"
+   *    }
+   *
+   * @apiSuccess {Event} Event The Event object
+   * @apiSuccessExample {json} Successful Event Response
+   *    HTTP/1.1 200 OK
+   *    {
+   *      "name": "eventNameString"
+   *      "organizer": {
+   *        "email": "bob@bob.bob,
+   *        "firstName": "bob",
+   *        ...
+   *      },
+   *      "description": "This is the coolest event ever",
+   *      "category": "football",
+   *      "start": 1478623941,
+   *      "end": 1478623941,
+   *      "address": "Vodičkova 25, Praha",
+   *      "minPeople": 2,
+   *      "maxPeople": 8,
+   *      "attendees": []
+   *      "comments": []
+   *    }
+   *
+   * @apiError UserNotFound The <code>email</code> of an User has not been found
+   * @apiError EventNotFound The <code>eventId</code> of an Event has not been found
+   * @apiError CommentNotFound The <code>commentId</code> of an Comment has not been found
+   */
+  .post(UsersController.isAuthenticated,EventsController.addReply)
+
 router.route('/events/:eventId/attendees/:userId')
   /**
    * @api {PUT} /events/:eventId/attendees/:userId Add user as attendee
