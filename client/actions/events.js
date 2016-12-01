@@ -125,11 +125,14 @@ export const acceptAttendeeFailure = ({ error }) => ({
 
 export const SEARCH_EVENTS = 'SEARCH_EVENTS';
 export const searchEvents = (payload) => {
-  const filter = {...payload};
+  let filter = {...payload};
 
-  if(filter.empty === false) delete filter.empty;
-  if(filter.full === false) delete filter.full;
+  if(filter.empty) filter.empty = false;
+  else filter.empty = null;
 
+  if(filter.full) filter.full = false;
+  else filter.full = null;
+  
   return {
     type: SEARCH_EVENTS,
     payload: filter,
