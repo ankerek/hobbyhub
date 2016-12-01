@@ -7,11 +7,14 @@ import { Row, Col, Button, Well, Glyphicon } from 'react-bootstrap';
 
 import * as attendeeStatus from '../constants/attendeeStatus';
 import { getCurrentUserId, isAuthenticated } from '../reducers/auth';
-import { getEvent, getIsAcceptedAttendee, getIsPendingAttendee, getIsOrganizer } from '../reducers/entities';
+import { getEvent, getIsAcceptedAttendee, getIsPendingAttendee, getIsOrganizer, getEventComments } from '../reducers/entities';
 import { fetchEvent, joinEvent, leaveEvent, removeEvent, acceptAttendee } from '../actions/events';
+import { createComment } from '../actions/comments';
 import { bm, be } from '../utils/bem';
 import UserAvatar from '../components/UserAvatar';
 import EventPoster from '../components/EventPoster';
+import CommentItem from '../components/CommentItem';
+import CommentForm from '../components/CommentForm';
 
 export const mapStateToProps = (state, { params: { id } }) => ({
   event: getEvent(state.entities, id),
@@ -19,6 +22,7 @@ export const mapStateToProps = (state, { params: { id } }) => ({
   isAcceptedAttendee: getIsAcceptedAttendee(state.entities, id, getCurrentUserId(state)),
   isPendingAttendee: getIsPendingAttendee(state.entities, id, getCurrentUserId(state)),
   isOrganizer: getIsOrganizer(state.entities, id, getCurrentUserId(state)),
+  comments: getEventComments(state.entities, id),
 });
 
 export const mapDispatchToProps = {
@@ -27,6 +31,7 @@ export const mapDispatchToProps = {
   leaveEvent,
   removeEvent,
   acceptAttendee,
+  createComment,
 };
 
 class EventDetailContainer extends React.Component {
@@ -42,6 +47,7 @@ class EventDetailContainer extends React.Component {
 
 export const renderEventDetailScreen = ({
   event,
+  comments,
   isAuthenticated,
   isAcceptedAttendee,
   isPendingAttendee,
@@ -50,6 +56,7 @@ export const renderEventDetailScreen = ({
   leaveEvent,
   removeEvent,
   acceptAttendee,
+  createComment,
 }) => (
   <Well>
     <div className="u-spacing20px">
@@ -146,6 +153,16 @@ export const renderEventDetailScreen = ({
           )}
         </div>
       ))}
+    </div>
+    <div>
+      <h2 className="u-spacing20px">Comments</h2>
+      { comments && comments.map((comment) => <CommentItem comment={comment} key={comment._id} onSubmit={({ commentId, text }) => createComment({ eventId: event._id, commentId, text })} />) }
+      { isAuthenticated && 
+        <div>
+          <h3>New Comment</h3>
+          <CommentForm onSubmit={({ text }) => createComment({ eventId: event._id, text })} /> 
+        </div>
+      }
     </div>
   </Well>
 );

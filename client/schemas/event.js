@@ -1,7 +1,7 @@
 import { Schema, arrayOf } from 'normalizr';
 import organizerSchema from './organizer';
 import attendeeSchema from './attendee';
-import commentSchema from './user';
+import commentSchema from './comment';
 
 const eventSchema = new Schema('events', { idAttribute: '_id' });
 

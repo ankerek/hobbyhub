@@ -31,6 +31,9 @@ export const getAttendee = (state, id) => ({
   ...state.attendees[id],
   user: getUser(state, id),
 });
+
+export const getComment = (state, id) => state.comments[id];
+
 export const getUsersByEvent = (state, ids) =>
   ids.map(id => getUser(state, id));
 
@@ -52,3 +55,7 @@ export const getIsPendingAttendee = (state, eventId, userId) =>
 export const getIsOrganizer = (state, eventId, userId) => state.events[eventId] && state.users[userId] && state.events[eventId].organizer === userId;
 export const getCategory = (state, id) => state.categories[id];
 export const getCategoryName = (state, id) => state.categories[id].name;
+
+export const getEventComments = (state, eventId) => state.events[eventId] && state.events[eventId].comments.map(id => getComment(state, id));
+
+
