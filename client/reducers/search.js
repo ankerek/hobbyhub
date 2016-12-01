@@ -23,7 +23,7 @@ const searchReducer = (state = initialState, { type, payload }) => {
       else categories.push(name);
 
       return state
-              .set('active', !!categories.length)
+              .set('active', true)
               .setIn(['filters', 'categories'], categories)
     case actions.RESET_SEARCH_EVENTS:
       return initialState;
