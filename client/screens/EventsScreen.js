@@ -1,9 +1,10 @@
 import React, { PropTypes as T } from 'react';
 import { connect } from 'react-redux';
+import { reset } from 'redux-form';
 import compose from 'compose-function';
 
 import { getAllEvents, getCategoryEvents } from '../reducers';
-import { fetchEvents, searchEvents, filterByCategory } from '../actions/events';
+import { fetchEvents, searchEvents, filterByCategory, resetSearchEvents } from '../actions/events';
 import { Well } from 'react-bootstrap';
 import CategoryFilter from '../components/CategoryFilter';
 import SearchForm from '../components/SearchForm';
@@ -23,6 +24,8 @@ export const mapDispatchToProps = {
   fetchEvents,
   searchEvents,
   filterByCategory,
+  resetSearchEvents,
+  resetForm: reset,
 };
 
 class EventsContainer extends React.Component {
@@ -39,11 +42,16 @@ export const renderEventsScreen = ({
   events,
   searchEvents,
   filterByCategory,
+  resetSearchEvents,
+  resetForm,
 }) => (
   <div>
     <Well>
       <CategoryFilter onClick={filterByCategory} />
-      <SearchForm onSubmit={searchEvents} />
+      <SearchForm onSubmit={searchEvents} resetForm={() => {
+        resetForm('searchEvents');
+        resetSearchEvents();
+      }} />
     </Well>
     <h2 className="u-spacing20px">Events</h2>
     <div className="u-spacing80px">

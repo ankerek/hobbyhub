@@ -18,7 +18,7 @@ const validate = values => {
 
 export const renderSearchForm = ({
   handleSubmit,
-  reset,
+  resetForm,
   searchEvents,
 }) => (
   <Form horizontal onSubmit={handleSubmit}>
@@ -67,7 +67,7 @@ export const renderSearchForm = ({
     <FormGroup>
       <div className={`${bm('Grid', 'multiCol justifyCenter wrap fit gutterA10px')}`}>
         <div className={`${be('Grid', 'cell')}`}>
-          <Button type="submit" bsStyle="primary" onClick={reset}>
+          <Button type="submit" bsStyle="primary" onClick={resetForm}>
             Clear filters
           </Button>
         </div>
@@ -88,7 +88,7 @@ renderSearchForm.propTypes = {
 const SearchForm = compose(
   connect(mapStateToProps),
   reduxForm({
-    form: 'login',
+    form: 'searchEvents',
     validate,
   })
 )(renderSearchForm);
