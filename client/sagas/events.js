@@ -3,13 +3,19 @@ import { call, fork, put, select } from 'redux-saga/effects';
 import { normalize, arrayOf } from 'normalizr';
 import { api } from '../utils/api';
 import eventSchema from '../schemas/event';
+import { getIsSearchActive, getSearchFilters } from '../reducers';
 import { getCurrentUser } from '../reducers/auth';
 import { navigate } from '../actions/router';
 import * as actions from '../actions/events';
 
 function* fetchEvents() {
   try {
-    const payload = yield call(api.fetch, '/api/events', { method: 'GET' });
+    const isSearchActive = yield select(getIsSearchActive);
+    const filters = yield select(getSearchFilters);
+    const payload = yield call(api.fetch, `/api/events${isSearchActive ? '/search' : ''}`, { 
+      method: isSearchActive ? 'POST' : 'GET',
+      body: isSearchActive ? {...filters} : null,
+    });
     yield put(actions.fetchEventsSuccess(normalize(payload, arrayOf(eventSchema))));
   } catch (error) {
     console.log(error);
@@ -103,6 +109,11 @@ function* acceptEventAttendee({ payload: { id, userId } }) {
   }
 }
 
+function* searchEvents({ payload }) {
+  if(!payload || (payload && Object.keys(payload).length === 0)) yield put(actions.resetSearchEvents());
+  yield put(actions.fetchEvents());
+}
+
 //=====================================
 //  WATCHERS
 //-------------------------------------
@@ -131,6 +142,10 @@ function* watchAcceptEventAttendee() {
   yield* takeLatest(actions.ACCEPT_ATTENDEE_REQUEST, acceptEventAttendee);
 }
 
+function* watchSearchEvents() {
+  yield* takeLatest([actions.SEARCH_EVENTS, actions.FILTER_BY_CATEGORY], searchEvents);
+}
+
 //=====================================
 //  ROOT
 //-------------------------------------
@@ -142,6 +157,7 @@ const eventsSagas = [
   fork(watchRemoveEvent),
   fork(watchJoinLeaveEvent),
   fork(watchAcceptEventAttendee),
+  fork(watchSearchEvents),
 ];
 
 export default eventsSagas;

@@ -5,9 +5,10 @@ import compose from 'compose-function';
 import { Button, InputGroup, Well, FormGroup, FormControl } from 'react-bootstrap';
 
 import { getAllEvents, getAllCategories } from '../reducers';
-import { fetchEvents } from '../actions/events';
+import { fetchEvents, filterByCategory } from '../actions/events';
 import fetchData from '../components/fetchData';
 import EventsGrid from '../components/EventsGrid';
+import CategoryFilter from '../components/CategoryFilter';
 import CategoryIcon from '../components/CategoryIcon';
 import { bm, be } from '../utils/bem';
 
@@ -16,9 +17,25 @@ export const mapStateToProps = (state) => ({
   categories: getAllCategories(state),
 });
 
+export const mapDispatchToProps = {
+  fetchEvents,
+  filterByCategory,
+}
+
+class LandingScreenContainer extends React.Component {
+  componentDidMount() {
+    this.props.fetchEvents();
+  }
+
+  render() {
+    return renderLandingScreen(this.props);
+  }
+}
+
 export const renderLandingScreen = ({
   upcomingEvents,
   categories,
+  filterByCategory,
 }) => (
   <div>
     <div className={bm('Grid', '1col multiCol:60em alignMiddle gutterA5px')}>
@@ -47,25 +64,7 @@ export const renderLandingScreen = ({
       </div>
       <div className={`${be('Grid', 'cell')} u-size4of12:60em`}>
         <Well>
-          <div className="u-spacing20px">
-            <div className={bm('Grid', 'multiCol justifyCenter wrap fit gutterA10px')}>
-              {categories.map(category => (
-                <div className={be('Grid', 'cell')} key={category._id}>
-                  <Link to={`/events/categories/${category._id}`}>
-                    <CategoryIcon category={category} size={48} />
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </div>
-          <FormGroup className="u-spacingNone">
-            <InputGroup>
-              <FormControl type="text" placeholder="Enter event name..." />
-              <InputGroup.Button>
-                <Button bsStyle="success">Search</Button>
-              </InputGroup.Button>
-            </InputGroup>
-          </FormGroup>
+          <CategoryFilter onClick={filterByCategory} />
         </Well>
       </div>
     </div>
@@ -89,8 +88,7 @@ renderLandingScreen.propTypes = {
 };
 
 const LandingScreen = compose(
-  connect(mapStateToProps),
-  fetchData(fetchEvents),
-)(renderLandingScreen);
+  connect(mapStateToProps, mapDispatchToProps),
+)(LandingScreenContainer);
 
 export default LandingScreen;

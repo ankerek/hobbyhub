@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import compose from 'compose-function';
 
 import { getAllEvents, getCategoryEvents } from '../reducers';
-import { fetchEvents } from '../actions/events';
-import fetchData from '../components/fetchData';
-import SearchFilters from '../components/SearchFilters';
+import { fetchEvents, searchEvents, filterByCategory } from '../actions/events';
+import { Well } from 'react-bootstrap';
+import CategoryFilter from '../components/CategoryFilter';
+import SearchForm from '../components/SearchForm';
 import EventsGrid from '../components/EventsGrid';
 
 export const mapStateToProps = (state, ownProps) => {
@@ -18,12 +19,32 @@ export const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export const EventsScreenView = ({
-  params,
+export const mapDispatchToProps = {
+  fetchEvents,
+  searchEvents,
+  filterByCategory,
+};
+
+class EventsContainer extends React.Component {
+  componentDidMount() {
+    this.props.fetchEvents();
+  }
+
+  render() {
+    return renderEventsScreen(this.props);
+  }
+}
+
+export const renderEventsScreen = ({
   events,
+  searchEvents,
+  filterByCategory,
 }) => (
   <div>
-    <SearchFilters categoryId={params.categoryId} />
+    <Well>
+      <CategoryFilter onClick={filterByCategory} />
+      <SearchForm onSubmit={searchEvents} />
+    </Well>
     <h2 className="u-spacing20px">Events</h2>
     <div className="u-spacing80px">
       <EventsGrid events={events} />
@@ -31,13 +52,12 @@ export const EventsScreenView = ({
   </div>
 );
 
-EventsScreenView.propTypes = {
+renderEventsScreen.propTypes = {
   events: T.array.isRequired,
 };
 
 const EventsScreen = compose(
-  connect(mapStateToProps),
-  fetchData(fetchEvents),
-)(EventsScreenView);
+  connect(mapStateToProps, mapDispatchToProps),
+)(EventsContainer);
 
 export default EventsScreen;

@@ -5,6 +5,7 @@ import categories from './categories';
 import upcomingEvents from './upcomingEvents';
 import events from './events';
 import auth from './auth';
+import search from './search';
 import router from './router';
 import { getEvent, getCategory, getCategoryName } from './entities';
 
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   upcomingEvents,
   events,
   auth,
+  search,
   router,
   form: formReducer,
 });
@@ -38,6 +40,12 @@ export const getAllCategories = (state) =>
 
 export const getAllCategoriesNames = (state) =>
   state.categories.map(id => getCategoryName(state.entities, id));
+
+export const getIsSearchActive = (state) => 
+  state.search.active;
+
+export const getSearchFilters = (state) =>
+  state.search.filters;
 
 export const getCurrentLocation = (state) =>
   state.router.location;

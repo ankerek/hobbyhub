@@ -12,8 +12,9 @@ export const renderCategoryIcon = ({
   category,
   isSelected,
   size = 64,
+  onClick,
 } = {}) => (
-  <div className={`${bm(moduleName, modifiers)} ${isSelected ? 'is-selected' : ''}`}>
+  <div className={`${bm(moduleName, modifiers)} ${isSelected ? 'is-selected' : ''}`} onClick={onClick}>
     <img data-tip
          data-for={`categoryIcon-${category.name}`}
          src={categoryIcons[category.name]}

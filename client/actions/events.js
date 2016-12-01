@@ -1,6 +1,7 @@
 export const FETCH_EVENTS_REQUEST = 'FETCH_EVENTS_REQUEST';
-export const fetchEvents = () => ({
+export const fetchEvents = (payload) => ({
   type: FETCH_EVENTS_REQUEST,
+  payload,
 });
 
 export const FETCH_EVENTS_SUCCESS = 'FETCH_EVENTS_SUCCESS';
@@ -120,4 +121,29 @@ export const ACCEPT_ATTENDEE_FAILURE = 'ACCEPT_ATTENDEE_FAILURE';
 export const acceptAttendeeFailure = ({ error }) => ({
   type: ACCEPT_ATTENDEE_FAILURE,
   payload: { error },
+});
+
+export const SEARCH_EVENTS = 'SEARCH_EVENTS';
+export const searchEvents = (payload) => {
+  const filter = {...payload};
+
+  if(filter.emptyfull === 'empty') filter.empty = true;
+  else if(filter.emptyfull === 'full') filter.full = true;
+  delete filter.emptyfull;
+
+  return {
+    type: SEARCH_EVENTS,
+    payload: filter,
+  };
+};
+
+export const RESET_SEARCH_EVENTS = 'RESET_SEARCH_EVENTS';
+export const resetSearchEvents = () => ({
+  type: RESET_SEARCH_EVENTS,
+});
+
+export const FILTER_BY_CATEGORY = 'FILTER_BY_CATEGORY';
+export const filterByCategory = ({ name }) => ({
+  type: FILTER_BY_CATEGORY,
+  payload: { name }
 });
