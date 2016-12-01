@@ -31,7 +31,6 @@ export class EventItemContainer extends React.Component {
   }
 
   handleReply = ({ text }) => {
-    console.log(this.props)
     this.props.onSubmit({ text, commentId: this.props.comment._id });
   }
 
@@ -54,7 +53,7 @@ export const renderCommentItem = ({
     <div className={bm('Grid', '1col multiCol:60em fit:60em gutterA20px')}>
       <div className={`${be('Grid', 'cell')}`}>
         <div className="u-spacing10px">
-          {comment.author}
+          {comment.authorName}
         </div>
       </div>
       <div className={`${be('Grid', 'cell')} u-flexOne`}>

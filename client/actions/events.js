@@ -127,9 +127,8 @@ export const SEARCH_EVENTS = 'SEARCH_EVENTS';
 export const searchEvents = (payload) => {
   const filter = {...payload};
 
-  if(filter.emptyfull === 'empty') filter.empty = true;
-  else if(filter.emptyfull === 'full') filter.full = true;
-  delete filter.emptyfull;
+  if(filter.empty === false) delete filter.empty;
+  if(filter.full === false) delete filter.full;
 
   return {
     type: SEARCH_EVENTS,

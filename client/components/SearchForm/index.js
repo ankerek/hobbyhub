@@ -37,9 +37,7 @@ export const renderSearchForm = ({
                type="datetime-local"
                component={HorizontalField} />
       </div>
-      <div className={be('Grid', 'cell')}>
-
-      </div>
+    
       <div className={be('Grid', 'cell')}>
         <Field controlId="formHorizontalSpotsRemaining"
                className="form-control"
@@ -48,20 +46,21 @@ export const renderSearchForm = ({
                label="Spots remaining"
                leftSm={6}
                rightSm={6}
-               component={HorizontalField} />
-        <FormGroup style={{marginLeft: 55}}>
-          <div className={`${bm('Grid', 'multiCol justifyCenter wrap fit gutterA10px')}`}>
-            <div className={`${be('Grid', 'cell')}`}>
-              <label><Field name="emptyfull" component="input" type="radio" value="empty"/> Empty</label>
-            </div>
-            <div className={`${be('Grid', 'cell')}`}>
-              <label><Field name="emptyfull" component="input" type="radio" value="full"/> Full</label>
-            </div>
-            <div className={`${be('Grid', 'cell')}`}>
-              <label><Field name="emptyfull" component="input" type="radio" value=""/> Doesn't matter</label>
-            </div>
+               component={HorizontalField} />  
+        <div className={`${bm('Grid', 'justifyCenter wrap fit gutterA20px')}`}>
+          <div className={be('Grid', 'cell')}>
+            <label>Don't show</label>
           </div>
-        </FormGroup>
+          <div className={be('Grid', 'cell')}>
+            <label htmlFor="empty">Empty</label>
+            <Field name="empty" id="empty" component="input" type="checkbox"/>
+          </div> 
+          <div className={be('Grid', 'cell')}>
+            <label htmlFor="full">Full</label>
+            <Field name="full" id="full" component="input" type="checkbox"/>
+          </div>
+        </div>   
+              
       </div>
 
     </div>
