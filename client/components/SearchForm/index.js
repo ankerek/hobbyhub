@@ -38,7 +38,7 @@ export const renderSearchForm = ({
                component={HorizontalField} />
       </div>
       <div className={be('Grid', 'cell')}>
-        
+
       </div>
       <div className={be('Grid', 'cell')}>
         <Field controlId="formHorizontalSpotsRemaining"
@@ -50,12 +50,20 @@ export const renderSearchForm = ({
                rightSm={6}
                component={HorizontalField} />
         <FormGroup style={{marginLeft: 55}}>
-          <label><Field name="emptyfull" component="input" type="radio" value="empty"/> Empty</label>
-          <label><Field name="emptyfull" component="input" type="radio" value="full"/> Full</label>
-          <label><Field name="emptyfull" component="input" type="radio" value=""/> Doesn't matter</label>
+          <div className={`${bm('Grid', 'multiCol justifyCenter wrap fit gutterA10px')}`}>
+            <div className={`${be('Grid', 'cell')}`}>
+              <label><Field name="emptyfull" component="input" type="radio" value="empty"/> Empty</label>
+            </div>
+            <div className={`${be('Grid', 'cell')}`}>
+              <label><Field name="emptyfull" component="input" type="radio" value="full"/> Full</label>
+            </div>
+            <div className={`${be('Grid', 'cell')}`}>
+              <label><Field name="emptyfull" component="input" type="radio" value=""/> Doesn't matter</label>
+            </div>
+          </div>
         </FormGroup>
       </div>
-      
+
     </div>
     <FormGroup>
       <div className={`${bm('Grid', 'multiCol justifyCenter wrap fit gutterA10px')}`}>
