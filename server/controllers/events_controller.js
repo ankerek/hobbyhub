@@ -86,7 +86,7 @@ export function show(req, res, next) {
 export function search(req, res, next) {
   const { categories, startBefore, startAfter, empty, full, spotsRemaining } = req.body;
   let query = Event.find().sort({_id: 'desc'});
-  if (categories) {
+  if (categories && categories.length) {
     query = query.where('category').in(categories);
   }
   if (startBefore) {
