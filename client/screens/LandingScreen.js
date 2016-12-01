@@ -5,6 +5,7 @@ import compose from 'compose-function';
 import { Button, InputGroup, Well, FormGroup, FormControl } from 'react-bootstrap';
 
 import { getAllEvents, getAllCategories } from '../reducers';
+import { isAuthenticated } from '../reducers/auth';
 import { fetchEvents, filterByCategory } from '../actions/events';
 import fetchData from '../components/fetchData';
 import EventsGrid from '../components/EventsGrid';
@@ -13,6 +14,7 @@ import CategoryIcon from '../components/CategoryIcon';
 import { bm, be } from '../utils/bem';
 
 export const mapStateToProps = (state) => ({
+  isAuthenticated: isAuthenticated(state),
   upcomingEvents: getAllEvents(state),
   categories: getAllCategories(state),
 });
@@ -34,7 +36,7 @@ class LandingScreenContainer extends React.Component {
 
 export const renderLandingScreen = ({
   upcomingEvents,
-  categories,
+  isAuthenticated,
   filterByCategory,
 }) => (
   <div>
@@ -49,18 +51,20 @@ export const renderLandingScreen = ({
         </p>
       </div>
       <div className={`${be('Grid', 'cell')} u-size4of12:60em`}>
-        <div className={bm('Grid', 'multiCol fit alignMiddle gutterH20px')}>
-          <div className={be('Grid', 'cell')}>
-            <Link className="btn btn-success btn-lg" to="/sign-up">
-              Sign Up Now
-            </Link>
+        { !isAuthenticated && (
+          <div className={bm('Grid', 'multiCol fit alignMiddle gutterH20px')}>
+            <div className={be('Grid', 'cell')}>
+              <Link className="btn btn-success btn-lg" to="/sign-up">
+                Sign Up Now
+              </Link>
+            </div>
+            <div className={`${be('Grid', 'cell')} u-text30px`}>
+              <p>
+                and <strong>play!</strong>
+              </p>
+            </div>
           </div>
-          <div className={`${be('Grid', 'cell')} u-text30px`}>
-            <p>
-              and <strong>play!</strong>
-            </p>
-          </div>
-        </div>
+        )}
       </div>
       <div className={`${be('Grid', 'cell')} u-size4of12:60em`}>
         <Well>

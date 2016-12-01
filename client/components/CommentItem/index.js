@@ -54,7 +54,7 @@ export const renderCommentItem = ({
     <div className={bm('Grid', '1col multiCol:60em fit:60em gutterA20px')}>
       <div className={`${be('Grid', 'cell')}`}>
         <div className="u-spacing10px">
-          {user.author}
+          {comment.author}
         </div>
       </div>
       <div className={`${be('Grid', 'cell')} u-flexOne`}>
