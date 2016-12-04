@@ -33,9 +33,9 @@ export const logoutFailure = ({ error }) => ({
 });
 
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';
-export const register = ({ email, password, fullName }) => ({
+export const register = ({ email, password, firstName, lastName }) => ({
   type: REGISTER_REQUEST,
-  payload: { email, password, fullName },
+  payload: { email, password, firstName, lastName },
 });
 
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';

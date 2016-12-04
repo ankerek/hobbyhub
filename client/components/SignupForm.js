@@ -14,8 +14,11 @@ const mapStateToProps = (state) => ({
 const validate = values => {
   const errors = {};
 
-  if (!values.fullName) {
-    errors.fullName = 'Required';
+  if (!values.firstName) {
+    errors.firstName = 'Required';
+  }
+  if (!values.lastName) {
+    errors.lastName = 'Required';
   }
 
   if (!values.email) {
@@ -56,13 +59,21 @@ export const renderSignupForm = ({
               </FormGroup>
             ) : null}
 
-            <Field controlId="formHorizontalFullName"
+            <Field controlId="formHorizontalFirstname"
                    leftSm={3}
                    rightSm={9}
                    className="form-control"
-                   name="fullName"
+                   name="firstName"
                    type="text"
-                   label="Full Name"
+                   label="First Name"
+                   component={HorizontalField} />
+            <Field controlId="formHorizontalLastname"
+                   leftSm={3}
+                   rightSm={9}
+                   className="form-control"
+                   name="lastName"
+                   type="text"
+                   label="Last Name"
                    component={HorizontalField} />
 
             <Field controlId="formHorizontalEmail"

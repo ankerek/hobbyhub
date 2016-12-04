@@ -13,8 +13,8 @@ const mapDispatchToProps = {
 export const renderSignupScreen = ({
   handleSignup,
 }) => (
-  <SignupForm onSubmit={({ fullName, email, password, passwordRetype }) => (
-    handleSignup({ fullName, email, password, passwordRetype })
+  <SignupForm onSubmit={({ firstName, lastName, email, password, passwordRetype }) => (
+    handleSignup({ firstName, lastName, email, password, passwordRetype })
   )} />
 );
 
