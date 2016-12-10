@@ -13,6 +13,7 @@ import SignupScreen from '../screens/SignupScreen';
 import EventsScreen from '../screens/EventsScreen';
 import EventDetailScreen from '../screens/EventDetailScreen';
 import EventFormScreen from '../screens/EventFormScreen';
+import ProfileDetailScreen from '../screens/ProfileDetailScreen';
 
 
 
@@ -67,6 +68,7 @@ export const renderAppView = ({ location, action, navigate }) => (
           <Match exactly pattern={`${props.pathname}events/:id/edit`} component={EventFormScreen} />
           <Match exactly pattern={`${props.pathname}events/categories/:categoryId`} component={EventsScreen} />
           <Match pattern={`${props.pathname}add-event`} component={EventFormScreen} />
+          <Match exactly pattern={`${props.pathname}profiles/:id`} component={ProfileDetailScreen} />
           <Miss component={() => (
             <div>
               I missed the route:

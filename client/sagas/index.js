@@ -2,6 +2,7 @@ import auth from './auth';
 import events from './events';
 import categories from './categories';
 import comments from './comments';
+import users from './users';
 
 export default function* rootSaga() {
   yield [
@@ -9,5 +10,6 @@ export default function* rootSaga() {
     ...events,
     ...categories,
     ...comments,
+    ...users,
   ]
 }

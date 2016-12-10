@@ -36,7 +36,7 @@ const renderLoggedIn = ({
 } = {}) => (
   <div>
     <Nav pullRight>
-      <NavItem onClick={() => navigate({ pathname: `/profile/${user._id}`})}>
+      <NavItem onClick={() => navigate({ pathname: `/profiles/${user._id}`})}>
         <div className="u-flex u-alignICenter">
           <img src={user.pictureUrl} alt={user.fullName} width={24} height={24} />
           <span className="u-indent5px">{user.fullName}</span>

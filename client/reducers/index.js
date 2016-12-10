@@ -7,7 +7,7 @@ import events from './events';
 import auth from './auth';
 import search from './search';
 import router from './router';
-import { getEvent, getCategory, getCategoryName } from './entities';
+import { getEvent, getUser, getCategory, getCategoryName } from './entities';
 
 const rootReducer = combineReducers({
   entities,
@@ -30,9 +30,14 @@ export const getCategoryEvents = (categoryId) =>
     const categories = getAllCategories(state);
     const category = categories.find(category => category._id === categoryId);
 
-    return state.events
-      .map(id => getEvent(state.entities, id))
+    return getAllEvents(state)
       .filter(event => event.category === category.name);
+  };
+
+export const getUserEvents = (userId) =>
+  (state) => {
+    return getAllEvents(state)
+      .filter(event => event.organizer === userId || event.attendees.findIndex(a => a.user.userId === userId) > -1);
   };
 
 export const getAllCategories = (state) =>
@@ -41,7 +46,7 @@ export const getAllCategories = (state) =>
 export const getAllCategoriesNames = (state) =>
   state.categories.map(id => getCategoryName(state.entities, id));
 
-export const getIsSearchActive = (state) => 
+export const getIsSearchActive = (state) =>
   state.search.active;
 
 export const getSearchFilters = (state) =>
