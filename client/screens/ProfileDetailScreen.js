@@ -45,7 +45,7 @@ export const renderProfileDetailScreen = ({
     <div>
       <Well className="u-maxWidth960px u-centerizeHorizontally u-spacing40px">
         <div className="u-spacing20px">
-          <div className={bm('Grid', '1col multiCol:30em alignMiddle fit:30em gutterA10px')}>
+          <div className={bm('Grid', '1col multiCol:30em alignMiddle fit:30em gutterA20px')}>
             <div className={be('Grid', 'cell')}>
               <img src={user.pictureUrl} alt={user.fullName} width={128} height={128} />
             </div>
@@ -58,14 +58,25 @@ export const renderProfileDetailScreen = ({
               </p>
             </div>
             <div className={`${be('Grid', 'cell')} u-text16px`}>
-
+              <div>
+                Average Rating:
+                <Rating start={0}
+                        stop={100}
+                        step={20}
+                        initialRate={user.averageRating}
+                        empty="glyphicon glyphicon-star-empty"
+                        full="glyphicon glyphicon-star"
+                        readonly
+                        className="u-indent5px"
+                />
+              </div>
             </div>
           </div>
         </div>
       </Well>
       <div className="u-maxWidth960px u-centerizeHorizontally u-spacing40px">
         <h2 className="u-spacing10px">
-          Ratings from people
+          Ratings from People
         </h2>
         {user.ratings && user.ratings.length ? (
           user.ratings.map(rating => (
