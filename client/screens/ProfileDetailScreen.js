@@ -1,5 +1,5 @@
 import React, { PropTypes as T } from 'react';
-import { FormattedTime } from 'react-intl';
+import { get as g } from 'lodash';
 import { connect } from 'react-redux';
 import Rating from 'react-rating';
 import { Link } from 'react-router';
@@ -10,20 +10,50 @@ import { getCurrentUserId, isAuthenticated } from '../reducers/auth';
 import { getUserEvents } from '../reducers';
 import { getUser } from '../reducers/entities';
 import { fetchEvents } from '../actions/events';
-import { fetchUser } from '../actions/users';
+import { fetchUser, rateUser, deleteUserRating } from '../actions/users';
 import { bm, be } from '../utils/bem';
 import EventsGrid from '../components/EventsGrid';
+import RateForm from '../components/RateForm';
 
-export const mapStateToProps = (state, { params: { id } }) => ({
-  isAuthenticated: isAuthenticated(state),
-  user: getUser(state.entities, id),
-  events: getUserEvents(id)(state),
+export const mapStateToProps = (state, { params: { id } }) => {
+  const user = getUser(state.entities, id);
+  const myId = getCurrentUserId(state);
+  const myRating = g(user, 'ratings', []).find(rating => rating.ratedBy === myId) || { percent: 0 };
+
+  const mayRate = g(user, 'userId') !== myId;
+
+  return {
+    isAuthenticated: isAuthenticated(state),
+    myId,
+    user,
+    myRating,
+    mayRate,
+    events: getUserEvents(id)(state),
+  };
+};
+
+export const mapDispatchToProps = (dispatch) => ({
+  fetch: (id) => dispatch(fetchUser(id)),
+  onRateSubmit: (data) => dispatch(rateUser(data)),
+  onDeleteRating: (data) => dispatch(deleteUserRating(data)),
+  fetchEvents: () => dispatch(fetchEvents()),
 });
 
-export const mapDispatchToProps = {
-  fetch: fetchUser,
-  fetchEvents,
-};
+export const mergeProps = (stateProps, dispatchProps, ownProps) => ({
+  ...ownProps,
+  ...stateProps,
+  ...dispatchProps,
+  onRateSubmit: (data) => dispatchProps.onRateSubmit({
+    ...data,
+    id: g(stateProps, ['user', 'userId']),
+    ratedBy: g(stateProps, ['myId']),
+  }),
+  onDeleteRating: (data) => dispatchProps.onDeleteRating({
+    ...data,
+    id: g(stateProps, ['user', 'userId']),
+    ratedBy: g(stateProps, ['myId']),
+  }),
+});
 
 class ProfileDetailContainer extends React.Component {
   componentDidMount() {
@@ -39,7 +69,11 @@ class ProfileDetailContainer extends React.Component {
 
 export const renderProfileDetailScreen = ({
   user,
+  myRating,
   events,
+  mayRate,
+  onRateSubmit,
+  onDeleteRating,
 }) => (
   user && events ? (
     <div>
@@ -71,6 +105,19 @@ export const renderProfileDetailScreen = ({
                 />
               </div>
             </div>
+            {mayRate ? (
+              <div className={`${be('Grid', 'cell')} u-text16px u-flexOne`}>
+                <div>
+                  Rate User:
+                  <RateForm onSubmit={onRateSubmit}
+                            onDeleteRating={onDeleteRating}
+                            hasRating={!!myRating.ratedBy}
+                            initialValues={myRating} />
+                </div>
+              </div>
+            ) : (
+              null
+            )}
           </div>
         </div>
       </Well>
@@ -80,7 +127,7 @@ export const renderProfileDetailScreen = ({
         </h2>
         {user.ratings && user.ratings.length ? (
           user.ratings.map(rating => (
-            <div className={bm('Grid', '1col multiCol:30em alignMiddle fit:30em gutterA10px')}>
+            <div key={rating._id} className={bm('Grid', '1col multiCol:30em alignMiddle fit:30em gutterA10px')}>
               <div className={be('Grid', 'cell')}>
                 <Rating start={0}
                         stop={100}
@@ -130,7 +177,7 @@ renderProfileDetailScreen.propTypes = {
 };
 
 const ProfileDetailScreen = compose(
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps, mergeProps)
 )(ProfileDetailContainer);
 
 export default ProfileDetailScreen;

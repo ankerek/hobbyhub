@@ -15,3 +15,39 @@ export const fetchUserFailure = ({ error }) => ({
   type: FETCH_USER_FAILURE,
   payload: { error },
 });
+
+export const RATE_USER_REQUEST = 'RATE_USER_REQUEST';
+export const rateUser = ({ id, ratedBy, additionalText, percent }) => ({
+  type: RATE_USER_REQUEST,
+  payload: { id, ratedBy, additionalText, percent },
+});
+
+export const RATE_USER_SUCCESS = 'RATE_USER_SUCCESS';
+export const rateUserSuccess = ({ entities, result }) => ({
+  type: RATE_USER_SUCCESS,
+  payload: { entities, result },
+});
+
+export const RATE_USER_FAILURE = 'RATE_USER_FAILURE';
+export const rateUserFailure = ({ error }) => ({
+  type: RATE_USER_FAILURE,
+  payload: { error },
+});
+
+export const DELETE_USER_RATING_REQUEST = 'DELETE_USER_RATING_REQUEST';
+export const deleteUserRating = ({ id, ratedBy }) => ({
+  type: DELETE_USER_RATING_REQUEST,
+  payload: { id, ratedBy },
+});
+
+export const DELETE_USER_RATING_SUCCESS = 'DELETE_USER_RATING_SUCCESS';
+export const deleteUserRatingSuccess = ({ entities, result }) => ({
+  type: DELETE_USER_RATING_SUCCESS,
+  payload: { entities, result },
+});
+
+export const DELETE_USER_RATING_FAILURE = 'DELETE_USER_RATING_FAILURE';
+export const deleteUserRatingFailure = ({ error }) => ({
+  type: DELETE_USER_RATING_FAILURE,
+  payload: { error },
+});
