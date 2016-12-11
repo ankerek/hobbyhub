@@ -1,6 +1,7 @@
 import React, { PropTypes as T } from 'react';
 import { FormattedTime } from 'react-intl';
 import { connect } from 'react-redux';
+import Rating from 'react-rating';
 import { Link } from 'react-router';
 import compose from 'compose-function';
 import { Well } from 'react-bootstrap';
@@ -40,41 +41,74 @@ export const renderProfileDetailScreen = ({
   user,
   events,
 }) => (
-    user && events ? (
-      <div>
-        <Well className="u-maxWidth960px u-centerizeHorizontally u-spacing40px">
-          <div className="u-spacing20px">
-            <div className={bm('Grid', '1col multiCol:30em alignMiddle fit:30em gutterA10px')}>
-              <div className={be('Grid', 'cell')}>
-                <img src={user.pictureUrl} alt={user.fullName} width={128} height={128} />
-              </div>
-              <div className={be('Grid', 'cell')}>
-                <p className="u-text30px">
-                  {user.fullName || `${user.firstName} ${user.lastName}`}
-                </p>
-                <p>
-                  Events attended: {events.length}
-                </p>
-              </div>
-              <div className={`${be('Grid', 'cell')} u-text16px`}>
+  user && events ? (
+    <div>
+      <Well className="u-maxWidth960px u-centerizeHorizontally u-spacing40px">
+        <div className="u-spacing20px">
+          <div className={bm('Grid', '1col multiCol:30em alignMiddle fit:30em gutterA10px')}>
+            <div className={be('Grid', 'cell')}>
+              <img src={user.pictureUrl} alt={user.fullName} width={128} height={128} />
+            </div>
+            <div className={be('Grid', 'cell')}>
+              <p className="u-text30px">
+                {user.fullName || `${user.firstName} ${user.lastName}`}
+              </p>
+              <p>
+                Events attended: {events.length}
+              </p>
+            </div>
+            <div className={`${be('Grid', 'cell')} u-text16px`}>
 
-              </div>
             </div>
           </div>
-          <h2 className="u-spacing10px">
-            Ratings from people
-          </h2>
-        </Well>
-        <div className="u-maxWidth960px u-centerizeHorizontally u-spacing40px">
-          <h2 className="u-spacing10px">
-            Latest Events
-          </h2>
-          <EventsGrid events={events} />
         </div>
+      </Well>
+      <div className="u-maxWidth960px u-centerizeHorizontally u-spacing40px">
+        <h2 className="u-spacing10px">
+          Ratings from people
+        </h2>
+        {user.ratings && user.ratings.length ? (
+          user.ratings.map(rating => (
+            <div className={bm('Grid', '1col multiCol:30em alignMiddle fit:30em gutterA10px')}>
+              <div className={be('Grid', 'cell')}>
+                <Rating start={0}
+                        stop={100}
+                        step={20}
+                        initialRate={rating.percent}
+                        empty="glyphicon glyphicon-star-empty"
+                        full="glyphicon glyphicon-star"
+                        readonly
+                />
+              </div>
+              <div className={be('Grid', 'cell')}>
+                {rating.additionalText}
+              </div>
+              <div className={be('Grid', 'cell')}>
+                |
+              </div>
+              <div className={be('Grid', 'cell')}>
+                rated by {rating.ratedBy}
+              </div>
+            </div>
+          ))
+        ) : (
+          <span>Nobody rated this user yet.</span>
+        )}
       </div>
-    ) : (
-      <span>Loading...</span>
-    )
+      <div className="u-maxWidth960px u-centerizeHorizontally u-spacing40px">
+        <h2 className="u-spacing10px">
+          Latest Events
+        </h2>
+        {events.length ? (
+            <EventsGrid events={events} />
+          ) : (
+            <span>There are no attended events.</span>
+          )}
+      </div>
+    </div>
+  ) : (
+    <span>Loading...</span>
+  )
 );
 
 renderProfileDetailScreen.propTypes = {
