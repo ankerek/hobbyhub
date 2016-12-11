@@ -49,8 +49,8 @@ export const getAllCategoriesNames = (state) =>
 export const getIsSearchActive = (state) =>
   state.search.active;
 
-export const getSearchFilters = (state) =>
-  state.search.filters;
+export const getSearchFilters = (state) => 
+  ({...state.search.form, categories: state.search.categories });
 
 export const getCurrentLocation = (state) =>
   state.router.location;

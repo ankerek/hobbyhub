@@ -132,6 +132,9 @@ export const searchEvents = (payload) => {
 
   if(filter.full) filter.full = false;
   else filter.full = null;
+
+  if(filter.startBefore) filter.startBefore = filter.startBefore.valueOf();
+  if(filter.startAfter) filter.startAfter = filter.startAfter.valueOf();
   
   return {
     type: SEARCH_EVENTS,
