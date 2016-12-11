@@ -22,7 +22,7 @@ const HorizontalField = ({
             {children}
           </select>)
         : ( type === 'datetime' 
-            ? <Datetime {...input} placeholder={label} />
+            ? <Datetime {...input} inputProps={{placeholder: label}} />
             : <input {...input} className="form-control" placeholder={label} type={type}/>
           )
       }
