@@ -1,5 +1,7 @@
 import Immutable from 'seamless-immutable';
+import { get as g } from 'lodash';
 import * as actions from '../actions/auth';
+import { getUser } from './entities';
 
 const anonymousUser = {
   _id: 0,
@@ -38,8 +40,8 @@ const authReducer = (state = initialState, { type, payload }) => {
   }
 };
 
-export const getCurrentUser = (state) => state.auth.user;
-export const getCurrentUserId = (state) => getCurrentUser(state)._id;
+export const getCurrentUserId = (state) => g(state, 'auth.user._id');
+export const getCurrentUser = (state) => getUser(state.entities, getCurrentUserId(state)) || anonymousUser;
 export const getAuthError = (state) => state.auth.authError;
 export const getRegisterError = (state) => state.auth.registerError;
 export const isAuthenticated = (state) => !getCurrentUser(state).anonymous;

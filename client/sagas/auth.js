@@ -3,7 +3,7 @@ import { takeLatest } from 'redux-saga';
 import { call, fork, put, select } from 'redux-saga/effects';
 import { normalize, arrayOf } from 'normalizr';
 import { api } from '../utils/api';
-import eventSchema from '../schemas/event';
+import userSchema from '../schemas/user';
 import { getCurrentUser } from '../reducers/auth';
 import { navigate } from '../actions/router';
 import * as actions from '../actions/auth';
@@ -19,9 +19,12 @@ function enhanceUser(user) {
 function* authTask() {
   try {
     const user = yield call(api.fetch, '/api/auth', { method: 'GET' });
+    const normalized = normalize(user, userSchema);
+
     yield put(
       actions.currentUserSuccess({
         user: enhanceUser(user),
+        ...normalized,
       })
     );
   } catch (error) {
@@ -38,9 +41,12 @@ function* loginTask(action) {
 
     store.set(AUTH_TOKEN_HEADER, token);
 
+    const normalized = normalize(user, userSchema);
+
     yield put(
       actions.loginSuccess({
         user: enhanceUser(user),
+        ...normalized,
       })
     );
 
@@ -73,9 +79,13 @@ function* registerTask(action) {
     const data = { email, password, firstName, lastName };
 
     const user = yield call(api.fetch, '/api/users', { method: 'POST', body: data });
+
+    const normalized = normalize(user, userSchema);
+
     yield put(
       actions.registerSuccess({
         user: enhanceUser(user),
+        ...normalized,
       })
     );
     yield put(

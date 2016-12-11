@@ -19,12 +19,13 @@ export const mapStateToProps = (state, { params: { id } }) => {
   const user = getUser(state.entities, id);
   const myId = getCurrentUserId(state);
   const myRating = g(user, 'ratings', []).find(rating => rating.ratedBy === myId) || { percent: 0 };
-
+  const isMine = g(user, 'userId') === myId;
   const mayRate = g(user, 'userId') !== myId;
 
   return {
     isAuthenticated: isAuthenticated(state),
     myId,
+    isMine,
     user,
     myRating,
     mayRate,
@@ -71,6 +72,7 @@ export const renderProfileDetailScreen = ({
   user,
   myRating,
   events,
+  isMine,
   mayRate,
   onRateSubmit,
   onDeleteRating,

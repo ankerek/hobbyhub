@@ -5,9 +5,9 @@ export const login = ({ email, password }) => ({
 });
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const loginSuccess = ({ user }) => ({
+export const loginSuccess = ({ user, entities, result }) => ({
   type: LOGIN_SUCCESS,
-  payload: { user },
+  payload: { user, entities, result },
 });
 
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
@@ -39,9 +39,9 @@ export const register = ({ email, password, firstName, lastName }) => ({
 });
 
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
-export const registerSuccess = ({ user }) => ({
+export const registerSuccess = ({ user, entities, result }) => ({
   type: REGISTER_SUCCESS,
-  payload: { user },
+  payload: { user, entities, result },
 });
 
 export const REGISTER_FAILURE = 'REGISTER_FAILURE';
@@ -56,9 +56,9 @@ export const currentUser = () => ({
 });
 
 export const CURRENT_USER_SUCCESS = 'CURRENT_USER_SUCCESS';
-export const currentUserSuccess = ({ user }) => ({
+export const currentUserSuccess = ({ user, entities, result }) => ({
   type: CURRENT_USER_SUCCESS,
-  payload: { user },
+  payload: { user, entities, result },
 });
 
 export const CURRENT_USER_FAILURE = 'CURRENT_USER_FAILURE';

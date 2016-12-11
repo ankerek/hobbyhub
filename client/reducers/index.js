@@ -1,10 +1,11 @@
 import { combineReducers } from 'redux';
-import { reducer as formReducer } from 'redux-form'
+import { reducer as formReducer } from 'redux-form';
+import { get as g } from 'lodash';
 import entities from './entities';
 import categories from './categories';
 import upcomingEvents from './upcomingEvents';
 import events from './events';
-import auth from './auth';
+import auth, { getCurrentUserId } from './auth';
 import search from './search';
 import router from './router';
 import { getEvent, getUser, getCategory, getCategoryName } from './entities';
@@ -36,8 +37,13 @@ export const getCategoryEvents = (categoryId) =>
 
 export const getUserEvents = (userId) =>
   (state) => {
+    const user = getUser(state.entities, userId);
+    const myId = getCurrentUserId(state);
+    const toHide = g(user, 'hidden', []);
+
     return getAllEvents(state)
-      .filter(event => event.organizer === userId || event.attendees.findIndex(a => a.user.userId === userId) > -1);
+      .filter(event => event.organizer === userId || event.attendees.findIndex(a => a.user.userId === userId) > -1)
+      .filter(event => toHide.indexOf(event._id) === -1 || myId === userId);
   };
 
 export const getAllCategories = (state) =>
@@ -49,7 +55,7 @@ export const getAllCategoriesNames = (state) =>
 export const getIsSearchActive = (state) =>
   state.search.active;
 
-export const getSearchFilters = (state) => 
+export const getSearchFilters = (state) =>
   ({...state.search.form, categories: state.search.categories });
 
 export const getCurrentLocation = (state) =>

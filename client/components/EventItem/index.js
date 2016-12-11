@@ -1,9 +1,11 @@
 import React, { PropTypes as T } from 'react';
+import { get as g } from 'lodash';
 import { FormattedTime } from 'react-intl';
 import { connect } from 'react-redux';
-import { getCurrentUserId, isAuthenticated } from '../../reducers/auth';
+import { getCurrentUser, getCurrentUserId, isAuthenticated } from '../../reducers/auth';
 import { getIsAcceptedAttendee, getIsPendingAttendee, } from '../../reducers/entities';
 import { joinEvent, leaveEvent } from '../../actions/events';
+import { toggleHideEvent } from '../../actions/users';
 import { navigate } from '../../actions/router';
 
 import { Button, Glyphicon } from 'react-bootstrap';
@@ -14,15 +16,19 @@ import { bm, be } from '../../utils/bem';
 import './index.scss';
 
 export const mapStateToProps = (state, { event }) => ({
+  myId: getCurrentUserId(state),
+  isMine: g(event, 'organizer') === getCurrentUserId(state),
   isAuthenticated: isAuthenticated(state),
   isAcceptedAttendee: getIsAcceptedAttendee(state.entities, event._id, getCurrentUserId(state)),
   isPendingAttendee: getIsPendingAttendee(state.entities, event._id, getCurrentUserId(state)),
+  isHidden: g(getCurrentUser(state), 'hidden', []).indexOf(event._id) > -1,
 });
 
 export const mapDispatchToProps = {
   navigate,
   joinEvent,
   leaveEvent,
+  toggleHideEvent,
 };
 
 function dontPropagate(fn) {
@@ -36,12 +42,16 @@ export const renderEventItem = ({
   moduleName = 'EventItem',
   modifiers = '',
   event,
+  myId,
+  isMine,
+  isHidden,
   isAuthenticated,
   isAcceptedAttendee,
   isPendingAttendee,
   navigate,
   joinEvent,
   leaveEvent,
+  toggleHideEvent,
 }) => (
   <div className={bm(moduleName, modifiers)} onClick={() => navigate({ pathname: `/events/${event._id}` })}>
     <div className={bm('Grid', '1col multiCol:60em fit:60em gutterA20px')}>
@@ -49,6 +59,27 @@ export const renderEventItem = ({
         <div className="u-spacing10px">
           <CategoryIcon category={{ name: event.category }} />
         </div>
+        {isMine ? (
+          isHidden ? (
+            <p className="u-spacing5px">
+              <Button bsStyle="primary"
+                      bsSize="sm"
+                      onClick={dontPropagate(() => toggleHideEvent({ id: event._id, userId: myId, hide: false }))}>
+                <Glyphicon glyph="eye-open" /> Show
+              </Button>
+            </p>
+          ) : (
+            <p className="u-spacing5px">
+              <Button bsStyle="primary"
+                      bsSize="sm"
+                      onClick={dontPropagate(() => toggleHideEvent({ id: event._id, userId: myId, hide: true }))}>
+                <Glyphicon glyph="eye-close" /> Hide
+              </Button>
+            </p>
+          )
+        ) : (
+          null
+        )}
         {isAuthenticated ? (
           (isPendingAttendee || isAcceptedAttendee) ? (
             <div>

@@ -51,3 +51,21 @@ export const deleteUserRatingFailure = ({ error }) => ({
   type: DELETE_USER_RATING_FAILURE,
   payload: { error },
 });
+
+export const TOGGLE_HIDE_EVENT_REQUEST = 'TOGGLE_HIDE_EVENT_REQUEST';
+export const toggleHideEvent = ({ id, userId, hide }) => ({
+  type: TOGGLE_HIDE_EVENT_REQUEST,
+  payload: { id, userId, hide },
+});
+
+export const TOGGLE_HIDE_EVENT_SUCCESS = 'TOGGLE_HIDE_EVENT_SUCCESS';
+export const toggleHideEventSuccess = ({ entities, result }) => ({
+  type: TOGGLE_HIDE_EVENT_SUCCESS,
+  payload: { entities, result },
+});
+
+export const TOGGLE_HIDE_EVENT_FAILURE = 'TOGGLE_HIDE_EVENT_FAILURE';
+export const toggleHideEventFailure = ({ error }) => ({
+  type: TOGGLE_HIDE_EVENT_FAILURE,
+  payload: { error },
+});

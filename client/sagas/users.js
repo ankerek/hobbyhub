@@ -1,11 +1,8 @@
 import { takeLatest } from 'redux-saga';
-import { call, fork, put, select } from 'redux-saga/effects';
-import { normalize, arrayOf } from 'normalizr';
+import { call, fork, put } from 'redux-saga/effects';
+import { normalize } from 'normalizr';
 import { api } from '../utils/api';
 import userSchema from '../schemas/user';
-import { getIsSearchActive, getSearchFilters } from '../reducers';
-import { getCurrentUser } from '../reducers/auth';
-import { navigate } from '../actions/router';
 import * as actions from '../actions/users';
 
 function* fetchUser({ payload: { id } }) {
@@ -50,6 +47,28 @@ function* deleteUserRating({ payload: { id, ratedBy } }) {
   }
 }
 
+function* toggleHideEvent({ payload: { id, userId, hide } }) {
+  try {
+    const payload = yield call(
+      api.fetch,
+      `/api/users/${userId}/hidden`, {
+        method: hide ? 'POST' : 'DELETE',
+        body: {
+          eventId: id
+        }
+      }
+    );
+
+    const normalized = normalize(payload, userSchema);
+
+    yield put(actions.toggleHideEventSuccess(normalized));
+  } catch (error) {
+    console.log('error', error);
+    // TODO show error
+    yield put(actions.toggleHideEventFailure({ error }));
+  }
+}
+
 //=====================================
 //  WATCHERS
 //-------------------------------------
@@ -67,6 +86,10 @@ function* watchDeleteUserRating() {
   yield* takeLatest(actions.DELETE_USER_RATING_REQUEST, deleteUserRating);
 }
 
+function* watchToggleHideEvent() {
+  yield* takeLatest(actions.TOGGLE_HIDE_EVENT_REQUEST, toggleHideEvent);
+}
+
 //=====================================
 //  ROOT
 //-------------------------------------
@@ -75,6 +98,7 @@ const eventsSagas = [
   fork(watchFetchUser),
   fork(watchRateUser),
   fork(watchDeleteUserRating),
+  fork(watchToggleHideEvent),
 ];
 
 export default eventsSagas;
