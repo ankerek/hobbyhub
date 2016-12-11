@@ -364,6 +364,10 @@ router.route('/users/:userId/rating')
   .post(UsersController.updateRating)
   .delete(UsersController.deleteRating);
 
+router.route('/users/:userId/hidden')
+  .post(UsersController.hide)
+  .delete(UsersController.unhide);
+
 router.route('/logout(\\?)?')
   /**
    * @api {GET} /users/logout Logs user out

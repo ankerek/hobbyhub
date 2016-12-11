@@ -28,6 +28,9 @@ const ratingSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
+  ratedByName: {
+    type: String
+  },
   timestamp: {
     type: Date,
     default: Date.now,
@@ -79,6 +82,10 @@ const UserSchema = new mongoose.Schema({
   ratings: [ratingSchema],
   token: {
     type: Object
+  },
+  hidden: {
+    type: [String],
+    default: []
   },
   resetToken: {
     type: String
