@@ -36,6 +36,8 @@ const validate = values => {
   if (!values.start) {
     errors.start = 'Required';
   } else {
+    if(!moment(values.start, 'L LT', true).isValid()) errors.start = 'Not valid';
+
     const today = moment();
     start = moment(values.start);
     if(start.diff(today) < 0) errors.start = 'Start date must be in future';
@@ -43,6 +45,8 @@ const validate = values => {
   if (!values.end) {
     errors.end = 'Required';
   } else {
+    if(!moment(values.end, 'L LT', true).isValid()) errors.end = 'Not valid';
+    
     const end = moment(values.end);
     if(end.diff(start) <= 0) errors.end = 'End date must be after start date';
   }
@@ -80,13 +84,13 @@ export const renderEventForm = ({
                  leftSm={4}
                  rightSm={8}
                  label="Start"
-                 type="datetime-local"
+                 type="datetime"
                  component={HorizontalField} />
           <Field name="end"
                  leftSm={4}
                  rightSm={8}
                  label="End"
-                 type="datetime-local"
+                 type="datetime"
                  component={HorizontalField} />
           <Field name="minPeople"
                  leftSm={4}

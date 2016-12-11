@@ -67,7 +67,7 @@ export const renderEventDetailScreen = ({
         <h1 className="u-spacing10px">{event.name}</h1>
         <p className="u-spacing5px">{event.address}</p>
         <p className="u-spacing10px">
-          <FormattedTime day="numeric" month="long" year="numeric" time="long" value={event.start} />
+          <FormattedTime day="numeric" month="long" year="numeric" time="long" value={event.start} /> - <FormattedTime day="numeric" month="long" year="numeric" time="long" value={event.end} />
         </p>
       </Col>
       <Col lg={4}>
