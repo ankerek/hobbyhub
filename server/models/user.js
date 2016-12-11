@@ -28,6 +28,9 @@ const ratingSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
+  ratedByName: {
+    type: String
+  },
   timestamp: {
     type: Date,
     default: Date.now,

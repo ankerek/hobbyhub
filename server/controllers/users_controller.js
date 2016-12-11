@@ -88,12 +88,30 @@ export function deleteRating(req, res, next) {
 
 function ratingHelper(validUser, percent, text, ratedBy, deleting) {
   let currentRatings = _.filter(validUser.ratings, rating  => rating.ratedBy != ratedBy);
-  if (!deleting) {
-    let newRating = { ratedBy: ratedBy, timestamp: Date.now(), percent: percent, additionalText: text };
-    currentRatings.push(newRating);
-  }
-  validUser.ratings = currentRatings;
-  return validUser.save();
+
+    let ratedByUser = {};
+    return User.findOne({_id: ratedBy}).exec()
+      .then(validRatedByUser => {
+        if (!validRatedByUser) {
+          throw { status: 404, reason: "RatedBy User not found", known: true };
+        }
+        ratedByUser = validRatedByUser;
+        if (!deleting) {
+          let newRating = {
+            ratedBy: ratedBy,
+            ratedByName: `${ratedByUser.firstName} ${ratedByUser.lastName}`,
+            timestamp: Date.now(),
+            percent: percent,
+            additionalText: text
+          };
+          currentRatings.push(newRating);
+        }
+        validUser.ratings = currentRatings;
+        return validUser.save();
+      })
+      .then(savedUser => {
+        return savedUser;
+      });
 }
 
 function updateAverageRatings(userId, avgRating) {
@@ -113,7 +131,6 @@ function updateAverageRatings(userId, avgRating) {
           }
         });
         if (changed) {
-          console.log("updating event", event);
           event.save();
         }
       })
@@ -127,6 +144,65 @@ export function show(req, res, next) {
     }
     res.json(user);
   })
+}
+
+export function hide(req, res, next) {
+  const { userId } = req.params;
+  const { eventId } = req.body;
+  let error = { status: 500, reason: "UnknownError" };
+
+  User
+    .findOne({ _id: userId }).exec()
+    .then(validUser => {
+      if (!validUser) {
+        throw { status: 404, reason: "User not found", known: true };
+      }
+      let currentlyHidden = _.filter(validUser.hidden, id => id != eventId);
+      currentlyHidden.push(eventId);
+      validUser.hidden = currentlyHidden;
+      return validUser.save()
+    })
+    .then(savedUser => {
+      if (!savedUser) {
+        throw error;
+      }
+      res.json(savedUser);
+    })
+    .catch((err) => {
+      console.log("hide error", err);
+      if (err.known) {
+        error = err;
+      }
+      res.status(error.status).json(_.omit(error, "known"));
+    });
+}
+
+export function unhide(req, res, next) {
+  const { userId } = req.params;
+  const { eventId } = req.body;
+  let error = { status: 500, reason: "UnknownError" };
+
+  User
+    .findOne({ _id: userId }).exec()
+    .then(validUser => {
+      if (!validUser) {
+        throw { status: 404, reason: "User not found", known: true };
+      }
+      validUser.hidden = _.filter(validUser.hidden, id => id != eventId);
+      return validUser.save()
+    })
+    .then(savedUser => {
+      if (!savedUser) {
+        throw error;
+      }
+      res.json(savedUser);
+    })
+    .catch((err) => {
+      if (err.known) {
+        error = err;
+      }
+      res.status(error.status).json(_.omit(error, "known"));
+    });
 }
 
 export function login(req, res, next) {
