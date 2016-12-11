@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt-nodejs';
 import jwt from 'jwt-simple';
+import _ from 'lodash'
 import config from '../../configs';
 
 const TokenSchema = new mongoose.Schema({
@@ -25,14 +26,6 @@ const ratingSchema = new mongoose.Schema({
   ratedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
-  },
-  event: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true
-  },
-  eventName: {
-    type: String,
     required: true
   },
   timestamp: {
@@ -95,10 +88,14 @@ const UserSchema = new mongoose.Schema({
   }
 });
 
+UserSchema.statics.averageRating = ratings => {
+  return (_.reduce(ratings, (sum, n) => sum + n.percent, 0) / ratings.length)>>0;
+};
+
 UserSchema.statics.generatePictureUrl = (low, high) => {
   const pictureNumber = Math.floor(Math.random() * (high - low) + low);
   return `/static/img/user-avatars/avatar-${pictureNumber}.svg`;
-}
+};
 
 UserSchema.statics.generateHash = function (password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
