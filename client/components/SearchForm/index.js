@@ -1,10 +1,10 @@
 import React, { PropTypes as T } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
+import moment from 'moment';
 import compose from 'compose-function';
 import { bm, be } from '../../utils/bem';
 import { Form, Grid, Row, Col, Button, FormGroup, Well } from 'react-bootstrap';
-import CategoryFilter from '../CategoryFilter';
 
 import HorizontalField from '../HorizontalField';
 
@@ -12,6 +12,14 @@ const mapStateToProps = null;
 
 const validate = values => {
   const errors = {};
+
+  if (values.startBefore) {
+    if(!moment(values.startBefore, 'L LT', true).isValid()) errors.startBefore = 'Not valid';
+  }
+  if (values.startAfter) {
+    if(!moment(values.startAfter, 'L LT', true).isValid()) errors.startAfter = 'Not valid';
+  }
+  
 
   return errors;
 };
@@ -28,13 +36,13 @@ export const renderSearchForm = ({
                leftSm={4}
                rightSm={8}
                label="Start before"
-               type="datetime-local"
+               type="datetime"
                component={HorizontalField} />
         <Field name="startAfter"
                leftSm={4}
                rightSm={8}
                label="Start after"
-               type="datetime-local"
+               type="datetime"
                component={HorizontalField} />
       </div>
     

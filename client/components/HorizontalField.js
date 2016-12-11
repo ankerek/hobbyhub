@@ -1,5 +1,6 @@
 import React from 'react';
 import { Col, FormGroup, ControlLabel } from 'react-bootstrap';
+import Datetime from 'react-datetime';
 
 const HorizontalField = ({
   controlId,
@@ -16,11 +17,14 @@ const HorizontalField = ({
       {label}
     </Col>
     <Col sm={rightSm}>
-      { type !== 'select'
-        ? <input {...input} className="form-control" placeholder={label} type={type}/>
-        : <select {...input} className="form-control" placeholder={label}>
+      { type === 'select' 
+        ? (<select {...input} className="form-control" placeholder={label}>
             {children}
-          </select>
+          </select>)
+        : ( type === 'datetime' 
+            ? <Datetime {...input} placeholder={label} />
+            : <input {...input} className="form-control" placeholder={label} type={type}/>
+          )
       }
       
       {touched && ((error && <span className="help-block">{error}</span>) || (warning && <span className="help-block">{warning}</span>))}
