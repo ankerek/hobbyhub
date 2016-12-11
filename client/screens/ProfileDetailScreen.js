@@ -87,7 +87,10 @@ export const renderProfileDetailScreen = ({
                 |
               </div>
               <div className={be('Grid', 'cell')}>
-                rated by {rating.ratedBy}
+                <div>
+                  rated by
+                  <Link className="u-indent5px" to={`/profiles/${rating.ratedBy}`}>{rating.ratedByName}</Link>
+                </div>
               </div>
             </div>
           ))
