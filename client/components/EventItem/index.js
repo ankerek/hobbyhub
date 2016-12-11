@@ -17,7 +17,6 @@ import './index.scss';
 
 export const mapStateToProps = (state, { event }) => ({
   myId: getCurrentUserId(state),
-  isMine: g(event, 'organizer') === getCurrentUserId(state),
   isAuthenticated: isAuthenticated(state),
   isAcceptedAttendee: getIsAcceptedAttendee(state.entities, event._id, getCurrentUserId(state)),
   isPendingAttendee: getIsPendingAttendee(state.entities, event._id, getCurrentUserId(state)),
@@ -43,7 +42,7 @@ export const renderEventItem = ({
   modifiers = '',
   event,
   myId,
-  isMine,
+  mayHide,
   isHidden,
   isAuthenticated,
   isAcceptedAttendee,
@@ -59,7 +58,7 @@ export const renderEventItem = ({
         <div className="u-spacing10px">
           <CategoryIcon category={{ name: event.category }} />
         </div>
-        {isMine ? (
+        {mayHide ? (
           isHidden ? (
             <p className="u-spacing5px">
               <Button bsStyle="primary"

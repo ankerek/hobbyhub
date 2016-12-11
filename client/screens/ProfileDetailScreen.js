@@ -163,7 +163,7 @@ export const renderProfileDetailScreen = ({
           Latest Events
         </h2>
         {events.length ? (
-            <EventsGrid events={events} />
+            <EventsGrid events={events} mayHide={isMine} />
           ) : (
             <span>There are no attended events.</span>
           )}
