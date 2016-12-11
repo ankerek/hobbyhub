@@ -63,7 +63,7 @@ function userToAttendee(user) {
   userProjection.userId = user._id;
   userProjection.email = user.email;
   userProjection.fullName = `${user.firstName} ${user.lastName}`;
-  userProjection.averageRating = 85; //TODO: implemented when rating is ready
+  userProjection.averageRating = User.averageRating(user.ratings);
   userProjection.pictureUrl = user.pictureUrl;
 
   return { user: userProjection, state: 'PENDING'};

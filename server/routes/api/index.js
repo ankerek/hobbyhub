@@ -360,6 +360,10 @@ router.route('/users')
 router.route('/users/:userId')
   .get(UsersController.show);
 
+router.route('/users/:userId/rating')
+  .post(UsersController.updateRating)
+  .delete(UsersController.deleteRating);
+
 router.route('/logout(\\?)?')
   /**
    * @api {GET} /users/logout Logs user out

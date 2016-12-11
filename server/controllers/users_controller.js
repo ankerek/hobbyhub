@@ -1,5 +1,7 @@
 import User, {Token} from '../models/user';
+import Event from '../models/event'
 import passport from '../../configs/passport';
+import _ from 'lodash'
 
 export function index(req, res, next) {
   User.find((err, users) => {
@@ -30,6 +32,94 @@ export function create(req, res, next) {
   })(req, res, next);
 }
 
+export function updateRating(req, res, next) {
+  const { userId } = req.params;
+  const { percent, text, ratedBy } = req.body;
+  let error = { status: 500, reason: "UnknownError" };
+
+  return User
+    .findOne({ _id: userId})
+    .then(validUser => {
+      if (!validUser) {
+        throw { status: 404, reason: "User not found", known: true };
+      }
+      return ratingHelper(validUser, percent, text, ratedBy, false);
+    })
+    .then(savedUser => {
+      if (savedUser) {
+        updateAverageRatings(userId, User.averageRating(savedUser.ratings));
+        res.json(savedUser);
+      }
+    })
+    .catch((err) => {
+      if (err.known) {
+        error = err;
+      }
+      res.status(error.status).json(_.omit(error, "known"));
+    });
+}
+
+export function deleteRating(req, res, next) {
+  const { userId } = req.params;
+  const { ratedBy } = req.body;
+  let error = { status: 500, reason: "UnknownError" };
+
+  return User
+    .findOne({ _id: userId})
+    .then(validUser => {
+      if (!validUser) {
+        throw { status: 404, reason: "User not found", known: true };
+      }
+      return ratingHelper(validUser, null, null, ratedBy, true);
+    })
+    .then(savedUser => {
+      if (savedUser) {
+        updateAverageRatings(userId, User.averageRating(savedUser.ratings));
+        res.json(savedUser);
+      }
+    })
+    .catch((err) => {
+      if (err.known) {
+        error = err;
+      }
+      res.status(error.status).json(_.omit(error, "known"));
+    });
+}
+
+function ratingHelper(validUser, percent, text, ratedBy, deleting) {
+  let currentRatings = _.filter(validUser.ratings, rating  => rating.ratedBy != ratedBy);
+  if (!deleting) {
+    let newRating = { ratedBy: ratedBy, timestamp: Date.now(), percent: percent, additionalText: text };
+    currentRatings.push(newRating);
+  }
+  validUser.ratings = currentRatings;
+  return validUser.save();
+}
+
+function updateAverageRatings(userId, avgRating) {
+  Event
+    .find().exec()
+    .then(events => {
+      _.forEach(events, event => {
+        let changed = false;
+        if (event.organizer.userId == userId) {
+          event.organizer.averageRating = avgRating;
+          changed = true;
+        }
+        _.forEach(event.attendees, attendee => {
+          if (attendee.user.userId == userId) {
+            attendee.user.averageRating = avgRating;
+            changed = true;
+          }
+        });
+        if (changed) {
+          console.log("updating event", event);
+          event.save();
+        }
+      })
+    })
+}
+
 export function show(req, res, next) {
   User.findById(req.params.userId, (err, user) => {
     if (err) {
@@ -58,7 +148,7 @@ export function login(req, res, next) {
           res.json({error: 'Issue generating token'});
         } else {
           res.json({
-            user, 
+            user,
             token: usersToken,
           });
         }
