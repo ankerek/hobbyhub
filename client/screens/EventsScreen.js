@@ -1,6 +1,6 @@
 import React, { PropTypes as T } from 'react';
 import { connect } from 'react-redux';
-import { reset } from 'redux-form';
+import { destroy } from 'redux-form';
 import compose from 'compose-function';
 
 import { getAllEvents, getCategoryEvents } from '../reducers';
@@ -17,6 +17,7 @@ export const mapStateToProps = (state, ownProps) => {
 
   return {
     events: eventsSelector(state),
+    formValues: state.search.form,
   };
 };
 
@@ -25,7 +26,7 @@ export const mapDispatchToProps = {
   searchEvents,
   filterByCategory,
   resetSearchEvents,
-  resetForm: reset,
+  destroyForm: destroy,
 };
 
 class EventsContainer extends React.Component {
@@ -40,17 +41,20 @@ class EventsContainer extends React.Component {
 
 export const renderEventsScreen = ({
   events,
+  formValues,
   searchEvents,
   filterByCategory,
   resetSearchEvents,
-  resetForm,
+  destroyForm,
 }) => (
   <div>
     <Well>
+      {console.log(formValues)}
       <CategoryFilter onClick={filterByCategory} />
-      <SearchForm onSubmit={searchEvents} resetForm={() => {
-        resetForm('searchEvents');
+      <SearchForm onSubmit={searchEvents} initialValues={formValues} resetForm={() => {
         resetSearchEvents();
+        destroyForm('searchEvents');
+        searchEvents();
       }} />
     </Well>
     <h2 className="u-spacing20px">Events</h2>
