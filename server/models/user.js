@@ -80,6 +80,10 @@ const UserSchema = new mongoose.Schema({
   token: {
     type: Object
   },
+  hidden: {
+    type: [String],
+    default: []
+  },
   resetToken: {
     type: String
   },

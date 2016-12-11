@@ -84,7 +84,7 @@ export function show(req, res, next) {
  * Current search only based on category
  */
 export function search(req, res, next) {
-  const { categories, startBefore, startAfter, empty, full, spotsRemaining } = req.body;
+  const { categories, startBefore, startAfter, empty, full, spotsRemaining, ratingAbove, nameContains } = req.body;
   let query = Event.find().sort({_id: 'desc'});
   if (categories && categories.length) {
     query = query.where('category').in(categories);
@@ -106,6 +106,17 @@ export function search(req, res, next) {
     }
     if (spotsRemaining != null) {
       results = _.filter(results, e => e.maxPeople - e.attendees.length == spotsRemaining);
+    }
+    if (nameContains != null) {
+      results = _.filter(results, e => e.name.toLowerCase().includes(nameContains.toLowerCase()));
+    }
+    if (ratingAbove != null) {
+      console.log("Filtering for events with avg rating above", ratingAbove);
+      results = _.filter(results, e => {
+        let allAverages = _.map(e.attendees, a => a.user.averageRating);
+        let averageOfAverages = (_.reduce(allAverages, (sum, n) => sum + n, 0) / allAverages.length)>>0;
+        return averageOfAverages > ratingAbove;
+      })
     }
     res.json(results)
   });
