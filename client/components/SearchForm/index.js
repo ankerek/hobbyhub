@@ -7,6 +7,7 @@ import { bm, be } from '../../utils/bem';
 import { Form, Grid, Row, Col, Button, FormGroup, Well } from 'react-bootstrap';
 
 import HorizontalField from '../HorizontalField';
+import RatingField from '../RatingField';
 
 const mapStateToProps = null;
 
@@ -27,11 +28,10 @@ const validate = values => {
 export const renderSearchForm = ({
   handleSubmit,
   resetForm,
-  searchEvents,
 }) => (
   <Form horizontal onSubmit={handleSubmit}>
     <div className={`${bm('Grid', 'multiCol justifyCenter wrap fit gutterA10px')}`}>
-      <div className={be('Grid', 'cell')}>
+      <div className={be('Grid', 'cell')}> 
         <Field name="startBefore"
                leftSm={4}
                rightSm={8}
@@ -44,9 +44,20 @@ export const renderSearchForm = ({
                label="Start after"
                type="datetime"
                component={HorizontalField} />
+        <Field name="nameContains"
+               leftSm={4}
+               rightSm={8}
+               label="Event name"
+               type="text"
+               component={HorizontalField} />
       </div>
     
       <div className={be('Grid', 'cell')}>
+        <Field name="ratingAbove"
+               leftSm={6}
+               rightSm={6}
+               label="Average rating above"
+               component={RatingField} />        
         <Field controlId="formHorizontalSpotsRemaining"
                className="form-control"
                name="spotsRemaining"
@@ -75,7 +86,7 @@ export const renderSearchForm = ({
     <FormGroup>
       <div className={`${bm('Grid', 'multiCol justifyCenter wrap fit gutterA10px')}`}>
         <div className={`${be('Grid', 'cell')}`}>
-          <Button type="submit" bsStyle="primary" onClick={resetForm}>
+          <Button bsStyle="primary" onClick={resetForm}>
             Clear filters
           </Button>
         </div>
