@@ -142,6 +142,8 @@ export function show(req, res, next) {
     if (err) {
       return next(err);
     }
+    user = user.toObject();
+    user.averageRating = User.averageRating(user.ratings);
     res.json(user);
   })
 }
