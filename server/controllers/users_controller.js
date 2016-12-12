@@ -154,7 +154,7 @@ function updateAverageRatings(userId, avgRating) {
       _.forEach(events, event => {
         let changed = false;
         if (event.organizer.userId == userId) {
-          event.organizer.averageRating = avgRating;
+          event.organizer.user.averageRating = avgRating;
           changed = true;
         }
         _.forEach(event.attendees, attendee => {
