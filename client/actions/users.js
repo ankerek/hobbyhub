@@ -16,6 +16,12 @@ export const fetchUserFailure = ({ error }) => ({
   payload: { error },
 });
 
+export const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST';
+export const updateUser = ({ file }) => ({
+  type: UPDATE_USER_REQUEST,
+  payload: { file },
+});
+
 export const RATE_USER_REQUEST = 'RATE_USER_REQUEST';
 export const rateUser = ({ id, ratedBy, additionalText, percent }) => ({
   type: RATE_USER_REQUEST,

@@ -1,9 +1,12 @@
 import { takeLatest } from 'redux-saga';
-import { call, fork, put } from 'redux-saga/effects';
+import { call, fork, put, select } from 'redux-saga/effects';
 import { normalize } from 'normalizr';
 import { api } from '../utils/api';
 import userSchema from '../schemas/user';
+import { getCurrentUser } from '../reducers/auth';
 import * as actions from '../actions/users';
+import { navigate } from '../actions/router';
+import { fetchEvents } from '../actions/events';
 
 function* fetchUser({ payload: { id } }) {
   try {
@@ -14,6 +17,33 @@ function* fetchUser({ payload: { id } }) {
     yield put(actions.fetchUserFailure({ error }));
   }
 }
+
+function* updateUser({ payload: { file } }) {
+  try {
+    const loggedUser = yield select(getCurrentUser);
+
+    const data = new FormData();
+    data.append('avatar', file);
+
+    const payload = yield call(
+      api.upload,
+      `/api/users/${loggedUser._id}`, {
+        method: 'PUT',
+        body: data,
+      }
+    );
+
+    yield put(actions.fetchUser(loggedUser._id));
+    yield put(fetchEvents());
+
+    //yield put(actions.createEventSuccess(payload));
+  } catch (error) {
+    console.log('error', error);
+    // TODO show error
+    //yield put(actions.createEventFailure({ error }));
+  }
+}
+
 
 function* rateUser({ payload: { id, ratedBy, additionalText, percent } }) {
   try {
@@ -78,6 +108,10 @@ function* watchFetchUser() {
   yield* takeLatest(actions.FETCH_USER_REQUEST, fetchUser);
 }
 
+function* watchUpdateUser() {
+  yield* takeLatest(actions.UPDATE_USER_REQUEST, updateUser);
+}
+
 function* watchRateUser() {
   yield* takeLatest(actions.RATE_USER_REQUEST, rateUser);
 }
@@ -96,6 +130,7 @@ function* watchToggleHideEvent() {
 
 const eventsSagas = [
   fork(watchFetchUser),
+  fork(watchUpdateUser),
   fork(watchRateUser),
   fork(watchDeleteUserRating),
   fork(watchToggleHideEvent),

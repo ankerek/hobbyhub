@@ -3,6 +3,7 @@ import { get as g } from 'lodash';
 import { connect } from 'react-redux';
 import Rating from 'react-rating';
 import { Link } from 'react-router';
+import Dropzone from 'react-dropzone';
 import compose from 'compose-function';
 import { Well } from 'react-bootstrap';
 
@@ -10,10 +11,26 @@ import { getCurrentUserId, isAuthenticated } from '../reducers/auth';
 import { getUserEvents } from '../reducers';
 import { getUser } from '../reducers/entities';
 import { fetchEvents } from '../actions/events';
-import { fetchUser, rateUser, deleteUserRating } from '../actions/users';
+import { fetchUser, updateUser, rateUser, deleteUserRating } from '../actions/users';
 import { bm, be } from '../utils/bem';
 import EventsGrid from '../components/EventsGrid';
 import RateForm from '../components/RateForm';
+
+
+class AvatarDropzone extends React.Component {
+  render() {
+    const { updateUser } = this.props;
+    return (
+      <div>
+        <Dropzone ref={(node) => { this.dropzone = node; }} onDrop={(files) => {updateUser({file: files[0]})}} style={{display:'none'}}>
+        </Dropzone>
+        <button type="button" onClick={() => { this.dropzone.open()} }>
+          Upload avatar
+        </button>
+      </div>
+    )
+  }
+}
 
 export const mapStateToProps = (state, { params: { id } }) => {
   const user = getUser(state.entities, id);
@@ -35,6 +52,7 @@ export const mapStateToProps = (state, { params: { id } }) => {
 
 export const mapDispatchToProps = (dispatch) => ({
   fetch: (id) => dispatch(fetchUser(id)),
+  updateUser: (data) => dispatch(updateUser(data)),
   onRateSubmit: (data) => dispatch(rateUser(data)),
   onDeleteRating: (data) => dispatch(deleteUserRating(data)),
   fetchEvents: () => dispatch(fetchEvents()),
@@ -76,6 +94,7 @@ export const renderProfileDetailScreen = ({
   mayRate,
   onRateSubmit,
   onDeleteRating,
+  updateUser,
 }) => (
   user && events ? (
     <div>
@@ -84,6 +103,7 @@ export const renderProfileDetailScreen = ({
           <div className={bm('Grid', '1col multiCol:30em alignMiddle fit:30em gutterA20px')}>
             <div className={be('Grid', 'cell')}>
               <img src={user.pictureUrl} alt={user.fullName} width={128} height={128} />
+              { isMine && <AvatarDropzone updateUser={updateUser} /> }
             </div>
             <div className={be('Grid', 'cell')}>
               <p className="u-text30px">

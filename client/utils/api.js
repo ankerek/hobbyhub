@@ -20,5 +20,21 @@ export const api = {
           return json.then(Promise.reject.bind(Promise));
         }
       });
+  },
+
+  upload(url, params) {
+    const headers = {
+      [AUTH_TOKEN_HEADER]: store.get(AUTH_TOKEN_HEADER) || 'anonymous',
+      ...params.headers,
+    };
+    
+    return fetch(url, { credentials: 'same-origin', ...params, headers, body: params.body })
+      .then(response => {
+        const json = response.json();
+        if (response.status >= 200 && response.status < 300) return json;
+        else {
+          return json.then(Promise.reject.bind(Promise));
+        }
+      });
   }
 };
