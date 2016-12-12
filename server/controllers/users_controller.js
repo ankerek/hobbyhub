@@ -12,6 +12,34 @@ export function index(req, res, next) {
   })
 }
 
+export function update(req,res,next){
+  const { userId } = req.params;
+  let error = { status: 500, reason: "UnknownError" };
+  
+  if(req.file){
+    User
+    .findByIdAndUpdate({
+      _id: userId
+    },{ pictureUrl: `/static/img/user-avatars/${req.file.filename}` },{new: true}).exec()
+    .then((user) => {
+      if (!user) {
+        error = { status: 404, reason: "User with given userId not found." };
+        throw error;
+      }
+      updatePictureUrl(userId,user.pictureUrl);
+      res.json(user);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(error.status).json(error);
+    });
+  }
+  else{
+    let error = { status: 404, reason: "Avatar file not provided" };
+    res.status(error.status).json(error);
+  }
+}
+
 export function create(req, res, next) {
   passport.authenticate('local-signup', {
     session: false
@@ -127,6 +155,29 @@ function updateAverageRatings(userId, avgRating) {
         _.forEach(event.attendees, attendee => {
           if (attendee.user.userId == userId) {
             attendee.user.averageRating = avgRating;
+            changed = true;
+          }
+        });
+        if (changed) {
+          event.save();
+        }
+      })
+    })
+}
+
+function updatePictureUrl(userId, pictureUrl) {
+  Event
+    .find().exec()
+    .then(events => {
+      _.forEach(events, event => {
+        let changed = false;
+        if (event.organizer.user.userId == userId) {
+          event.organizer.user.pictureUrl = pictureUrl;
+          changed = true;
+        }
+        _.forEach(event.attendees, attendee => {
+          if (attendee.user.userId == userId) {
+            attendee.user.pictureUrl = pictureUrl;
             changed = true;
           }
         });

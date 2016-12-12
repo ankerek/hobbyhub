@@ -6,8 +6,11 @@ import path from 'path';
 import morgan from 'morgan';
 import config from '../configs';
 import routes from './routes';
+import multer from 'multer';
 
 const app = express();
+
+const upload = multer({ dest: './client/static/img/user-avatars/' }).single('avatar');
 
 mongoose.connect(config.mongodb);
 mongoose.connection.on('error', () => {
@@ -19,6 +22,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('tiny'));
 app.use(passport.initialize());
+app.use(upload);
 app.use(routes);
 
 app.use('/static', express.static(path.resolve(process.cwd(), 'client', 'static')));
