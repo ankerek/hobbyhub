@@ -87,6 +87,7 @@ class ProfileDetailContainer extends React.Component {
 }
 
 export const renderProfileDetailScreen = ({
+  isAuthenticated,
   user,
   myRating,
   events,
@@ -127,7 +128,7 @@ export const renderProfileDetailScreen = ({
                 />
               </div>
             </div>
-            {mayRate ? (
+            {isAuthenticated && mayRate ? (
               <div className={`${be('Grid', 'cell')} u-text16px u-flexOne`}>
                 <div>
                   Rate User:

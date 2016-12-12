@@ -75,8 +75,13 @@ export function updateRating(req, res, next) {
     })
     .then(savedUser => {
       if (savedUser) {
-        updateAverageRatings(userId, User.averageRating(savedUser.ratings));
-        res.json(savedUser);
+       
+        
+        let avgRating = User.averageRating(savedUser.ratings);
+        updateAverageRatings(userId, avgRating);
+        let apiUser = savedUser.toObject();
+        apiUser.averageRating = avgRating;
+        res.json(apiUser);
       }
     })
     .catch((err) => {
