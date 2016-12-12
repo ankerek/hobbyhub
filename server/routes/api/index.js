@@ -1,5 +1,6 @@
 import express from 'express';
 
+
 import * as EventsController from '../../controllers/events_controller'
 import * as UsersController from '../../controllers/users_controller'
 import * as CategoriesController from '../../controllers/categories_controller'
@@ -268,9 +269,9 @@ router.route('/events/:eventId/comments')
    */
   .post(UsersController.isAuthenticated,EventsController.addComment);
 
-router.route('/events/:eventId/comments/:commentId/replies/')
+router.route('/events/:eventId/comments/:commentId/replies')
   /**
-   * @api {POST} /events/:eventId/comments Add simple reply to comment
+   * @api {POST} /events/:eventId/comments/:commentId/replies/ Add simple reply to comment
    * @apiVersion 0.0.1
    * @apiName AddReply
    * @apiGroup Event
@@ -356,9 +357,23 @@ router.route('/events/:eventId/attendees/:userId')
 router.route('/users')
   .post(UsersController.create)
   .get(UsersController.index);
+ 
+  
 
 router.route('/users/:userId')
-  .get(UsersController.show);
+  .get(UsersController.show)
+  /**
+   * @api {PUT} /users/:userId Update existing user
+   * @apiVersion 0.0.1
+   * @apiName UpdateUser
+   * @apiGroup User
+   * @apiPermission authenticatedUser (organizer)
+   *
+   * @apiDescription This call will update an existing user.
+   * @apiSampleRequest http://hobbyhub8.herokuapp.com/api/users/:userId
+   *
+   */
+  .put(UsersController.update);
 
 router.route('/users/:userId/rating')
   .post(UsersController.updateRating)
