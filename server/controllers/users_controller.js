@@ -20,7 +20,7 @@ export function update(req,res,next){
     User
     .findByIdAndUpdate({
       _id: userId
-    },{ pictureUrl: `/static/img/user-avatars/${req.file.filename}` },{new: true}).exec()
+    },{ pictureUrl: req.file.location },{new: true}).exec()
     .then((user) => {
       if (!user) {
         error = { status: 404, reason: "User with given userId not found." };
