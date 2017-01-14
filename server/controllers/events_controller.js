@@ -102,7 +102,7 @@ export function search(req, res, next) {
       results = full ? _.filter(results, e => e.attendees.length + e.spotsReserved == e.maxPeople) : _.filter(results, e => e.attendees.length + e.spotsReserved < e.maxPeople);
     }
     if (spotsRemaining != null) {
-      results = _.filter(results, e => e.maxPeople - e.attendees.length + e.spotsReserved >= spotsRemaining);
+      results = _.filter(results, e => e.maxPeople - e.attendees.length - e.spotsReserved >= spotsRemaining);
     }
     if (nameContains != null) {
       results = _.filter(results, e => e.name.toLowerCase().includes(nameContains.toLowerCase()));
