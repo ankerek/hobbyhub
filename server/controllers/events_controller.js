@@ -18,8 +18,8 @@ export function index(req, res, next) {
 }
 
 export function create(req, res, next) {
-  const { name, start, end, address, minPeople, maxPeople, description, organizer, category } = req.body;
-  let apiEvent = { name, start, end, address, minPeople, maxPeople, description, comments: [], attendees: [] };
+  const { name, start, end, address, minPeople, maxPeople, spotsReserved, description, organizer, category } = req.body;
+  let apiEvent = { name, start, end, address, minPeople, maxPeople, spotsReserved, description, comments: [], attendees: [] };
   let error = { status: 500, reason: "UnknownError" };
 
   User
@@ -80,9 +80,6 @@ export function show(req, res, next) {
     });
 }
 
-/**
- * Current search only based on category
- */
 export function search(req, res, next) {
   const { categories, startBefore, startAfter, empty, full, spotsRemaining, ratingAbove, nameContains } = req.body;
   let query = Event.find().sort({_id: 'desc'});
@@ -99,13 +96,13 @@ export function search(req, res, next) {
     // this is much easier in JS for now
     let results = events;
     if (empty != null) {
-      results = empty ? _.filter(results, e => e.attendees.length == 0) : _.filter(results, e => e.attendees.length > 0);
+      results = empty ? _.filter(results, e => e.attendees.length + e.spotsReserved == 0) : _.filter(results, e => e.attendees.length + e.spotsReserved > 0);
     }
     if (full != null) {
-      results = full ? _.filter(results, e => e.attendees.length == e.maxPeople) : _.filter(results, e => e.attendees.length < e.maxPeople);
+      results = full ? _.filter(results, e => e.attendees.length + e.spotsReserved == e.maxPeople) : _.filter(results, e => e.attendees.length + e.spotsReserved < e.maxPeople);
     }
     if (spotsRemaining != null) {
-      results = _.filter(results, e => e.maxPeople - e.attendees.length == spotsRemaining);
+      results = _.filter(results, e => e.maxPeople - e.attendees.length + e.spotsReserved >= spotsRemaining);
     }
     if (nameContains != null) {
       results = _.filter(results, e => e.name.toLowerCase().includes(nameContains.toLowerCase()));
@@ -124,8 +121,8 @@ export function search(req, res, next) {
 
 export function update(req, res, next) {
   const { eventId } = req.params;
-  const { name, start, end, address, minPeople, maxPeople, description, category } = req.body;
-  let apiEvent = { name, start, end, address, minPeople, maxPeople, description, comments: [], attendees: [] };
+  const { name, start, end, address, minPeople, maxPeople, spotsReserved, description, category } = req.body;
+  let apiEvent = { name, start, end, address, minPeople, maxPeople, spostsReserved, description, comments: [], attendees: [] };
   let error = { status: 500, reason: "UnknownError" };
   let mongooseEvent = {};
 
@@ -143,6 +140,7 @@ export function update(req, res, next) {
       mongooseEvent.address = address;
       mongooseEvent.minPeople = minPeople;
       mongooseEvent.maxPeople = maxPeople;
+      mongooseEvent.spotsReserved = spotsReserved;
       mongooseEvent.description = description;
       apiEvent._id = eventId;
       apiEvent.comments = mongooseEvent.comments;
@@ -215,8 +213,6 @@ export function leave(req, res, next) {
 }
 
 export function approve(req, res, next) {
-  //TODO: authorization
-  //TODO: ask -> return whole json or is status ok?
   const { eventId, userId } = req.params;
   let error = { status: 500, reason: "UnknownError" };
   let mongooseEvent = {};
@@ -377,6 +373,9 @@ function attendLeaveHelper(eventId, userId, adding) {
     .then((validEvent) => {
       if (!validEvent) {
         throw { status: 404, reason: "Event not found", known: true };
+      }
+      if (validEvent.end < Date.now()) {
+        throw { status: 400, reason: "Event has already ended.", known: true};
       }
       apiEvent = validEvent;
       return User.findOne({ _id: userId }).exec();
