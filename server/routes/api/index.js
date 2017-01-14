@@ -102,7 +102,8 @@ router.route('/events')
    *      "address": "Vodičkova 25, Praha",
    *      "minPeople": 2,
    *      "maxPeople": 8,
-   *      "attendees": []
+   *      "spotsReserved": 1,
+   *      "attendees": [],
    *      "comments": []
    *    }
    *

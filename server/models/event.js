@@ -101,6 +101,12 @@ const EventSchema = new mongoose.Schema({
     required: true,
     min: 2,
   },
+  spotsReserved: {
+    type: Number,
+    required: true,
+    min: 0,
+    default: 0
+  },
   attendees: [attendeeSchema],
   comments: [commentSchema],
 });

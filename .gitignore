@@ -4,5 +4,6 @@ npm-debug.log
 dist
 static/
 .idea
+.vscode
 yarn-error.log
 configs/myconfig.js
