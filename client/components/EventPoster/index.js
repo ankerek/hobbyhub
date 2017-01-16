@@ -14,7 +14,7 @@ export const renderEventPoster = ({
 );
 
 renderEventPoster.propTypes = {
-  category: T.string.isRequired,
+  category: T.string,
 };
 
 const EventPoster = (renderEventPoster);

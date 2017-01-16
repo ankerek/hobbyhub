@@ -16,7 +16,7 @@ const HorizontalField = ({
       {label}
     </Col>
     <Col sm={rightSm}style={{paddingTop: 12}}>
-      <Rating initialRate={input.value}
+      <Rating initialRate={Number(input.value)}
               start={0}
               stop={100}
               step={20}
