@@ -13,6 +13,6 @@ npm install
 - `npm run dev:server` run development server for backend app
 - `npm run dev:client` run development server for frontend app
 
-## Deployment
+## Tests
 
-TODO
+- `npm run test:client`
