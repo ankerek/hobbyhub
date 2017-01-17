@@ -4,19 +4,13 @@ import Rating from 'react-rating';
 import { Field, reduxForm } from 'redux-form';
 import compose from 'compose-function';
 import { getAuthError } from '../reducers/auth';
-import { Form, Grid, Row, Col, Button, FormGroup, Well } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 
 import HorizontalField from './HorizontalField';
 
 const mapStateToProps = (state) => ({
   authError: getAuthError(state),
 });
-
-const validate = values => {
-  const errors = {};
-
-  return errors;
-};
 
 const renderEditableRating = ({
   input
@@ -66,7 +60,6 @@ const RateForm = compose(
   connect(mapStateToProps),
   reduxForm({
     form: 'rateForm',
-    validate,
   })
 )(renderRateForm);
 

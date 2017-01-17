@@ -2,20 +2,18 @@ import React, { PropTypes as T } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import compose from 'compose-function';
-import { Button, InputGroup, Well, FormGroup, FormControl } from 'react-bootstrap';
+import { Well } from 'react-bootstrap';
 
 import { getAllEvents, getAllCategories } from '../reducers';
 import { isAuthenticated } from '../reducers/auth';
 import { fetchEvents, filterByCategory } from '../actions/events';
-import fetchData from '../components/fetchData';
 import EventsGrid from '../components/EventsGrid';
 import CategoryFilter from '../components/CategoryFilter';
-import CategoryIcon from '../components/CategoryIcon';
 import { bm, be } from '../utils/bem';
 
 export const mapStateToProps = (state) => ({
   isAuthenticated: isAuthenticated(state),
-  upcomingEvents: getAllEvents(state),
+  events: getAllEvents(state),
   categories: getAllCategories(state),
 });
 
@@ -35,7 +33,7 @@ class LandingScreenContainer extends React.Component {
 }
 
 export const renderLandingScreen = ({
-  upcomingEvents,
+  events,
   isAuthenticated,
   filterByCategory,
 }) => (
@@ -75,19 +73,19 @@ export const renderLandingScreen = ({
     <div className="u-spacing20px">
       <div className={bm('Grid', 'multiCol fit alignMiddle gutterA10px')}>
         <div className={be('Grid', 'cell')}>
-          <h2>Upcoming Events</h2>
+          <h2>Events</h2>
         </div>
         <div className={`${be('Grid', 'cell')}`}>
           <Link className='btn btn-primary btn-sm' to="/events">See All</Link>
         </div>
       </div>
     </div>
-    {upcomingEvents.length ? <EventsGrid events={upcomingEvents} /> : null}
+    {events.length ? <EventsGrid events={events} /> : null}
   </div>
 );
 
 renderLandingScreen.propTypes = {
-  upcomingEvents: T.array.isRequired,
+  events: T.array.isRequired,
   categories: T.array.isRequired,
 };
 

@@ -1,19 +1,7 @@
 import Immutable from 'seamless-immutable';
 import * as actions from '../actions/categories';
 
-// TODO: fetch on init
-const initialState = Immutable.from([
-  // 'soccer',
-  // 'volleyball',
-  // 'basketball',
-  // 'americanfootball',
-  // 'baseball',
-  // 'pingpong',
-  // 'tennis',
-  // 'foosball',
-  // 'bowling',
-  // 'chess',
-]);
+const initialState = Immutable.from([]);
 
 const categoriesReducer = (state = initialState, { type, payload }) => {
   switch (type) {

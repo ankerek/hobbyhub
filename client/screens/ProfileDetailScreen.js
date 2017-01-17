@@ -16,7 +16,7 @@ import { bm, be } from '../utils/bem';
 import EventsGrid from '../components/EventsGrid';
 import RateForm from '../components/RateForm';
 
-
+/*eslint-disable */
 class AvatarDropzone extends React.Component {
   render() {
     const { updateUser } = this.props;
@@ -31,6 +31,8 @@ class AvatarDropzone extends React.Component {
     )
   }
 }
+/*eslint-enable */
+
 
 export const mapStateToProps = (state, { params: { id } }) => {
   const user = getUser(state.entities, id);

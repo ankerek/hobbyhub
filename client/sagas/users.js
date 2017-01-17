@@ -5,7 +5,6 @@ import { api } from '../utils/api';
 import userSchema from '../schemas/user';
 import { getCurrentUser } from '../reducers/auth';
 import * as actions from '../actions/users';
-import { navigate } from '../actions/router';
 import { fetchEvents } from '../actions/events';
 
 function* fetchUser({ payload: { id } }) {
@@ -25,6 +24,7 @@ function* updateUser({ payload: { file } }) {
     const data = new FormData();
     data.append('avatar', file);
 
+    // eslint-disable-next-line no-unused-vars
     const payload = yield call(
       api.upload,
       `/api/users/${loggedUser._id}`, {

@@ -8,7 +8,6 @@ const HorizontalField = ({
   rightSm = 10,
   input,
   label,
-  type,
   meta: { touched, error, warning },
 }) => (
   <FormGroup  controlId={controlId} validationState={touched ? (error ? 'error' : (warning ? 'warning' : 'success')) : null}>

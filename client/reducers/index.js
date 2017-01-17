@@ -3,7 +3,6 @@ import { reducer as formReducer } from 'redux-form';
 import { get as g } from 'lodash';
 import entities from './entities';
 import categories from './categories';
-import upcomingEvents from './upcomingEvents';
 import events from './events';
 import auth, { getCurrentUserId } from './auth';
 import search from './search';
@@ -13,7 +12,6 @@ import { getEvent, getUser, getCategory, getCategoryName } from './entities';
 const rootReducer = combineReducers({
   entities,
   categories,
-  upcomingEvents,
   events,
   auth,
   search,

@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 import moment from 'moment';
 import compose from 'compose-function';
 import { bm, be } from '../../utils/bem';
-import { Form, Grid, Row, Col, Button, FormGroup, Well } from 'react-bootstrap';
+import { Form, Button, FormGroup } from 'react-bootstrap';
 
 import HorizontalField from '../HorizontalField';
 import RatingField from '../RatingField';
@@ -20,7 +20,7 @@ const validate = values => {
   if (values.startAfter) {
     if(!moment(values.startAfter, 'L LT', true).isValid()) errors.startAfter = 'Not valid';
   }
-  
+
 
   return errors;
 };
@@ -31,7 +31,7 @@ export const renderSearchForm = ({
 }) => (
   <Form horizontal onSubmit={handleSubmit}>
     <div className={`${bm('Grid', 'multiCol justifyCenter wrap fit gutterA10px')}`}>
-      <div className={be('Grid', 'cell')}> 
+      <div className={be('Grid', 'cell')}>
         <Field name="startBefore"
                leftSm={4}
                rightSm={8}
@@ -51,13 +51,13 @@ export const renderSearchForm = ({
                type="text"
                component={HorizontalField} />
       </div>
-    
+
       <div className={be('Grid', 'cell')}>
         <Field name="ratingAbove"
                leftSm={6}
                rightSm={6}
                label="Average rating above"
-               component={RatingField} />        
+               component={RatingField} />
         <Field controlId="formHorizontalSpotsRemaining"
                className="form-control"
                name="spotsRemaining"
@@ -65,7 +65,7 @@ export const renderSearchForm = ({
                label="Spots remaining"
                leftSm={6}
                rightSm={6}
-               component={HorizontalField} />  
+               component={HorizontalField} />
         <div className={`${bm('Grid', 'justifyCenter wrap fit gutterA20px')}`}>
           <div className={be('Grid', 'cell')}>
             <label>Don't show</label>
@@ -73,13 +73,13 @@ export const renderSearchForm = ({
           <div className={be('Grid', 'cell')}>
             <label htmlFor="empty">Empty</label>
             <Field name="empty" id="empty" component="input" type="checkbox"/>
-          </div> 
+          </div>
           <div className={be('Grid', 'cell')}>
             <label htmlFor="full">Full</label>
             <Field name="full" id="full" component="input" type="checkbox"/>
           </div>
-        </div>   
-              
+        </div>
+
       </div>
 
     </div>

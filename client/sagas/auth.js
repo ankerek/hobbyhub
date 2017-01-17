@@ -1,10 +1,9 @@
 import store from 'store';
 import { takeLatest } from 'redux-saga';
-import { call, fork, put, select } from 'redux-saga/effects';
-import { normalize, arrayOf } from 'normalizr';
+import { call, fork, put } from 'redux-saga/effects';
+import { normalize } from 'normalizr';
 import { api } from '../utils/api';
 import userSchema from '../schemas/user';
-import { getCurrentUser } from '../reducers/auth';
 import { navigate } from '../actions/router';
 import * as actions from '../actions/auth';
 import { AUTH_TOKEN_HEADER } from '../constants/api';

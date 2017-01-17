@@ -1,6 +1,6 @@
 import { takeLatest } from 'redux-saga';
 import { call, fork, put, select } from 'redux-saga/effects';
-import { normalize, arrayOf } from 'normalizr';
+import { normalize } from 'normalizr';
 import { api } from '../utils/api';
 import eventSchema from '../schemas/event';
 import { getCurrentUser } from '../reducers/auth';

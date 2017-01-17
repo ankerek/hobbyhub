@@ -38,6 +38,12 @@ class EventFormScreenContainer extends React.Component {
   }
 }
 
+EventFormScreenContainer.propTypes = {
+  id: T.string.isRequired,
+  event: T.object.isRequired,
+  fetchEvent: T.func.isRequired,
+}
+
 const EventFormScreen = compose(
   connect(mapStateToProps, mapDispatchToProps),
 )(EventFormScreenContainer);

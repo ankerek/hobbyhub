@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import compose from 'compose-function';
 import { getAuthError } from '../reducers/auth';
-import { Form, Grid, Row, Col, Button, FormGroup, Well } from 'react-bootstrap';
+import { Form, Row, Col, Button, FormGroup } from 'react-bootstrap';
 
 import HorizontalField from './HorizontalField';
 
@@ -14,6 +14,10 @@ const mapStateToProps = (state) => ({
 const validate = values => {
   const errors = {};
 
+  if (!values.text) {
+    errors.text = 'Required';
+  }
+  
   return errors;
 };
 

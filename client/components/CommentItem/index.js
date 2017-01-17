@@ -3,9 +3,8 @@ import { FormattedTime } from 'react-intl';
 import { connect } from 'react-redux';
 import { isAuthenticated } from '../../reducers/auth';
 
-import { Button, Glyphicon } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import CommentForm from '../CommentForm';
-import UserAvatar from '../UserAvatar';
 import { bm, be } from '../../utils/bem';
 
 import './index.scss';
@@ -16,10 +15,7 @@ export const mapStateToProps = (state) => {
   })
 };
 
-export const mapDispatchToProps = {
-};
-
-export class EventItemContainer extends React.Component {
+export class CommentItemContainer extends React.Component {
   state = {
     reply: false,
   }
@@ -65,12 +61,12 @@ export const renderCommentItem = ({
         <p className="u-spacing5px">
           {comment.text}
         </p>
-        { comment.replies && comment.replies.map((comment) => renderCommentItem({comment, isReply: true})) }
-        { !isReply && isAuthenticated && (replying 
+        { comment.replies && comment.replies.map((comment) => renderCommentItem({comment, isReply: true, key: comment._id})) }
+        { !isReply && isAuthenticated && (replying
             ? <CommentForm onSubmit={onSubmit} form={comment._id} />
             : <Button bsStyle="primary" bsSize="sm" onClick={toggleReply} style={{width: 100}}>Reply</Button>
          )}
-        
+
       </div>
     </div>
   </div>
@@ -80,6 +76,6 @@ renderCommentItem.propTypes = {
   comment: T.object.isRequired,
 };
 
-const CommentItem = connect(mapStateToProps, mapDispatchToProps)(EventItemContainer);
+const CommentItem = connect(mapStateToProps)(CommentItemContainer);
 
 export default CommentItem;

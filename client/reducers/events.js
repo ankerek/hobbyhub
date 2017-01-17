@@ -1,7 +1,6 @@
 import Immutable from 'seamless-immutable';
 import * as actions from '../actions/events';
 
-// TODO: fetch on init
 const initialState = Immutable.from([]);
 
 const eventsReducer = (state = initialState, { type, payload }) => {
