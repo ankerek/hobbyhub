@@ -13,5 +13,3 @@ const eventsReducer = (state = initialState, { type, payload }) => {
 };
 
 export default eventsReducer;
-
-export const getEventById = (state, id) => state.find(event => event.id === Number(id))
