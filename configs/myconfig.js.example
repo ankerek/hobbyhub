@@ -4,4 +4,6 @@ module.exports = {
   secret: 'tajnyKlic',
   authExpiration: 7 * 24 * 60 * 60,
   ttl: 3600000,
+  AWS_ACCESS_KEY_ID: '<access_key_id>',
+  AWS_SECRET_ACCESS_KEY: '<secret_access_key>',
 };
