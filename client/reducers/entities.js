@@ -1,4 +1,5 @@
 import Immutable from 'seamless-immutable';
+import { get as g } from 'lodash';
 import * as attendeeStatus from '../constants/attendeeStatus';
 
 const initialState = Immutable.from({
@@ -26,7 +27,7 @@ export const getEvent = (state, id) => ({
   ...state.events[id],
   attendees: state.events[id] ? getAttendeesByEvent(state, state.events[id].attendees) : [],
 });
-export const getUser = (state, id) => state.users[id];
+export const getUser = (state, id) => g(state, 'users.' + id, null);
 export const getAttendee = (state, id) => ({
   ...state.attendees[id],
   user: getUser(state, id),
@@ -51,6 +52,13 @@ export const getIsAcceptedAttendee = (state, eventId, userId) =>
 export const getIsPendingAttendee = (state, eventId, userId) =>
   getIsAttendee(state, eventId, userId) &&
   state.attendees[userId].state === attendeeStatus.STATUS_PENDING;
+
+export const getOrganizerByEvent = (state, event) =>
+  getUser(state, event.organizer);
+
+export const getOrganizer = (state, eventId) =>
+  getOrganizerByEvent(state, getEvent(state, eventId));
+
 
 export const getIsOrganizer = (state, eventId, userId) => state.events[eventId] && state.users[userId] && state.events[eventId].organizer === userId;
 export const getCategory = (state, id) => state.categories[id];

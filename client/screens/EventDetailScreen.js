@@ -7,7 +7,7 @@ import { Row, Col, Button, Well, Glyphicon } from 'react-bootstrap';
 
 import * as attendeeStatus from '../constants/attendeeStatus';
 import { getCurrentUserId, isAuthenticated } from '../reducers/auth';
-import { getEvent, getIsAcceptedAttendee, getIsPendingAttendee, getIsOrganizer, getEventComments } from '../reducers/entities';
+import { getEvent, getOrganizer, getIsAcceptedAttendee, getIsPendingAttendee, getIsOrganizer, getEventComments } from '../reducers/entities';
 import { fetchEvent, joinEvent, leaveEvent, removeEvent, acceptAttendee } from '../actions/events';
 import { createComment } from '../actions/comments';
 import { bm, be } from '../utils/bem';
@@ -18,6 +18,7 @@ import CommentForm from '../components/CommentForm';
 
 export const mapStateToProps = (state, { params: { id } }) => ({
   event: getEvent(state.entities, id),
+  organizer: getOrganizer(state.entities, id),
   isAuthenticated: isAuthenticated(state),
   isAcceptedAttendee: getIsAcceptedAttendee(state.entities, id, getCurrentUserId(state)),
   isPendingAttendee: getIsPendingAttendee(state.entities, id, getCurrentUserId(state)),
@@ -47,6 +48,7 @@ class EventDetailContainer extends React.Component {
 
 export const renderEventDetailScreen = ({
   event,
+  organizer,
   comments,
   isAuthenticated,
   isAcceptedAttendee,
@@ -130,6 +132,7 @@ export const renderEventDetailScreen = ({
           </Col>
         </Row>
         <p className="u-spacing40px">{event.description}</p>
+        <p className="u-spacing10px">Organizer: {organizer.fullName}</p>
         <p className="u-spacing10px">
           Minimum players: <strong>{event.minPeople}</strong><br />
           {event.spotsReserved ?
@@ -187,6 +190,7 @@ export const renderEventDetailScreen = ({
 
 renderEventDetailScreen.propTypes = {
   event: T.object.isRequired,
+  organizer: T.object.isRequired,
   fetchEvent: T.func.isRequired,
   joinEvent: T.func.isRequired,
   leaveEvent: T.func.isRequired,

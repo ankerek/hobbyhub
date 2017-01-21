@@ -3,7 +3,7 @@ import { get as g } from 'lodash';
 import { FormattedTime } from 'react-intl';
 import { connect } from 'react-redux';
 import { getCurrentUser, getCurrentUserId, isAuthenticated } from '../../reducers/auth';
-import { getIsAcceptedAttendee, getIsPendingAttendee, } from '../../reducers/entities';
+import { getOrganizer, getIsAcceptedAttendee, getIsPendingAttendee, } from '../../reducers/entities';
 import { joinEvent, leaveEvent } from '../../actions/events';
 import { toggleHideEvent } from '../../actions/users';
 import { navigate } from '../../actions/router';
@@ -17,6 +17,7 @@ import './index.scss';
 
 export const mapStateToProps = (state, { event }) => ({
   myId: getCurrentUserId(state),
+  organizer: getOrganizer(state.entities, event._id),
   isAuthenticated: isAuthenticated(state),
   isAcceptedAttendee: getIsAcceptedAttendee(state.entities, event._id, getCurrentUserId(state)),
   isPendingAttendee: getIsPendingAttendee(state.entities, event._id, getCurrentUserId(state)),
@@ -42,6 +43,7 @@ export const renderEventItem = ({
   modifiers = '',
   event,
   myId,
+  organizer,
   mayHide,
   isHidden,
   isAuthenticated,
@@ -120,6 +122,7 @@ export const renderEventItem = ({
             <span className="u-indent5px">-</span>
             <span className="u-indent5px">{event.address}</span>
           </p>
+          <p className="u-spacing10px">Organizer: {organizer && organizer.fullName}</p>
           <p className="u-spacing10px">
             Minimum players: <strong>{event.minPeople}</strong><br />
             {event.spotsReserved ?
