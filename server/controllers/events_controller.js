@@ -122,7 +122,7 @@ export function search(req, res, next) {
 export function update(req, res, next) {
   const { eventId } = req.params;
   const { name, start, end, address, minPeople, maxPeople, spotsReserved, description, category } = req.body;
-  let apiEvent = { name, start, end, address, minPeople, maxPeople, spostsReserved, description, comments: [], attendees: [] };
+  let apiEvent = { name, start, end, address, minPeople, maxPeople, spotsReserved, description, comments: [], attendees: [] };
   let error = { status: 500, reason: "UnknownError" };
   let mongooseEvent = {};
 
