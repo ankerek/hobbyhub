@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Rating from 'react-rating';
 import { navigate } from '../../actions/router';
+import anonymous from '../../static/img/user-avatars/anonymous.svg';
 
 import './index.scss';
 
@@ -25,16 +26,17 @@ export const renderUserAvatar = ({
   user,
   size = 32,
   withRating = false,
+  reserved = false,
   navigate,
 } = {}) => (
   <div className={`${bm(moduleName)} u-textCenter u-isActionable`}
        onClick={dontPropagate(() => navigate({ pathname: `/profiles/${user.userId}` }))}
   >
     <div className="u-spacing5px">
-      <img src={user.pictureUrl} alt={user.fullName} width={size} height={size} />
+      <img src={reserved ? anonymous : user.pictureUrl} alt={reserved ? 'anonymous' : user.fullName} width={size} height={size} />
     </div>
     <p className="u-spacing5px">
-      {user.fullName}
+      {reserved ? 'Reserved' : user.fullName}
     </p>
     {withRating ? (
       <p className="u-colorPrimary">

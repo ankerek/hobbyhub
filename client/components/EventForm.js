@@ -46,10 +46,12 @@ const validate = values => {
     errors.end = 'Required';
   } else {
     if(!moment(values.end, 'L LT', true).isValid()) errors.end = 'Not valid';
-    
+
     const end = moment(values.end);
     if(end.diff(start) <= 0) errors.end = 'End date must be after start date';
   }
+
+  if (values.spotsReserved > values.maxPeople) errors.spotsReserved = 'Cannot be higher than max people';
 
   return errors;
 };
@@ -104,6 +106,12 @@ export const renderEventForm = ({
                  label="Max people"
                  type="number"
                  component={HorizontalField} />
+         <Field name="spotsReserved"
+                leftSm={4}
+                rightSm={8}
+                label="Reserved spots"
+                type="number"
+                component={HorizontalField} />
           <Field name="category"
                  leftSm={4}
                  rightSm={8}
