@@ -43,8 +43,6 @@ const renderLoggedIn = ({
         </div>
       </NavItem>
       <NavDropdown eventKey={3} title="My Account" id="basic-nav-dropdown">
-        <MenuItem eventKey={3.1}>Settings</MenuItem>
-        <MenuItem divider />
         <MenuItem eventKey={3.2} onClick={handleLogout}>Logout</MenuItem>
       </NavDropdown>
     </Nav>
