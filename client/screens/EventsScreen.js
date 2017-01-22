@@ -31,7 +31,7 @@ export const mapDispatchToProps = {
 
 class EventsContainer extends React.Component {
   componentDidMount() {
-    this.props.fetchEvents();
+    this.props.fetchEvents({ withFilters: true });
   }
 
   render() {
@@ -49,7 +49,6 @@ export const renderEventsScreen = ({
 }) => (
   <div>
     <Well>
-      {console.log(formValues)}
       <CategoryFilter onClick={filterByCategory} />
       <SearchForm onSubmit={searchEvents} initialValues={formValues} resetForm={() => {
         resetSearchEvents();

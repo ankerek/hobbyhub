@@ -57,7 +57,7 @@ export const mapDispatchToProps = (dispatch) => ({
   updateUser: (data) => dispatch(updateUser(data)),
   onRateSubmit: (data) => dispatch(rateUser(data)),
   onDeleteRating: (data) => dispatch(deleteUserRating(data)),
-  fetchEvents: () => dispatch(fetchEvents()),
+  fetchEvents: (data) => dispatch(fetchEvents(data)),
 });
 
 export const mergeProps = (stateProps, dispatchProps, ownProps) => ({
@@ -80,7 +80,7 @@ class ProfileDetailContainer extends React.Component {
   componentDidMount() {
     const { params: { id }, fetch, fetchEvents } = this.props;
     fetch(id);
-    fetchEvents();
+    fetchEvents({ withFilters: false });
   }
 
   render() {

@@ -135,7 +135,7 @@ export const searchEvents = (payload) => {
 
   if(filter.startBefore) filter.startBefore = filter.startBefore.valueOf();
   if(filter.startAfter) filter.startAfter = filter.startAfter.valueOf();
-  
+
   return {
     type: SEARCH_EVENTS,
     payload: filter,

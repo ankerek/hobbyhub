@@ -8,11 +8,11 @@ import { getCurrentUser } from '../reducers/auth';
 import { navigate } from '../actions/router';
 import * as actions from '../actions/events';
 
-function* fetchEvents() {
+function* fetchEvents({ payload: { withFilters } }) {
   try {
-    const isSearchActive = yield select(getIsSearchActive);
+    const isSearchActive = withFilters && (yield select(getIsSearchActive));
     const filters = yield select(getSearchFilters);
-    const payload = yield call(api.fetch, `/api/events${isSearchActive ? '/search' : ''}`, { 
+    const payload = yield call(api.fetch, `/api/events${isSearchActive ? '/search' : ''}`, {
       method: isSearchActive ? 'POST' : 'GET',
       body: isSearchActive ? {...filters} : null,
     });
@@ -111,7 +111,7 @@ function* acceptEventAttendee({ payload: { id, userId } }) {
 
 function* searchEvents({ payload }) {
   if(!payload || (payload && Object.keys(payload).length === 0)) yield put(actions.resetSearchEvents());
-  yield put(actions.fetchEvents());
+  yield put(actions.fetchEvents({ withFilters: true }));
 }
 
 //=====================================

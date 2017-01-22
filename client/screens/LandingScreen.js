@@ -24,7 +24,7 @@ export const mapDispatchToProps = {
 
 class LandingScreenContainer extends React.Component {
   componentDidMount() {
-    this.props.fetchEvents();
+    this.props.fetchEvents({ withFilters: true });
   }
 
   render() {
