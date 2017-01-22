@@ -105,9 +105,11 @@ export const renderEventItem = ({
                 }
               </div>
             ) : (
-              <Button bsStyle="primary" bsSize="sm" onClick={dontPropagate(() => joinEvent({ id: event._id }))}>
-                <Glyphicon glyph="plus" /> Join
-              </Button>
+              <p className="u-spacing5px">
+                <Button bsStyle="primary" bsSize="sm" onClick={dontPropagate(() => joinEvent({ id: event._id }))}>
+                  <Glyphicon glyph="plus" /> Join
+                </Button>
+              </p>
             )
           ) : null}
         </div>

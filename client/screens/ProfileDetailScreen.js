@@ -103,7 +103,7 @@ export const renderProfileDetailScreen = ({
     <div>
       <Well className="u-maxWidth960px u-centerizeHorizontally u-spacing40px">
         <div className="u-spacing20px">
-          <div className={bm('Grid', '1col multiCol:30em alignMiddle fit:30em gutterA20px')}>
+          <div className={bm('Grid', '1col multiCol:30em alignMiddle fit:30em gutterA20px wrap')}>
             <div className={be('Grid', 'cell')}>
               <img src={user.pictureUrl} alt={user.fullName} width={128} height={128} />
               { isMine && <AvatarDropzone updateUser={updateUser} /> }
