@@ -1,4 +1,5 @@
 import React, { PropTypes as T } from 'react';
+import classNames from 'classnames';
 import { get as g } from 'lodash';
 import { FormattedTime } from 'react-intl';
 import { connect } from 'react-redux';
@@ -62,7 +63,15 @@ export const renderEventItem = ({
   }
 
   return (
-    <div className={bm(moduleName, modifiers)} onClick={() => navigate({ pathname: `/events/${event._id}` })}>
+    <div
+      className={
+        classNames({
+          [bm(moduleName, modifiers)]: true,
+          'EventItem-hidden': isHidden,
+        })
+      }
+      onClick={() => navigate({ pathname: `/events/${event._id}` })}
+    >
       <div className={bm('Grid', '1col multiCol:60em fit:60em gutterA20px')}>
         <div className={`${be('Grid', 'cell')}`}>
           <div className="u-spacing10px">

@@ -100,7 +100,7 @@ export const renderProfileDetailScreen = ({
   updateUser,
 }) => (
   user && events ? (
-    <div>
+    <div className="ProfileDetailScreen">
       <Well className="u-maxWidth960px u-centerizeHorizontally u-spacing40px">
         <div className="u-spacing20px">
           <div className={bm('Grid', '1col multiCol:30em alignMiddle fit:30em gutterA20px wrap')}>
