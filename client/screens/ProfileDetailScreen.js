@@ -38,8 +38,8 @@ export const mapStateToProps = (state, { params: { id } }) => {
   const user = getUser(state.entities, id);
   const myId = getCurrentUserId(state);
   const myRating = g(user, 'ratings', []).find(rating => rating.ratedBy === myId) || { percent: 0 };
-  const isMine = g(user, 'userId') === myId;
-  const mayRate = g(user, 'userId') !== myId;
+  const isMine = g(user, '_id') === myId;
+  const mayRate = g(user, '_id') !== myId;
 
   return {
     isAuthenticated: isAuthenticated(state),

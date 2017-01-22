@@ -13,7 +13,6 @@ const initialState = Immutable.from({
 
 const entities = (state = initialState, action) => {
   const { payload } = action;
-
   if (payload && payload.entities) {
     return state.merge(payload.entities, {deep: true});
   }
