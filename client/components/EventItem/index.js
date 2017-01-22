@@ -1,4 +1,5 @@
 import React, { PropTypes as T } from 'react';
+import moment from 'moment';
 import classNames from 'classnames';
 import { get as g } from 'lodash';
 import { FormattedTime } from 'react-intl';
@@ -61,6 +62,7 @@ export const renderEventItem = ({
       reservedSpots.push(<div key={i} className={`${be('Grid', 'cell')}`}><UserAvatar size={48} reserved /></div>);
     }
   }
+  const isClosed = moment().diff(moment(event.end)) > 0;
 
   return (
     <div
@@ -68,6 +70,7 @@ export const renderEventItem = ({
         classNames({
           [bm(moduleName, modifiers)]: true,
           'EventItem-hidden': isHidden,
+          'EventItem-closed': isClosed,
         })
       }
       onClick={() => navigate({ pathname: `/events/${event._id}` })}
@@ -98,7 +101,7 @@ export const renderEventItem = ({
           ) : (
             null
           )}
-          {isAuthenticated ? (
+          {!isClosed && (isAuthenticated ? (
             (isPendingAttendee || isAcceptedAttendee) ? (
               <div>
                 <p className="u-spacing5px">
@@ -120,7 +123,8 @@ export const renderEventItem = ({
                 </Button>
               </p>
             )
-          ) : null}
+          ) : null
+        )}
         </div>
         <div className={`${be('Grid', 'cell')} u-flexOne`}>
           <h3 className="u-spacing5px">

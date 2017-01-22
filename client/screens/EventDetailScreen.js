@@ -1,4 +1,5 @@
 import React, { PropTypes as T } from 'react';
+import moment from 'moment';
 import { FormattedTime } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -64,6 +65,7 @@ export const renderEventDetailScreen = ({
   for(let i = 0; i < event.spotsReserved; i++) {
     reservedSpots.push(<div key={i} className={`${be('Grid', 'cell')}`}><UserAvatar size={48} reserved /></div>);
   }
+  const isClosed = moment().diff(moment(event.end)) > 0;
   return (
     event._id ? (
       <Well>
@@ -98,7 +100,7 @@ export const renderEventDetailScreen = ({
                   </div>
                 </div>
               ) }
-              { isAuthenticated ? (
+              { !isClosed && (isAuthenticated ? (
                 (isAcceptedAttendee || isPendingAttendee) ? (
                   <div className={be('Grid', 'cell')}>
                     <Button bsStyle="warning"
@@ -120,7 +122,8 @@ export const renderEventDetailScreen = ({
                 <div className={be('Grid', 'cell')}>
                   <Link className="btn btn-primary u-pullRight" to="/sign-up">Sign Up to Attend</Link>
                 </div>
-              )}
+              )
+            )}
             </div>
             {(isAuthenticated && isPendingAttendee) ? (
               <p className="u-colorInfo u-textRight">
