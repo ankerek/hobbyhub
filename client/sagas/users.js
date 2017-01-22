@@ -34,7 +34,7 @@ function* updateUser({ payload: { file } }) {
     );
 
     yield put(actions.fetchUser(loggedUser._id));
-    yield put(fetchEvents());
+    yield put(fetchEvents({ withFilters: false }));
 
     //yield put(actions.createEventSuccess(payload));
   } catch (error) {
